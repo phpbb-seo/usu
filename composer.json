@@ -40,7 +40,7 @@
 		"version-check": {
 			"host": "version.phpbb-seo.org",
 			"directory": "/",
-			"filename": "sfu.json"
+			"filename": "usu.json"
 		}
     }
 }
