@@ -438,8 +438,7 @@ class listener implements EventSubscriberInterface
 							$response = $http_kernel->handle($symfony_request);
 							$response->send();
 							$http_kernel->terminate($symfony_request, $response);
-							exit;
-
+							
 						}
 
 						if ($this->core->seo_opt['redirect_404_forum'])
