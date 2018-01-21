@@ -1657,17 +1657,17 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '(styles/.*|images/
 		$modrtype_lang['type'] = $modrtype_lang['types'][$this->core->modrtype];
 
 		$modrtype_lang['modrlinks_en'] = array(
-			1	=> 'http://www.phpbb-seo.com/en/simple-seo-url/simple-phpbb-seo-url-t1566.html',
-			2	=> 'http://www.phpbb-seo.com/en/mixed-seo-url/mixed-phpbb-seo-url-t1565.html',
-			3	=> 'http://www.phpbb-seo.com/en/advanced-seo-url/advanced-phpbb-seo-url-t1219.html',
-			'u'	=> 'http://www.phpbb-seo.com/en/phpbb-mod-rewrite/ultimate-seo-url-t4608.html',
+			1	=> 'http://www.phpbb-seo.org/simple-seo-url/simple-phpbb-seo-url-t1566.html',
+			2	=> 'http://www.phpbb-seo.org/mixed-seo-url/mixed-phpbb-seo-url-t1565.html',
+			3	=> 'http://www.phpbb-seo.org/advanced-seo-url/advanced-phpbb-seo-url-t1219.html',
+			'u'	=> 'http://www.phpbb-seo.org/phpbb-mod-rewrite/ultimate-seo-url-t4608.html',
 		);
 
 		$modrtype_lang['modrforumlinks_en'] = array(
-			1	=> 'http://www.phpbb-seo.com/en/simple-seo-url/',
-			2	=> 'http://www.phpbb-seo.com/en/mixed-seo-url/',
-			3	=> 'http://www.phpbb-seo.com/en/advanced-seo-url/',
-			'u'	=> 'http://www.phpbb-seo.com/en/phpbb-mod-rewrite/',
+			1	=> 'http://www.phpbb-seo.org/simple-seo-url/',
+			2	=> 'http://www.phpbb-seo.or/mixed-seo-url/',
+			3	=> 'http://www.phpbb-seo.org/advanced-seo-url/',
+			'u'	=> 'http://www.phpbb-seo.org/phpbb-mod-rewrite/',
 		);
 
 		if (strpos($this->config['default_lang'], 'fr') !== false)

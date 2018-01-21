@@ -2,7 +2,7 @@
 *
 * @package Ultimate phpBB SEO Friendly URL
 * @version $$
-* @copyright (c) 2006 - 2014 www.phpbb-seo.com
+* @copyright (c) 2006 - 2014 www.phpbb-seo.org
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
