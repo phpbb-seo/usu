@@ -6,7 +6,9 @@ This Extension will URL rewrite phpBB URLs in various manners, injecting, or not
 You will be able to run the mod in Advanced, Mixed and Simple mode.
 
 <b>Note:</b><br />
-Don't use this extension in live forums yet ...
+Report Bugs: https://github.com/phpbb-seo/usu/issues
+Join US: http://www.phpbb-seo.org/
+
 
 <b>Working on phpBB 3.2</b>
 
