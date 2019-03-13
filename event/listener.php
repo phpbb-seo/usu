@@ -393,9 +393,6 @@ class listener implements EventSubscriberInterface
 							// request url is rewriten
 							// re-route request to app.php
 							global $phpbb_container; // god save the hax
-							$phpbb_root_path = $this->phpbb_root_path;
-							$phpEx = $this->php_ext;
-							include($phpbb_root_path . 'includes/functions_url_matcher.' . $phpEx);
 
 							// we need to overwrite couple SERVER variable to simulate direct app.php call
 							// start with scripts
