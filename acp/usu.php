@@ -140,9 +140,9 @@ class usu
 		{
 			case 'settings':
 
-				$display_vars['title'] = 'ACP_PHPBB_SEO_CLASS';
-				$this->language['ACP_PHPBB_SEO_CLASS_EXPLAIN'] = sprintf($this->language['ACP_PHPBB_SEO_CLASS_EXPLAIN'], $this->modrtype_lang['ulink'], $this->modrtype_lang['uforumlink'], '</p><hr/><p><b>' . $this->language['ACP_PHPBB_SEO_MODE'] . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><hr/><p>');
 				$display_vars['vars'] = array();
+				$display_vars['title'] = 'ACP_PHPBB_SEO_CLASS';
+				$display_vars['description'] = sprintf($this->language->lang('ACP_PHPBB_SEO_CLASS_EXPLAIN'), $this->modrtype_lang['ulink'], $this->modrtype_lang['uforumlink'], '</p><hr/><p><b>' . $this->language->lang('ACP_PHPBB_SEO_MODE') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><hr/><p>');
 				$i = 2;
 				$display_vars['vars']['legend1'] = 'ACP_PHPBB_SEO_CLASS';
 
@@ -815,7 +815,7 @@ class usu
 		$this->tpl_name = 'acp_board';
 		$this->page_title = $display_vars['title'];
 
-		$l_title_explain = $this->language[$display_vars['title'] . '_EXPLAIN'];
+		$l_title_explain = $this->language->lang($display_vars['title'] . '_EXPLAIN');
 
 		if ($mode != 'extended')
 		{
