@@ -324,7 +324,7 @@ class usu
 			case 'server':
 
 				$display_vars['title'] = 'ACP_REWRITE_CONF';
-                $this->language['ACP_REWRITE_CONF_EXPLAIN'] = $this->language['ACP_REWRITE_CONF_EXPLAIN'] . '</p><hr/><p><b>' . $this->user->lang['ACP_PHPBB_SEO_VERSION'] . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><p>';
+                		$display_vars['description'] =  $this->language->lang('ACP_REWRITE_CONF_EXPLAIN') . '</p><hr/><p><b>' . $this->user->lang('ACP_PHPBB_SEO_VERSION') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><p>';
 				$display_vars['vars'] = array();
 				$display_vars['vars']['legend1'] = 'ACP_REWRITE_CONF';
 				if ($this->core->seo_path['phpbb_script'] && !$this->core->seo_opt['virtual_root'])
@@ -347,7 +347,7 @@ class usu
 				}
 
 				// Dirty yet simple templating
-				$this->language['ACP_REWRITE_CONF_EXPLAIN'] = $this->language['ACP_REWRITE_CONF_EXPLAIN'] . $this->seo_server_conf();
+				$display_vars['description'] = $this->language->lang('ACP_REWRITE_CONF_EXPLAIN') . $this->seo_server_conf();
 
 				$this->template->assign_vars(array(
 					'S_SEO_HTACCESS'	=> 1,
