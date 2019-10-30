@@ -229,7 +229,7 @@ class usu
 				}
 
 				$display_vars['title'] = 'ACP_FORUM_URL';
-				$display_vars['desciption'] = $this->user->lang('ACP_FORUM_URL_EXPLAIN') . '</p><hr/><p><b>' . $this->user->lang('ACP_PHPBB_SEO_VERSION') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><hr/><p>';
+				$display_vars['description'] = $this->user->lang('ACP_FORUM_URL_EXPLAIN') . '</p><hr/><p><b>' . $this->user->lang('ACP_PHPBB_SEO_VERSION') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><hr/><p>';
 				$display_vars['vars'] = array();
 				$display_vars['vars']['legend1'] = 'ACP_FORUM_URL';
 
