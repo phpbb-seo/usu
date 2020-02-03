@@ -730,7 +730,7 @@ class usu
 					// Let's make sure that the proper field was added to the topic table
 					if ($config_name === 'sql_rewrite' && $config_value == 1 && !$this->core->seo_opt['sql_rewrite'])
 					{
-						$db_tools = new \phpbb\db\tools($this->db);
+						$db_tools = new \phpbb\db\tools\tools($this->db);
 						$db_tools->db->sql_return_on_error(true);
 
 						if (!$db_tools->sql_column_exists(TOPICS_TABLE, 'topic_url'))
