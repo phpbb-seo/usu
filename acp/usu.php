@@ -142,7 +142,8 @@ class usu
 
 				$display_vars['vars'] = array();
 				$display_vars['title'] = 'ACP_PHPBB_SEO_CLASS';
-				$display_vars['description'] = sprintf($this->language->lang('ACP_PHPBB_SEO_CLASS_EXPLAIN'), $this->modrtype_lang['ulink'], $this->modrtype_lang['uforumlink'], '</p><hr/><p><b>' . $this->language->lang('ACP_PHPBB_SEO_MODE') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><hr/><p>');
+				$display_vars['ACP_PHPBB_SEO_CLASS_EXPLAIN'] = sprintf($this->language->lang('ACP_PHPBB_SEO_CLASS_EXPLAIN'), $this->modrtype_lang['ulink'], $this->modrtype_lang['uforumlink'], '</p><hr/><p><b>' . $this->language->lang('ACP_PHPBB_SEO_MODE') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><hr/><p>');
+
 				$i = 2;
 				$display_vars['vars']['legend1'] = 'ACP_PHPBB_SEO_CLASS';
 
@@ -229,7 +230,8 @@ class usu
 				}
 
 				$display_vars['title'] = 'ACP_FORUM_URL';
-				$display_vars['description'] = $this->user->lang('ACP_FORUM_URL_EXPLAIN') . '</p><hr/><p><b>' . $this->user->lang('ACP_PHPBB_SEO_VERSION') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><hr/><p>';
+				$display_vars['ACP_FORUM_URL_EXPLAIN'] = $this->user->lang('ACP_FORUM_URL_EXPLAIN') . '</p><hr/><p><b>' . $this->user->lang('ACP_PHPBB_SEO_VERSION') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><hr/><p>';
+
 				$display_vars['vars'] = array();
 				$display_vars['vars']['legend1'] = 'ACP_FORUM_URL';
 
@@ -324,7 +326,8 @@ class usu
 			case 'server':
 
 				$display_vars['title'] = 'ACP_REWRITE_CONF';
-                		$display_vars['description'] =  $this->language->lang('ACP_REWRITE_CONF_EXPLAIN') . '</p><hr/><p><b>' . $this->user->lang('ACP_PHPBB_SEO_VERSION') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><p>';
+            	$display_vars['ACP_REWRITE_CONF_EXPLAIN'] =  $this->language->lang('ACP_REWRITE_CONF_EXPLAIN') . '</p><hr/><p><b>' . $this->user->lang('ACP_PHPBB_SEO_VERSION') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><p>';
+
 				$display_vars['vars'] = array();
 				$display_vars['vars']['legend1'] = 'ACP_REWRITE_CONF';
 				if ($this->core->seo_path['phpbb_script'] && !$this->core->seo_opt['virtual_root'])
@@ -347,7 +350,7 @@ class usu
 				}
 
 				// Dirty yet simple templating
-				$display_vars['description'] = $this->language->lang('ACP_REWRITE_CONF_EXPLAIN') . $this->seo_server_conf();
+				$display_vars['ACP_REWRITE_CONF_EXPLAIN'] = $this->language->lang('ACP_REWRITE_CONF_EXPLAIN') . $this->seo_server_conf();
 
 				$this->template->assign_vars(array(
 					'S_SEO_HTACCESS'	=> 1,
@@ -1550,10 +1553,6 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '(styles/.*|images/
 			}
 		}
 
-		$this->template->assign_vars(array(
-			'SEO_REWRITE_ENGINES'	=> '["' . (implode('","', array_keys($rewrite_conf))) . '"]',
-		));
-
 		if ($html)
 		{
 			// HTML output
@@ -1570,7 +1569,12 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '(styles/.*|images/
 			}
 
 			$html_output .= '</ul></div><p>' . "\n";
+			$this->template->assign_vars(array(
+				'SEO_REWRITE_ENGINES'	=> str_replace('"', "\"", $html_output),
+			));
+
 			return $html_output;
+
 		}
 		else
 		{
