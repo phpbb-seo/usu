@@ -1,4 +1,4 @@
-[![phpBB-SEO](http://www.php-bb.ir/pic/uploads/15303852777391.jpg)](http://www.phpbb-seo.org)
+[![phpBB-SEO](http://www.php-bb.ir/pic/uploads/15303852777391.jpg)](http://www.phpBB-SEO.ir)
 
 # usu ( Ultimate phpBB SEO Friendly URL )
 Ultimate phpBB SEO Friendly URL
