@@ -3,7 +3,7 @@
 *
 * @package Ultimate phpBB SEO Friendly URL
 * @version $$
-* @copyright (c) 2017 www.phpbb-seo.org
+* @copyright (c) 2017 www.phpBB-SEO.ir
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -12,7 +12,7 @@ namespace phpbbseo\usu\acp;
 
 /**
 * phpBB_SEO Class
-* www.phpBB-SEO.org
+* www.phpBB-SEO.ir
 * @package Ultimate phpBB SEO Friendly URL
 */
 class usu
@@ -787,7 +787,7 @@ class usu
 				$file = $this->core->cache_config['file'];
 				ksort($this->core->cache_config['forum_urls']);
 
-				$update = '<'.'?php' . "\n" . '/**' . "\n" . '* phpBB SEO' . "\n" . '* www.phpBB-SEO.org' . "\n" . '* @package phpBB SEO USU' . "\n" . '*/' . "\n" . 'if (!defined(\'IN_PHPBB\')) {' . "\n\t" . 'exit;' . "\n" . '}' . "\n";
+				$update = '<'.'?php' . "\n" . '/**' . "\n" . '* phpBB SEO' . "\n" . '* www.phpBB-SEO.ir' . "\n" . '* @package phpBB SEO USU' . "\n" . '*/' . "\n" . 'if (!defined(\'IN_PHPBB\')) {' . "\n\t" . 'exit;' . "\n" . '}' . "\n";
 				$update .= '$settings = ' . preg_replace('`[\s]+`', ' ', var_export($this->core->cache_config['settings'], true)) . ';'. "\n";
 				$update .= '$forum_urls = ' . preg_replace('`[\s]+`', ' ', var_export($this->core->cache_config['forum_urls'], true)) . ';';
 
@@ -1661,17 +1661,17 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '(styles/.*|images/
 		$modrtype_lang['type'] = $modrtype_lang['types'][$this->core->modrtype];
 
 		$modrtype_lang['modrlinks_en'] = array(
-			1	=> 'http://www.phpbb-seo.org/simple-seo-url/simple-phpbb-seo-url-t1566.html',
-			2	=> 'http://www.phpbb-seo.org/mixed-seo-url/mixed-phpbb-seo-url-t1565.html',
-			3	=> 'http://www.phpbb-seo.org/advanced-seo-url/advanced-phpbb-seo-url-t1219.html',
-			'u'	=> 'http://www.phpbb-seo.org/phpbb-mod-rewrite/ultimate-seo-url-t4608.html',
+			1	=> 'http://www.phpBB-SEO.ir/simple-seo-url/simple-phpbb-seo-url-t1566.html',
+			2	=> 'http://www.phpBB-SEO.ir/mixed-seo-url/mixed-phpbb-seo-url-t1565.html',
+			3	=> 'http://www.phpBB-SEO.ir/advanced-seo-url/advanced-phpbb-seo-url-t1219.html',
+			'u'	=> 'http://www.phpBB-SEO.ir/phpbb-mod-rewrite/ultimate-seo-url-t4608.html',
 		);
 
 		$modrtype_lang['modrforumlinks_en'] = array(
-			1	=> 'http://www.phpbb-seo.org/simple-seo-url/',
+			1	=> 'http://www.phpBB-SEO.ir/simple-seo-url/',
 			2	=> 'http://www.phpbb-seo.or/mixed-seo-url/',
-			3	=> 'http://www.phpbb-seo.org/advanced-seo-url/',
-			'u'	=> 'http://www.phpbb-seo.org/phpbb-mod-rewrite/',
+			3	=> 'http://www.phpBB-SEO.ir/advanced-seo-url/',
+			'u'	=> 'http://www.phpBB-SEO.ir/phpbb-mod-rewrite/',
 		);
 
 		if (strpos($this->config['default_lang'], 'fr') !== false)

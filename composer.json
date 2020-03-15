@@ -2,7 +2,7 @@
     "name": "phpbbseo/usu",
     "type": "phpbb-extension",
     "description": "This Extension will URL rewrite phpBB URLs in various manners, injecting, or not, forums and topic titles in their URLS, each URL being rewritten once, no matter the number of links using it on the page.",
-    "homepage": "http://www.phpbb-seo.org",
+    "homepage": "http://www.phpBB-SEO.ir",
     "version": "2.0.0-b5",
 	"keywords": ["phpbbSEO", "extension", "seo", "Friendly User"],
     "time": "2019-03-20",
@@ -10,8 +10,8 @@
     "authors": [
         {
  			"name": "Meis@M",
-			"email": "info@phpbb-seo.org",
-			"homepage": "http://www.phpbb-seo.org/",
+			"email": "info@phpBB-SEO.ir",
+			"homepage": "http://www.phpBB-SEO.ir/",
 			"role": "Lead Developer"
         },
         {
