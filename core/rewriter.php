@@ -8,7 +8,7 @@
 *
 */
 
-namespace phpbbseo\usu;
+namespace phpbbseo\usu\core;
 
 /**
 * rewriter Class
@@ -17,7 +17,7 @@ namespace phpbbseo\usu;
 */
 class rewriter
 {
-	/** @var \phpbbseo\usu\core */
+	/** @var \phpbbseo\usu\core\core */
 	private $core;
 
 	/* @var \phpbb\user */
@@ -32,11 +32,11 @@ class rewriter
 	/**
 	* Constructor
 	*
-	* @param	\phpbbseo\usu\core			$core
+	* @param	\phpbbseo\usu\core\core		$core
 	* @param	\phpbb\user					$user				User object
 	* @param	string						$phpbb_root_path	Path to the phpBB root
 	*/
-	public function __construct(\phpbbseo\usu\core $core, \phpbb\user $user, $phpbb_root_path)
+	public function __construct(\phpbbseo\usu\core\core $core, \phpbb\user $user, $phpbb_root_path)
 	{
 		$this->core = $core;
 		$this->user = $user;

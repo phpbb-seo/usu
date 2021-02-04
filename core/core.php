@@ -8,10 +8,10 @@
 *
 */
 
-namespace phpbbseo\usu;
+namespace phpbbseo\usu\core;
 
-use phpbbseo\usu\customise;
-use phpbbseo\usu\rewriter;
+use phpbbseo\usu\core\customise;
+use phpbbseo\usu\core\rewriter;
 
 /**
 * core Class
@@ -67,8 +67,8 @@ class core
 	* uri cache
 	*/
 	public $seo_url = array(
-		'forum'		=>  array(),
-		'topic'		=>  array(),
+		'forum'		=> array(),
+		'topic'		=> array(),
 		'user'		=> array(),
 		'username'	=> array(),
 		'group'		=> array(),
@@ -177,7 +177,7 @@ class core
 	*/
 	public $seo_opt = array(
 		'url_rewrite'			=> false,
-		'modrtype'			=> 2,
+		'modrtype'				=> 2,
 		'sql_rewrite'			=> false,
 		'profile_inj'			=> false,
 		'profile_vfolder'		=> false,
@@ -186,17 +186,17 @@ class core
 
 		// disable attachment rewriting
 		// https://github.com/phpBBSEO/usu/issues/31
-		// 'rewrite_files'			=> false,
+		// 'rewrite_files'		=> false,
 
-		'rem_sid'			=> false,
-		'rem_hilit'			=> true,
+		'rem_sid'				=> false,
+		'rem_hilit'				=> true,
 		'rem_small_words'		=> false,
 		'virtual_folder'		=> false,
 		'virtual_root'			=> false,
 		'cache_layer'			=> true,
-		'rem_ids'			=> false,
-		'redirect_404_forum'		=> false,
-		'redirect_404_topic'		=> false,
+		'rem_ids'				=> false,
+		'redirect_404_forum'	=> false,
+		'redirect_404_topic'	=> false,
 	);
 
 	/**

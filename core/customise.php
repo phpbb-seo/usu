@@ -7,7 +7,8 @@
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
-namespace phpbbseo\usu;
+
+namespace phpbbseo\usu\core;
 
 /**
 * customize Class
@@ -16,7 +17,7 @@ namespace phpbbseo\usu;
 */
 class customise
 {
-	/** @var \phpbbseo\usu\core */
+	/** @var \phpbbseo\usu\core\core */
 	private $core;
 
 	/** @var \phpbb\config\config */
@@ -25,11 +26,11 @@ class customise
 	/**
 	* Constructor
 	*
-	* @param	\phpbbseo\usu\core		$core
-	* @param	\phpbb\config\config	$config				Config object
+	* @param	\phpbbseo\usu\core\core		$core
+	* @param	\phpbb\config\config		$config				Config object
 	*
 	*/
-	public function __construct(\phpbbseo\usu\core $core, \phpbb\config\config $config)
+	public function __construct(\phpbbseo\usu\core\core $core, \phpbb\config\config $config)
 	{
 		$this->core = $core;
 		$this->config = $config;

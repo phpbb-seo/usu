@@ -10,7 +10,9 @@
 
 namespace phpbbseo\usu\migrations;
 
-class release_2_0_0_b2 extends \phpbb\db\migration\migration
+use phpbb\db\migration\migration;
+
+class release_2_0_0_b2 extends migration
 {
 	public function effectively_installed()
 	{

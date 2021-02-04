@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 */
 class listener implements EventSubscriberInterface
 {
-	/* @var \phpbbseo\usu\core */
+	/* @var \phpbbseo\usu\core\core */
 	private $core;
 
 	/* @var \phpbb\config\config */
@@ -69,18 +69,18 @@ class listener implements EventSubscriberInterface
 	/**
 	* Constructor
 	*
-	* @param \phpbbseo\usu\core				$core
+	* @param \phpbbseo\usu\core\core			$core
 	* @param \phpbb\config\config				$config				Config object
-	* @param \phpbb\auth\auth				$auth				Auth object
+	* @param \phpbb\auth\auth					$auth				Auth object
 	* @param \phpbb\template\template			$template			Template object
-	* @param \phpbb\user					$user				User object
+	* @param \phpbb\user						$user				User object
 	* @param \phpbb\request\request				$request			Request object
-	* @param \phpbb\db\driver\driver_interface		$db				Database object
-	* @param string						$phpbb_root_path		Path to the phpBB root
-	* @param string						$php_ext			PHP file extension
+	* @param \phpbb\db\driver\driver_interface	$db					Database object
+	* @param string								$phpbb_root_path	Path to the phpBB root
+	* @param string								$php_ext			PHP file extension
 	*
 	*/
-	public function __construct(\phpbbseo\usu\core $core, \phpbb\config\config $config, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\request\request $request, \phpbb\db\driver\driver_interface $db, \phpbb\language\language $language, $phpbb_root_path, $php_ext)
+	public function __construct(\phpbbseo\usu\core\core $core, \phpbb\config\config $config, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\request\request $request, \phpbb\db\driver\driver_interface $db, \phpbb\language\language $language, $phpbb_root_path, $php_ext)
 	{
 		$this->core = $core;
 		$this->template = $template;
@@ -89,7 +89,7 @@ class listener implements EventSubscriberInterface
 		$this->auth = $auth;
 		$this->request = $request;
 		$this->db = $db;
-        $this->language = $language;
+		$this->language = $language;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 	}
@@ -97,19 +97,19 @@ class listener implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return array(
-			'core.common'					=> 'core_common',
-			'core.user_setup'				=> 'core_user_setup',
-			'core.append_sid'				=> 'core_append_sid',
+			'core.common'								=> 'core_common',
+			'core.user_setup'							=> 'core_user_setup',
+			'core.append_sid'							=> 'core_append_sid',
 			'core.pagination_generate_page_link'		=> 'core_pagination_generate_page_link',
-			'core.page_header_after'			=> 'core_page_header_after',
-			'core.page_footer'				=> 'core_page_footer',
-			'core.viewforum_modify_topicrow'		=> 'core_viewforum_modify_topicrow',
-			'core.viewtopic_modify_page_title'		=> 'core_viewtopic_modify_page_title',
-			'core.viewtopic_modify_post_row'		=> 'core_viewtopic_modify_post_row',
-			'core.memberlist_view_profile'			=> 'core_memberlist_view_profile',
-			'core.modify_username_string'			=> 'core_modify_username_string',
-			'core.submit_post_end'				=> 'core_submit_post_end',
-			'core.posting_modify_template_vars'		=> 'core_posting_modify_template_vars',
+			'core.page_header_after'					=> 'core_page_header_after',
+			'core.page_footer'							=> 'core_page_footer',
+			'core.viewforum_modify_topicrow'			=> 'core_viewforum_modify_topicrow',
+			'core.viewtopic_modify_page_title'			=> 'core_viewtopic_modify_page_title',
+			'core.viewtopic_modify_post_row'			=> 'core_viewtopic_modify_post_row',
+			'core.memberlist_view_profile'				=> 'core_memberlist_view_profile',
+			'core.modify_username_string'				=> 'core_modify_username_string',
+			'core.submit_post_end'						=> 'core_submit_post_end',
+			'core.posting_modify_template_vars'			=> 'core_posting_modify_template_vars',
 			'core.display_user_activity_modify_actives'	=> 'core_display_user_activity_modify_actives',
 		);
 	}
@@ -435,7 +435,7 @@ class listener implements EventSubscriberInterface
 							$response = $http_kernel->handle($symfony_request);
 							$response->send();
 							$http_kernel->terminate($symfony_request, $response);
-							
+
 						}
 
 						if ($this->core->seo_opt['redirect_404_forum'])

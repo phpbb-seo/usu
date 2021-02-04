@@ -8,14 +8,14 @@
 #
 services:
     phpbbseo.usu.core:
-        class: phpbbseo\usu\core
+        class: phpbbseo\usu\core\core
         arguments:
             - '@config'
             - '@request'
             - '@user'
             - '@auth'
-            - %core.root_path%
-            - %core.php_ext%
+            - '%core.root_path%'
+            - '%core.php_ext%'
 
     phpbbseo.usu.listener:
         class: phpbbseo\usu\event\listener
@@ -28,8 +28,7 @@ services:
             - '@request'
             - '@dbal.conn'
             - '@language'
-            - %core.root_path%
-            - %core.php_ext%
+            - '%core.root_path%'
+            - '%core.php_ext%'
         tags:
             - { name: event.listener }
-

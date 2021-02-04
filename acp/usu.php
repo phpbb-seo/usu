@@ -20,7 +20,7 @@ class usu
 	/** @var \phpbb\config\config */
 	protected $config;
 
-	/** @var \phpbbseo\usu\core */
+	/** @var \phpbbseo\usu\core\core */
 	protected $core;
 
 	/** @var \phpbb\db\driver\driver_interface */
@@ -69,7 +69,7 @@ class usu
 		$this->user = $user;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $phpEx;
-        $this->language = $language;
+		$this->language = $language;
 
 		$this->user->add_lang_ext('phpbbseo/usu', 'acp_usu');
 
@@ -1669,11 +1669,16 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 
 		$modrtype_lang['modrforumlinks_en'] = array(
 			1	=> 'http://www.phpBB-SEO.ir/simple-seo-url/',
-			2	=> 'http://www.phpbb-seo.or/mixed-seo-url/',
+			2	=> 'http://www.phpbb-seo.ir/mixed-seo-url/',
 			3	=> 'http://www.phpBB-SEO.ir/advanced-seo-url/',
 			'u'	=> 'http://www.phpBB-SEO.ir/phpbb-mod-rewrite/',
 		);
 
+		/**
+		 * Disable this check
+		 * https://github.com/phpbb-seo/usu/issues/38
+		 */
+		/** // Check if Default Lang is FR
 		if (strpos($this->config['default_lang'], 'fr') !== false)
 		{
 			$modrtype_lang['linkurl'] = $modrtype_lang['modrlinks_fr'][$this->core->modrtype];
@@ -1688,6 +1693,11 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 			$modrtype_lang['ulinkurl'] = $modrtype_lang['modrlinks_en']['u'];
 			$modrtype_lang['uforumlinkurl'] = $modrtype_lang['modrforumlinks_en']['u'];
 		}
+		*/
+		$modrtype_lang['linkurl'] = $modrtype_lang['modrlinks_en'][$this->core->modrtype];
+		$modrtype_lang['forumlinkurl'] = $modrtype_lang['modrforumlinks_en'][$this->core->modrtype];
+		$modrtype_lang['ulinkurl'] = $modrtype_lang['modrlinks_en']['u'];
+		$modrtype_lang['uforumlinkurl'] = $modrtype_lang['modrforumlinks_en']['u'];
 
 		$modrtype_lang['link'] = '<a href="' . $modrtype_lang['linkurl'] . '" title="' . $this->user->lang['ACP_PHPBB_SEO_VERSION'] . ' ' . $modrtype_lang['title'] . '" onclick="window.open(this.href); return false;"><b>' . $modrtype_lang['title'] . '</b></a>';
 		$modrtype_lang['forumlink'] = '<a href="' . $modrtype_lang['forumlinkurl'] . '" title="' . $this->user->lang['ACP_SEO_SUPPORT_FORUM'] . '" onclick="window.open(this.href); return false;"><b>' . $this->user->lang['ACP_SEO_SUPPORT_FORUM'] . '</b></a>';
