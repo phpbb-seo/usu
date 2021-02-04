@@ -14,36 +14,36 @@ class main_info
 {
 	function module()
 	{
-		return array(
+		return [
 			'filename'	=> '\phpbbseo\usu\acp\usu',
 			'title'		=> 'ACP_CAT_PHPBB_SEO',
 			'version'	=> '2.0.0-b2',
-			'modes'		=> array(
-				'settings'	=> array(
+			'modes'		=> [
+				'settings'	=> [
 					'title'	=> 'ACP_PHPBB_SEO_CLASS',
 					'auth'	=> 'ext_phpbbseo/usu && acl_a_board',
-					'cat'	=> array('ACP_MOD_REWRITE')
-				),
-				'forum_url'	=> array(
+					'cat'	=> ['ACP_MOD_REWRITE']
+				],
+				'forum_url'	=> [
 					'title'	=> 'ACP_FORUM_URL',
 					'auth'	=> 'ext_phpbbseo/usu && acl_a_board',
-					'cat'	=> array('ACP_MOD_REWRITE')
-				),
-				'server'	=> array(
+					'cat'	=> ['ACP_MOD_REWRITE']
+				],
+				'server'	=> [
 					'title'	=> 'ACP_REWRITE_CONF',
 					'auth'	=> 'ext_phpbbseo/usu && acl_a_board',
-					'cat'	=> array('ACP_MOD_REWRITE')
-				),
-				'sync_url'	=> array(
+					'cat'	=> ['ACP_MOD_REWRITE']
+				],
+				'sync_url'	=> [
 					'title'	=> 'ACP_SYNC_URL',
 					'auth'	=> 'ext_phpbbseo/usu && acl_a_board',
-					'cat'	=> array('ACP_MOD_REWRITE')
-				),
-				'extended'	=> array(
+					'cat'	=> ['ACP_MOD_REWRITE']
+				],
+				'extended'	=> [
 					'title'	=> 'ACP_SEO_EXTENDED',
 					'auth'	=> 'ext_phpbbseo/usu && acl_a_board',
-					'cat'	=> array('ACP_MOD_REWRITE')
-				),
-			));
+					'cat'	=> ['ACP_MOD_REWRITE']
+				],
+			]];
 	}
 }

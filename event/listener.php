@@ -96,7 +96,7 @@ class listener implements EventSubscriberInterface
 
 	public static function getSubscribedEvents()
 	{
-		return array(
+		return [
 			'core.common'								=> 'core_common',
 			'core.user_setup'							=> 'core_user_setup',
 			'core.append_sid'							=> 'core_append_sid',
@@ -111,7 +111,7 @@ class listener implements EventSubscriberInterface
 			'core.submit_post_end'						=> 'core_submit_post_end',
 			'core.posting_modify_template_vars'			=> 'core_posting_modify_template_vars',
 			'core.display_user_activity_modify_actives'	=> 'core_display_user_activity_modify_actives',
-		);
+		];
 	}
 
 	public function core_user_setup($event)
@@ -157,18 +157,18 @@ class listener implements EventSubscriberInterface
 					$sort_days = $this->request->variable('st', $default_sort_days);
 					$sort_key = $this->request->variable('sk', $default_sort_key);
 					$sort_dir = $this->request->variable('sd', $default_sort_dir);
-					$keep_mark = in_array($mark_read, array('topics', 'topic', 'forums', 'all')) ? (boolean) ($user_data['is_registered'] || $config['load_anon_lastread']) : false;
+					$keep_mark = in_array($mark_read, ['topics', 'topic', 'forums', 'all']) ? (boolean) ($user_data['is_registered'] || $config['load_anon_lastread']) : false;
 
-					$this->core->seo_opt['zero_dupe']['redir_def'] = array(
-						'hash'		=> array('val' => $this->request->variable('hash', ''), 'keep' => $keep_mark),
-						'f'		=> array('val' => $this->forum_id, 'keep' => true, 'force' => true),
-						'st'		=> array('val' => $sort_days, 'keep' => true),
-						'sk'		=> array('val' => $sort_key, 'keep' => true),
-						'sd'		=> array('val' => $sort_dir, 'keep' => true),
-						'mark'		=> array('val' => $mark_read, 'keep' => $keep_mark),
-						'mark_time'	=> array('val' => $this->request->variable('mark_time', 0), 'keep' => $keep_mark),
-						'start'		=> array('val' => $this->start, 'keep' => true),
-					);
+					$this->core->seo_opt['zero_dupe']['redir_def'] = [
+						'hash'		=> ['val' => $this->request->variable('hash', ''), 'keep' => $keep_mark],
+						'f'		=> ['val' => $this->forum_id, 'keep' => true, 'force' => true],
+						'st'		=> ['val' => $sort_days, 'keep' => true],
+						'sk'		=> ['val' => $sort_key, 'keep' => true],
+						'sd'		=> ['val' => $sort_dir, 'keep' => true],
+						'mark'		=> ['val' => $mark_read, 'keep' => $keep_mark],
+						'mark_time'	=> ['val' => $this->request->variable('mark_time', 0), 'keep' => $keep_mark],
+						'start'		=> ['val' => $this->start, 'keep' => true],
+					];
 
 					$this->core->zero_dupe();
 				}
@@ -294,10 +294,10 @@ class listener implements EventSubscriberInterface
 
 					if ($post_id && !$view && !$this->core->set_do_redir_post())
 					{
-						$this->core->seo_opt['zero_dupe']['redir_def'] = array(
-							'p'		=> array('val' => $post_id, 'keep' => true, 'force' => true, 'hash' => "p$post_id"),
-							'hilit'	=> array('val' => (($highlight_match) ? $highlight : ''), 'keep' => !empty($highlight_match)),
-						);
+						$this->core->seo_opt['zero_dupe']['redir_def'] = [
+							'p'		=> ['val' => $post_id, 'keep' => true, 'force' => true, 'hash' => "p$post_id"],
+							'hilit'	=> ['val' => (($highlight_match) ? $highlight : ''), 'keep' => !empty($highlight_match)],
+						];
 					}
 					else
 					{
@@ -316,22 +316,22 @@ class listener implements EventSubscriberInterface
 						$keep_hash = (boolean) ($keep_watch || $keep_unwatch || $seo_bookmark);
 						$seo_uid = max(0, $this->request->variable('uid', 0));
 
-						$this->core->seo_opt['zero_dupe']['redir_def'] = array(
-							'uid'		=> array('val' => $seo_uid, 'keep' => (boolean) ($keep_hash && $seo_uid)),
-							'f'		=> array('val' => $forum_id, 'keep' => true, 'force' => true),
-							't'		=> array('val' => $topic_id, 'keep' => true, 'force' => true, 'hash' => $post_id ? "p{$post_id}" : ''),
-							'p'		=> array('val' => $post_id, 'keep' =>  ($post_id && $view == 'show' ? true : false), 'hash' => "p{$post_id}"),
-							'watch'		=> array('val' => $seo_watch, 'keep' => $keep_watch),
-							'unwatch'	=> array('val' => $seo_unwatch, 'keep' => $keep_unwatch),
-							'bookmark'	=> array('val' => $seo_bookmark, 'keep' => (boolean) ($user_data['is_registered'] && $this->config['allow_bookmarks'] && $seo_bookmark)),
-							'start'		=> array('val' => $this->start, 'keep' => true, 'force' => true),
-							'hash'		=> array('val' => $this->request->variable('hash', ''), 'keep' => $keep_hash),
-							'st'		=> array('val' => $sort_days, 'keep' => true),
-							'sk'		=> array('val' => $sort_key, 'keep' => true),
-							'sd'		=> array('val' => $sort_dir, 'keep' => true),
-							'view'		=> array('val' => $view, 'keep' => $view == 'print' ? (boolean) $this->auth->acl_get('f_print', $forum_id) : (($view == 'viewpoll' || $view == 'show') ? true : false)),
-							'hilit'		=> array('val' => (($highlight_match) ? $highlight : ''), 'keep' => (boolean) !(!$user_data['is_registered'] && $this->core->seo_opt['rem_hilit'])),
-						);
+						$this->core->seo_opt['zero_dupe']['redir_def'] = [
+							'uid'		=> ['val' => $seo_uid, 'keep' => (boolean) ($keep_hash && $seo_uid)],
+							'f'		=> ['val' => $forum_id, 'keep' => true, 'force' => true],
+							't'		=> ['val' => $topic_id, 'keep' => true, 'force' => true, 'hash' => $post_id ? "p{$post_id}" : ''],
+							'p'		=> ['val' => $post_id, 'keep' =>  ($post_id && $view == 'show' ? true : false), 'hash' => "p{$post_id}"],
+							'watch'		=> ['val' => $seo_watch, 'keep' => $keep_watch],
+							'unwatch'	=> ['val' => $seo_unwatch, 'keep' => $keep_unwatch],
+							'bookmark'	=> ['val' => $seo_bookmark, 'keep' => (boolean) ($user_data['is_registered'] && $this->config['allow_bookmarks'] && $seo_bookmark)],
+							'start'		=> ['val' => $this->start, 'keep' => true, 'force' => true],
+							'hash'		=> ['val' => $this->request->variable('hash', ''), 'keep' => $keep_hash],
+							'st'		=> ['val' => $sort_days, 'keep' => true],
+							'sk'		=> ['val' => $sort_key, 'keep' => true],
+							'sd'		=> ['val' => $sort_dir, 'keep' => true],
+							'view'		=> ['val' => $view, 'keep' => $view == 'print' ? (boolean) $this->auth->acl_get('f_print', $forum_id) : (($view == 'viewpoll' || $view == 'show') ? true : false)],
+							'hilit'		=> ['val' => (($highlight_match) ? $highlight : ''), 'keep' => (boolean) !(!$user_data['is_registered'] && $this->core->seo_opt['rem_hilit'])],
+						];
 
 						if ($this->core->seo_opt['zero_dupe']['redir_def']['bookmark']['keep'])
 						{
@@ -396,7 +396,7 @@ class listener implements EventSubscriberInterface
 
 							// we need to overwrite couple SERVER variable to simulate direct app.php call
 							// start with scripts
-							$script_fix_list = array('SCRIPT_FILENAME', 'SCRIPT_NAME', 'PHP_SELF');
+							$script_fix_list = ['SCRIPT_FILENAME', 'SCRIPT_NAME', 'PHP_SELF'];
 							foreach ($script_fix_list as $varname)
 							{
 								if ($this->request->is_set($varname, \phpbb\request\request_interface::SERVER))
@@ -411,7 +411,7 @@ class listener implements EventSubscriberInterface
 							}
 
 							// then fix query strings
-							$qs_fix_list = array('QUERY_STRING', 'REDIRECT_QUERY_STRING');
+							$qs_fix_list = ['QUERY_STRING', 'REDIRECT_QUERY_STRING'];
 							foreach ($qs_fix_list as $varname)
 							{
 								if ($this->request->is_set($varname, \phpbb\request\request_interface::SERVER))
@@ -509,7 +509,7 @@ class listener implements EventSubscriberInterface
 
 	public function core_page_header_after($event)
 	{
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'SEO_PHPBB_URL'		=> $this->core->seo_path['phpbb_url'],
 			'SEO_ROOT_URL'		=> $this->core->seo_path['phpbb_url'],
 			'SEO_BASE_HREF'		=> $this->core->seo_opt['seo_base_href'],
@@ -521,7 +521,7 @@ class listener implements EventSubscriberInterface
 			'SEO_EXT_CLASSES'	=> !empty($this->config['seo_ext_classes']) ? preg_replace('`[^a-z0-9_|-]+`', '', str_replace(',', '|', trim($this->config['seo_ext_classes'], ', '))) : '',
 			'SEO_HASHFIX'		=> $this->core->seo_opt['url_rewrite'] && $this->core->seo_opt['virtual_folder'] ? 1 : '',
 			'SEO_PHPEX'			=> $this->php_ext,
-		));
+		]);
 
 		$page_title = $event['page_title'];
 
@@ -560,9 +560,9 @@ class listener implements EventSubscriberInterface
 
 		$this->language->lang('TRANSLATION_INFO', (!empty($this->user->lang['TRANSLATION_INFO']) ? $this->user->lang['TRANSLATION_INFO'] . '<br>' : '') . $output);
 
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'U_CANONICAL'	=> $this->core->get_canonical(),
-		));
+		]);
 	}
 
 	public function core_viewforum_modify_topicrow($event)
@@ -594,11 +594,11 @@ class listener implements EventSubscriberInterface
 
 	public function core_viewtopic_modify_page_title($event)
 	{
-		$this->template->assign_vars(array(
+		$this->template->assign_vars([
 			'U_PRINT_TOPIC'		=> ($this->auth->acl_get('f_print', $this->forum_id)) ? append_sid("{$this->phpbb_root_path}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;view=print") : '',
 			'U_BOOKMARK_TOPIC'	=> ($this->user->data['is_registered'] && $this->config['allow_bookmarks']) ? append_sid("{$this->phpbb_root_path}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;bookmark=1&amp;hash=" . generate_link_hash("topic_{$this->topic_id}")) : '',
 			'U_VIEW_RESULTS'	=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", "f=$this->forum_id&amp;t=$this->topic_id&amp;view=viewpoll"),
-		));
+		]);
 	}
 
 	public function core_memberlist_view_profile($event)
@@ -612,10 +612,10 @@ class listener implements EventSubscriberInterface
 
 		$this->core->set_user_url($member['username'], $member['user_id']);
 		$this->core->seo_path['canonical'] = $this->core->drop_sid(append_sid("{$this->phpbb_root_path}memberlist.{$this->php_ext}", "mode=viewprofile&amp;u=" . $member['user_id']));
-		$this->core->seo_opt['zero_dupe']['redir_def'] = array(
-			'mode'	=> array('val' => 'viewprofile', 'keep' => true),
-			'u'		=> array('val' => $member['user_id'], 'keep' => true, 'force' => true),
-		);
+		$this->core->seo_opt['zero_dupe']['redir_def'] = [
+			'mode'	=> ['val' => 'viewprofile', 'keep' => true],
+			'u'		=> ['val' => $member['user_id'], 'keep' => true, 'force' => true],
+		];
 
 		$this->core->zero_dupe();
 
@@ -624,7 +624,7 @@ class listener implements EventSubscriberInterface
 
 	public function core_modify_username_string($event)
 	{
-		$modes = array('profile' => 1, 'full' => 1);
+		$modes = ['profile' => 1, 'full' => 1];
 
 		$mode = $event['mode'];
 
@@ -666,7 +666,7 @@ class listener implements EventSubscriberInterface
 			return;
 		}
 
-		$event['username_string'] = str_replace(array('{PROFILE_URL}', '{USERNAME_COLOUR}', '{USERNAME}'), array($profile_url, $event['username_colour'], $event['username']), (!$event['username_colour']) ? $event['_profile_cache']['tpl_profile'] : $event['_profile_cache']['tpl_profile_colour']);
+		$event['username_string'] = str_replace(['{PROFILE_URL}', '{USERNAME_COLOUR}', '{USERNAME}'], [$profile_url, $event['username_colour'], $event['username']], (!$event['username_colour']) ? $event['_profile_cache']['tpl_profile'] : $event['_profile_cache']['tpl_profile_colour']);
 	}
 
 	/*
@@ -704,7 +704,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 
 	public function core_pagination_generate_page_link($event)
 	{
-		static $paginated = array(), $find = array('{SN}', '{SV}');
+		static $paginated = [], $find = ['{SN}', '{SV}'];
 
 		$base_url = $event['base_url'];
 		$on_page = $event['on_page'];
@@ -754,7 +754,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 		}
 
 		// we'll see if start_name has use cases, and we can still work with rewriterules
-		$event['generate_page_link_override'] = ($on_page > 1) ? str_replace($find, array($start_name, ($on_page - 1) * $per_page), $paginated[$base_url]) : $base_url;
+		$event['generate_page_link_override'] = ($on_page > 1) ? str_replace($find, [$start_name, ($on_page - 1) * $per_page], $paginated[$base_url]) : $base_url;
 	}
 
 	public function core_submit_post_end($event)
@@ -821,7 +821,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 				if (isset($data['topic_url']))
 				{
 					$sql = 'UPDATE ' . TOPICS_TABLE . '
-						SET ' . $this->db->sql_build_array('UPDATE', array('topic_url' => $data['topic_url'])) . '
+						SET ' . $this->db->sql_build_array('UPDATE', ['topic_url' => $data['topic_url']]) . '
 						WHERE topic_id = ' . (int) $data['topic_id'];
 					$this->db->sql_query($sql);
 				}
@@ -857,11 +857,11 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 		// MODs/Extensions are able to force any visibility on posts
 		if (isset($data['force_approved_state']))
 		{
-			$post_visibility = (in_array((int) $data['force_approved_state'], array(ITEM_APPROVED, ITEM_UNAPPROVED, ITEM_DELETED, ITEM_REAPPROVE))) ? (int) $data['force_approved_state'] : $post_visibility;
+			$post_visibility = (in_array((int) $data['force_approved_state'], [ITEM_APPROVED, ITEM_UNAPPROVED, ITEM_DELETED, ITEM_REAPPROVE])) ? (int) $data['force_approved_state'] : $post_visibility;
 		}
 		if (isset($data['force_visibility']))
 		{
-			$post_visibility = (in_array((int) $data['force_visibility'], array(ITEM_APPROVED, ITEM_UNAPPROVED, ITEM_DELETED, ITEM_REAPPROVE))) ? (int) $data['force_visibility'] : $post_visibility;
+			$post_visibility = (in_array((int) $data['force_visibility'], [ITEM_APPROVED, ITEM_UNAPPROVED, ITEM_DELETED, ITEM_REAPPROVE])) ? (int) $data['force_visibility'] : $post_visibility;
 		}
 
 		$data['post_visibility'] = $post_visibility;
@@ -955,19 +955,19 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 
 		if (!empty($active_t_row))
 		{
-			$sql_array = array(
+			$sql_array = [
 				'SELECT'	=> 't.topic_title, t.topic_type ' . (!empty($this->core->seo_opt['sql_rewrite']) ? ', t.topic_url' : '') . ', f.forum_id, f.forum_name',
-				'FROM'		=> array(
+				'FROM'		=> [
 					TOPICS_TABLE	=> 't',
-				),
-				'LEFT_JOIN' => array(
-					array(
-						'FROM'	=> array(FORUMS_TABLE => 'f'),
+				],
+				'LEFT_JOIN' => [
+					[
+						'FROM'	=> [FORUMS_TABLE => 'f'],
 						'ON'	=> 'f.forum_id = t.forum_id',
-					),
-				),
+					],
+				],
 				'WHERE' => 't.topic_id = ' . (int) $active_t_row['topic_id']
-			);
+			];
 			$result = $this->db->sql_query($this->db->sql_build_query('SELECT', $sql_array));
 			$seo_active_t_row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);

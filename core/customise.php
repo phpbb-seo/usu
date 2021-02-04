@@ -11,31 +11,12 @@
 namespace phpbbseo\usu\core;
 
 /**
-* customize Class
+* customize trait
 * www.phpBB-SEO.ir
 * @package Ultimate phpBB SEO Friendly URL
 */
-class customise
+trait customise
 {
-	/** @var \phpbbseo\usu\core\core */
-	private $core;
-
-	/** @var \phpbb\config\config */
-	private $config;
-
-	/**
-	* Constructor
-	*
-	* @param	\phpbbseo\usu\core\core		$core
-	* @param	\phpbb\config\config		$config				Config object
-	*
-	*/
-	public function __construct(\phpbbseo\usu\core\core $core, \phpbb\config\config $config)
-	{
-		$this->core = $core;
-		$this->config = $config;
-	}
-
 	/**
 	* inject()
 	*/
@@ -44,7 +25,7 @@ class customise
 		// ===> Custom url replacements <===
 		// Here you can set up custom replacements to be used in title injection.
 		// Example : array('find' => 'replace')
-		//	$this->core->url_replace = array(
+		//	$this->url_replace = array(
 		//		// Purely cosmetic replace
 		//		'$' => 'dollar', '€' => 'euro',
 		//		'\'s' => 's', // it's => its / mary's => marys ...
@@ -92,16 +73,57 @@ class customise
 		// ==> Special for lazy French, others may delete this part
 		if (strpos($this->config['default_lang'], 'fr') !== false)
 		{
-			$this->core->seo_static['user'] = 'membre';
-			$this->core->seo_static['group'] = 'groupe';
-			$this->core->seo_static['global_announce'] = 'annonces';
-			$this->core->seo_static['leaders'] = 'equipe';
-			$this->core->seo_static['atopic'] = 'sujets-actifs';
-			$this->core->seo_static['utopic'] = 'sans-reponses';
-			$this->core->seo_static['npost'] = 'nouveaux-messages';
-			$this->core->seo_static['urpost'] = 'non-lu';
-			$this->core->seo_static['file_index'] = 'ressources';
+			$this->seo_static['user'] = 'membre';
+			$this->seo_static['group'] = 'groupe';
+			$this->seo_static['global_announce'] = 'annonces';
+			$this->seo_static['leaders'] = 'equipe';
+			$this->seo_static['atopic'] = 'sujets-actifs';
+			$this->seo_static['utopic'] = 'sans-reponses';
+			$this->seo_static['npost'] = 'nouveaux-messages';
+			$this->seo_static['urpost'] = 'non-lu';
+			$this->seo_static['file_index'] = 'ressources';
 		}
 		// <== Special for lazy French, others may delete this part
+	}
+
+	/**
+	* drop_sid($url)
+	* drop the sid's in url
+	*/
+	public function drop_sid($url)
+	{
+		return (strpos($url, 'sid=') !== false) ? trim(preg_replace(['`&(amp;)?sid=[a-z0-9]+(&amp;|&)?`i', '`(\?)sid=[a-z0-9]+(&amp;|&)?`i'], ['\2', '\1'], $url), '?') : $url;
+	}
+
+	/**
+	* sslify($url, $ssl = true)
+	* properly set http protocol (eg http or https)
+	*/
+	public function sslify($url, $ssl = null)
+	{
+		$mask = '`^https?://`i';
+
+		$replace = $ssl !== null ? ($ssl ? 'https://' : 'http://') : '//';
+
+		return preg_replace($mask, $replace, trim($url));
+	}
+
+	/**
+	* is_utf8($string)
+	* Borrowed from php.net : http://www.php.net/mb_detect_encoding (detectUTF8)
+	*/
+	public function is_utf8($string)
+	{
+		// non-overlong 2-byte|excluding overlongs|straight 3-byte|excluding surrogates|planes 1-3|planes 4-15|plane 16
+		return preg_match('%(?:[\xC2-\xDF][\x80-\xBF]|\xE0[\xA0-\xBF][\x80-\xBF]|[\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}|\xED[\x80-\x9F][\x80-\xBF] |\xF0[\x90-\xBF][\x80-\xBF]{2}|[\xF1-\xF3][\x80-\xBF]{3}|\xF4[\x80-\x8F][\x80-\xBF]{2})+%xs', $string);
+	}
+
+	/**
+	* stripslashes($value)
+	* Borrowed from php.net : http://www.php.net/stripslashes
+	*/
+	public function stripslashes($value)
+	{
+		return is_array($value) ? array_map([&$this, 'stripslashes'], $value) : stripslashes($value);
 	}
 }

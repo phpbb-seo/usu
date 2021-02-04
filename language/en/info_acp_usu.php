@@ -17,7 +17,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 // DEVELOPERS PLEASE NOTE
 //
@@ -34,7 +34,7 @@ if (empty($lang) || !is_array($lang))
 // Some characters you may want to copy&paste:
 // ’ » “ ” …
 //
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_CAT_PHPBB_SEO' => 'phpBB SEO',
 	'ACP_MOD_REWRITE' => 'URL Rewriting settings',
 	'ACP_PHPBB_SEO_CLASS' => 'phpBB SEO Class settings',
@@ -53,4 +53,4 @@ $lang = array_merge($lang, array(
 	'SEO_LOG_CONFIG_FORUM_URL' => '<strong>Altered Forum URLs</strong>',
 	'SEO_LOG_CONFIG_HTACCESS' => '<strong>Generated new .htaccess</strong>',
 	'SEO_LOG_CONFIG_EXTENDED' => '<strong>Altered phpBB SEO extended config</strong>',
-));
+]);

@@ -17,7 +17,7 @@ if (!defined('IN_PHPBB'))
 
 if (empty($lang) || !is_array($lang))
 {
-	$lang = array();
+	$lang = [];
 }
 // DEVELOPERS PLEASE NOTE
 //
@@ -34,7 +34,7 @@ if (empty($lang) || !is_array($lang))
 // Some characters you may want to copy&paste:
 // ’ » “ ” …
 //
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	// ACP Main CAT
 	'ACP_CAT_PHPBB_SEO'	=> 'phpBB SEO',
 	'ACP_MOD_REWRITE'	=> 'URL Rewriting settings',
@@ -287,9 +287,9 @@ $lang = array_merge($lang, array(
 	'no_dupe' => 'No duplicate',
 	'no_dupe_on' => 'Activate The No duplicate',
 	'no_dupe_on_explain' => 'The No duplicate mod replaces posts URLs with the corresponding Topic URL (with pagination).<br/>It does not add any SQL, just a LEFT JOIN on a query already being performed. This could still mean a bit more work, but should not be a problem for server load.',
-));
+]);
 
-$lang = array_merge($lang, array(
+$lang = array_merge($lang, [
 	'ACP_CAT_PHPBB_SEO' => 'phpBB SEO',
 	'ACP_MOD_REWRITE' => 'URL Rewriting settings',
 	'ACP_PHPBB_SEO_CLASS' => 'phpBB SEO Class settings',
@@ -307,4 +307,4 @@ $lang = array_merge($lang, array(
 	'SEO_LOG_CONFIG_FORUM_URL' => '<strong>Altered Forum URLs</strong>',
 	'SEO_LOG_CONFIG_HTACCESS' => '<strong>Generated new .htaccess</strong>',
 	'SEO_LOG_CONFIG_EXTENDED' => '<strong>Altered phpBB SEO extended config</strong>',
-));
+]);
