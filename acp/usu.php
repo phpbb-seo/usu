@@ -88,10 +88,10 @@ class usu
 			$this->multiple_options['zero_dupe']['post_redir_values'] = ['off' => 'off', 'post' => 'post', 'guest' => 'guest', 'all' => 'all']; // do not change
 
 			$this->multiple_options['zero_dupe']['post_redir_lang'] = [
-				'off'	=> $this->user->lang['ACP_ZERO_DUPE_OFF'],
-				'post'	=> $this->user->lang['ACP_ZERO_DUPE_MSG'],
-				'guest'	=> $this->user->lang['ACP_ZERO_DUPE_GUEST'],
-				'all'	=> $this->user->lang['ACP_ZERO_DUPE_ALL']
+				'off'	=> $this->language->lang('ACP_ZERO_DUPE_OFF'),
+				'post'	=> $this->language->lang('ACP_ZERO_DUPE_MSG'),
+				'guest'	=> $this->language->lang('ACP_ZERO_DUPE_GUEST'),
+				'all'	=> $this->language->lang('ACP_ZERO_DUPE_ALL')
 			];
 		}
 
@@ -142,7 +142,7 @@ class usu
 
 				$display_vars['vars'] = [];
 				$display_vars['title'] = 'ACP_PHPBB_SEO_CLASS';
-				$display_vars['ACP_PHPBB_SEO_CLASS_EXPLAIN'] = sprintf($this->language->lang('ACP_PHPBB_SEO_CLASS_EXPLAIN'), $this->modrtype_lang['ulink'], $this->modrtype_lang['uforumlink'], '</p><hr/><p><b>' . $this->language->lang('ACP_PHPBB_SEO_MODE') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><hr/><p>');
+				$display_vars['ACP_PHPBB_SEO_CLASS_EXPLAIN'] = $this->language->lang('ACP_PHPBB_SEO_CLASS_EXPLAIN', $this->modrtype_lang['ulink'], $this->modrtype_lang['uforumlink'], '</p><hr/><p><b>' . $this->language->lang('ACP_PHPBB_SEO_MODE') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><hr/><p>');
 
 				$i = 2;
 				$display_vars['vars']['legend1'] = 'ACP_PHPBB_SEO_CLASS';
@@ -224,13 +224,13 @@ class usu
 
 				if ($this->core->modrtype == 1 || !$this->core->seo_opt['cache_layer'])
 				{
-					trigger_error($this->user->lang['ACP_NO_FORUM_URL'] . preg_replace('`(&amp;|&|\?)mode=forum_url`i', '', adm_back_link($this->u_action)));
+					trigger_error($this->language->lang('ACP_NO_FORUM_URL') . preg_replace('`(&amp;|&|\?)mode=forum_url`i', '', adm_back_link($this->u_action)));
 
 					break;
 				}
 
 				$display_vars['title'] = 'ACP_FORUM_URL';
-				$display_vars['ACP_FORUM_URL_EXPLAIN'] = $this->user->lang('ACP_FORUM_URL_EXPLAIN') . '</p><hr/><p><b>' . $this->user->lang('ACP_PHPBB_SEO_VERSION') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><hr/><p>';
+				$display_vars['ACP_FORUM_URL_EXPLAIN'] = $this->language->lang('ACP_FORUM_URL_EXPLAIN') . '</p><hr/><p><b>' . $this->language->lang('ACP_PHPBB_SEO_VERSION') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><hr/><p>';
 
 				$display_vars['vars'] = [];
 				$display_vars['vars']['legend1'] = 'ACP_FORUM_URL';
@@ -273,7 +273,7 @@ class usu
 							if (array_search($forum_url_title, $this->core->cache_config['forum_urls']))
 							{
 								$this->new_config['forum_url' . $forum_id] = $forum_url_title .  $this->core->seo_delim['forum'] . $forum_id;
-								$error_cust = '<li>&nbsp;' . sprintf($this->user->lang['SEO_ADVICE_DUPE'], $forum_url_title) . '</li>';
+								$error_cust = '<li>&nbsp;' . $this->language->lang('SEO_ADVICE_DUPE', $forum_url_title) . '</li>';
 							}
 							else
 							{
@@ -283,12 +283,12 @@ class usu
 						else
 						{
 							$this->new_config['forum_url' . $forum_id] = $forum_url_title . $this->core->seo_delim['forum'] . $forum_id;
-							$error_cust = '<li>&nbsp;' . sprintf($this->user->lang['SEO_ADVICE_RESERVED'], $forum_url_title) . '</li>';
+							$error_cust = '<li>&nbsp;' . $this->language->lang('SEO_ADVICE_RESERVED', $forum_url_title) . '</li>';
 						}
 
 						$title = '<b style="color:red">' . $forum_name . ' - ID ' . $forum_id . '</b>';
-						$status_msg = '<b style="color:red">' . $this->user->lang['SEO_CACHE_URL_NOT_OK'] . '</b>';
-						$status_msg .= '<br/><span style="color:red">' . $this->user->lang['SEO_CACHE_URL'] . '&nbsp;:</span>&nbsp;' . $this->new_config['forum_url' . $forum_id] . $this->core->seo_ext['forum'];
+						$status_msg = '<b style="color:red">' . $this->language->lang('SEO_CACHE_URL_NOT_OK') . '</b>';
+						$status_msg .= '<br/><span style="color:red">' . $this->language->lang('SEO_CACHE_URL') . '&nbsp;:</span>&nbsp;' . $this->new_config['forum_url' . $forum_id] . $this->core->seo_ext['forum'];
 
 						$display_vars['vars']['forum_url' . $forum_id] = [
 							'lang'					=> $title,
@@ -306,8 +306,8 @@ class usu
 						$this->new_config['forum_url' . $forum_id] = $this->core->cache_config['forum_urls'][$forum_id];
 
 						$title = '<b style="color:green">' . $forum_name . ' - ID ' . $forum_id . '</b>';
-						$status_msg = '<span style="color:green">' . $this->user->lang['SEO_CACHE_URL_OK'] . '&nbsp;:</span>&nbsp;<b style="color:green">' . $this->new_config['forum_url' . $forum_id] . '</b>';
-						$status_msg .= '<br/><span style="color:green">' . $this->user->lang['SEO_CACHE_URL'] . '&nbsp;:</span>&nbsp;' . $this->new_config['forum_url' . $forum_id] . $this->core->seo_ext['forum'];
+						$status_msg = '<span style="color:green">' . $this->language->lang('SEO_CACHE_URL_OK') . '&nbsp;:</span>&nbsp;<b style="color:green">' . $this->new_config['forum_url' . $forum_id] . '</b>';
+						$status_msg .= '<br/><span style="color:green">' . $this->language->lang('SEO_CACHE_URL') . '&nbsp;:</span>&nbsp;' . $this->new_config['forum_url' . $forum_id] . $this->core->seo_ext['forum'];
 
 						$display_vars['vars']['forum_url' . $forum_id] = [
 							'lang'					=> $title,
@@ -326,7 +326,7 @@ class usu
 			case 'server':
 
 				$display_vars['title'] = 'ACP_REWRITE_CONF';
-            	$display_vars['ACP_REWRITE_CONF_EXPLAIN'] =  $this->language->lang('ACP_REWRITE_CONF_EXPLAIN') . '</p><hr/><p><b>' . $this->user->lang('ACP_PHPBB_SEO_VERSION') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><p>';
+            	$display_vars['ACP_REWRITE_CONF_EXPLAIN'] =  $this->language->lang('ACP_REWRITE_CONF_EXPLAIN') . '</p><hr/><p><b>' . $this->language->lang('ACP_PHPBB_SEO_VERSION') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><p>';
 
 				$display_vars['vars'] = [];
 				$display_vars['vars']['legend1'] = 'ACP_REWRITE_CONF';
@@ -379,7 +379,7 @@ class usu
 
 					$display_vars['vars'] += [
 						'legend2'			=> 'SEO_RELATED_TOPICS',
-						'seo_related'			=> ['lang' => 'SEO_RELATED', 'validate' => 'bool', 'type' => 'radio:enabled_disabled', 'explain' => true, 'append' => !empty($this->config['seo_related']) ? '<br/>' . (!empty($this->config['seo_related_fulltext']) ? $this->user->lang['FULLTEXT_INSTALLED'] : $this->user->lang['FULLTEXT_NOT_INSTALLED']) : '', 'default' => 0],
+						'seo_related'			=> ['lang' => 'SEO_RELATED', 'validate' => 'bool', 'type' => 'radio:enabled_disabled', 'explain' => true, 'append' => !empty($this->config['seo_related']) ? '<br/>' . (!empty($this->config['seo_related_fulltext']) ? $this->language->lang('FULLTEXT_INSTALLED') : $this->language->lang('FULLTEXT_NOT_INSTALLED')) : '', 'default' => 0],
 						'seo_related_check_ignore'	=> ['lang' => 'SEO_RELATED_CHECK_IGNORE', 'validate' => 'bool', 'type' => 'radio:enabled_disabled', 'explain' => true, 'default' => 0],
 						'seo_related_limit'		=> ['lang' => 'SEO_RELATED_LIMIT', 'validate' => 'int:2:25', 'type' => 'text:3:4', 'explain' => true, 'default' => 5],
 						'seo_related_allforums'		=> ['lang' => 'SEO_RELATED_ALLFORUMS', 'validate' => 'bool', 'type' => 'radio:yes_no', 'explain' => true, 'default' => 0],
@@ -452,7 +452,7 @@ class usu
 
 				if ($cancel || !$go)
 				{
-					trigger_error($this->user->lang['SYNC_WARN'] . '<br/><br/><b> &bull; <a href="' . append_sid($redirect_url, "go=1&amp;sync=sync") . '">' . $this->user->lang['SYNC_TOPIC_URLS'] . '</a><br/><br/> &bull; <a href="' . append_sid($redirect_url, "go=1&amp;sync=reset") . '" >' . $this->user->lang['SYNC_RESET_TOPIC_URLS'] . '</a></b>');
+					trigger_error($this->language->lang('SYNC_WARN') . '<br/><br/><b> &bull; <a href="' . append_sid($redirect_url, "go=1&amp;sync=sync") . '">' . $this->language->lang('SYNC_TOPIC_URLS') . '</a><br/><br/> &bull; <a href="' . append_sid($redirect_url, "go=1&amp;sync=reset") . '" >' . $this->language->lang('SYNC_RESET_TOPIC_URLS') . '</a></b>');
 				}
 
 				$starttime = microtime(true);
@@ -524,10 +524,10 @@ class usu
 						$duration = $endtime - $starttime;
 						$speed = round($limit/$duration, 2);
 						$percent = round((($start + $limit) / $cnt['topic_cnt']) * 100, 2);
-						$message = sprintf($user->lang['SYNC_PROCESSING'], $percent, ($start + $limit), $cnt['topic_cnt'], $limit, $speed, round($duration, 2) , round((($cnt['topic_cnt'] - $start)/$speed)/60, 2));
+						$message = $language->lang('SYNC_PROCESSING', $percent, ($start + $limit), $cnt['topic_cnt'], $limit, $speed, round($duration, 2) , round((($cnt['topic_cnt'] - $start)/$speed)/60, 2));
 						if ($url_updated)
 						{
-							$message.= sprintf($user->lang['SYNC_ITEM_UPDATED'], '<br/>' . $url_updated);
+							$message.= $language->lang('SYNC_ITEM_UPDATED', '<br/>' . $url_updated);
 						}
 						$new_limit = ($duration < 10) ? $limit + 50 : $limit - 10;
 						meta_refresh(1, append_sid($redirect_url, 'go=1&amp;start=' . ($start + $limit) . "&amp;limit=$new_limit&amp;sync=sync"));
@@ -535,7 +535,7 @@ class usu
 					}
 					else
 					{
-						trigger_error($user->lang['SYNC_COMPLETE'] . sprintf($user->lang['RETURN_INDEX'], '<br/><br/><a href="' . append_sid($redirect_url) . '" >', '</a>'));
+						trigger_error($language->lang('SYNC_COMPLETE') . $language->lang('RETURN_INDEX', '<br/><br/><a href="' . append_sid($redirect_url) . '" >', '</a>'));
 					}
 				}
 				else if ($sync_url === 'reset')
@@ -544,16 +544,16 @@ class usu
 					{
 						$sql = "UPDATE " . TOPICS_TABLE . " SET topic_url = ''";
 						$db->sql_query($sql);
-						trigger_error($user->lang['SYNC_RESET_COMPLETE'] . '<br/><br/><b> &bull; <a href="' . append_sid($redirect_url, "go=1&amp;sync=sync") . '">' . $user->lang['SYNC_TOPIC_URLS'] . '</a><br/><br/> &bull; ' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid($redirect_url) . '" >', '</a></b>'));
+						trigger_error($language->lang('SYNC_RESET_COMPLETE') . '<br/><br/><b> &bull; <a href="' . append_sid($redirect_url, "go=1&amp;sync=sync") . '">' . $language->lang('SYNC_TOPIC_URLS') . '</a><br/><br/> &bull; ' . $language->lang('RETURN_INDEX', '<a href="' . append_sid($redirect_url) . '" >', '</a></b>'));
 					}
 					else
 					{
-						confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(['go' => '1', 'sync' => 'reset']), 'confirm_body.html');
+						confirm_box(false, $language->lang('CONFIRM_OPERATION'), build_hidden_fields(['go' => '1', 'sync' => 'reset']), 'confirm_body.html');
 					}
 				}
 				else
 				{
-					trigger_error($user->lang['SYNC_WARN'] . '<br/><br/><b> &bull; <a href="' . append_sid($redirect_url, "go=1&amp;sync=sync") . '">' . $user->lang['SYNC_TOPIC_URLS'] . '</a><br/><br/> &bull; <a href="' . append_sid($redirect_url, "go=1&amp;sync=reset") . '" >' . $user->lang['SYNC_RESET_TOPIC_URLS'] . '</a></b>');
+					trigger_error($language->lang('SYNC_WARN') . '<br/><br/><b> &bull; <a href="' . append_sid($redirect_url, "go=1&amp;sync=sync") . '">' . $language->lang('SYNC_TOPIC_URLS') . '</a><br/><br/> &bull; <a href="' . append_sid($redirect_url, "go=1&amp;sync=reset") . '" >' . $language->lang('SYNC_RESET_TOPIC_URLS') . '</a></b>');
 				}
 				break;
 			default:
@@ -567,7 +567,7 @@ class usu
 
 		if ($submit && !check_form_key($form_key))
 		{
-			$error[] = $this->user->lang['FORM_INVALID'];
+			$error[] = $this->language->lang('FORM_INVALID');
 		}
 
 		// We validate the complete config if whished
@@ -621,7 +621,7 @@ class usu
 
 					if (strlen($config_value) > 255)
 					{
-						$error[] = sprintf($this->user->lang['SETTING_TOO_LONG'], $this->user->lang[$cfg_setup['lang']], 255);
+						$error[] = $this->language->lang('SETTING_TOO_LONG', $this->language->lang($cfg_setup['lang']), 255);
 					}
 
 					$submit = empty($error);
@@ -663,7 +663,7 @@ class usu
 
 							if (@$this->core->cache_config['settings']['rem_ids'])
 							{
-								$seo_msg['SEO_ADVICE_DELIM_REM'] = '<li>&nbsp;' . $this->user->lang['SEO_ADVICE_DELIM_REM'] . '</li>';
+								$seo_msg['SEO_ADVICE_DELIM_REM'] = '<li>&nbsp;' . $this->language->lang('SEO_ADVICE_DELIM_REM') . '</li>';
 							}
 						}
 
@@ -671,7 +671,7 @@ class usu
 						while (preg_match('`^[a-z0-9_-]+' . $this->core->seo_delim['start'] . '[0-9]+$`i', $config_value))
 						{
 							$config_value = preg_replace('`^([a-z0-9_-]+)' . $this->core->seo_delim['start'] . '[0-9]+$`i', "\\1", $config_value);
-							$seo_msg['SEO_ADVICE_START'] = '<li>&nbsp;' . $this->user->lang['SEO_ADVICE_START'] . '</li>';
+							$seo_msg['SEO_ADVICE_START'] = '<li>&nbsp;' . $this->language->lang('SEO_ADVICE_START') . '</li>';
 						}
 
 						// Only update if the value is not a static one for forums
@@ -687,13 +687,13 @@ class usu
 								}
 								else
 								{
-									$seo_msg['SEO_ADVICE_DUPE_' . $forum_id] = '<li>&nbsp;' . sprintf($this->user->lang['SEO_ADVICE_DUPE'], $config_value) . '</li>';
+									$seo_msg['SEO_ADVICE_DUPE_' . $forum_id] = '<li>&nbsp;' . $this->language->lang('SEO_ADVICE_DUPE', $config_value) . '</li>';
 								}
 							}
 						}
 						else
 						{
-							$seo_msg['SEO_ADVICE_RESERVED_' . $forum_id] = '<li>&nbsp;' . sprintf($this->user->lang['SEO_ADVICE_RESERVED'], $config_value) . '</li>';
+							$seo_msg['SEO_ADVICE_RESERVED_' . $forum_id] = '<li>&nbsp;' . $this->language->lang('SEO_ADVICE_RESERVED', $config_value) . '</li>';
 						}
 					}
 				}
@@ -741,11 +741,11 @@ class usu
 							$db_tools->sql_column_add(TOPICS_TABLE, 'topic_url', ['VCHAR:255', '']);
 						}
 
-						$additional_notes = sprintf($this->user->lang['SYNC_TOPIC_URL_NOTE'], '<a href="' . append_sid("{$phpbb_admin_path}index.$phpEx", 'i=-phpbbseo-usu-acp-usu&amp;mode=sync_url') . '">', '</a>');
+						$additional_notes = $this->language->lang('SYNC_TOPIC_URL_NOTE', '<a href="' . append_sid("{$phpbb_admin_path}index.$phpEx", 'i=-phpbbseo-usu-acp-usu&amp;mode=sync_url') . '">', '</a>');
 
 						if ($db_tools->db->get_sql_error_triggered())
 						{
-							$error[] = '<b>' . $this->user->lang['sql_rewrite'] . '</b> : ' . $this->user->lang['SEO_SQL_ERROR'] . ' [ ' . $db_tools->db->get_sql_layer() . ' ] : ' . $db_tools->db->sql_error_returned['message'] . ' [' . $db_tools->db->sql_error_returned['code'] . ']' . '<br/>' . $this->user->lang['SEO_SQL_TRY_MANUALLY'] . '<br/>' . $db_tools->db->sql_error_sql;
+							$error[] = '<b>' . $this->language->lang('sql_rewrite') . '</b> : ' . $this->language->lang('SEO_SQL_ERROR') . ' [ ' . $db_tools->db->get_sql_layer() . ' ] : ' . $db_tools->db->sql_error_returned['message'] . ' [' . $db_tools->db->sql_error_returned['code'] . ']' . '<br/>' . $this->language->lang('SEO_SQL_TRY_MANUALLY') . '<br/>' . $db_tools->db->sql_error_sql;
 							$submit = false;
 						}
 
@@ -779,7 +779,7 @@ class usu
 			{
 				add_log('admin', 'SEO_LOG_CONFIG_' . strtoupper($mode));
 
-				trigger_error($this->user->lang['CONFIG_UPDATED'] . adm_back_link($this->u_action));
+				trigger_error($this->language->lang('CONFIG_UPDATED') . adm_back_link($this->u_action));
 			}
 			else
 			{
@@ -797,9 +797,9 @@ class usu
 
 					add_log('admin', 'SEO_LOG_CONFIG_' . strtoupper($mode));
 
-					$msg = !empty($seo_msg) ? '<br /><h1 style="color:red;text-align:left;">' . $this->user->lang['SEO_VALIDATE_INFO'] . '</h1><ul style="text-align:left;">' . implode(' ', $seo_msg) . '</ul><br />' : '';
+					$msg = !empty($seo_msg) ? '<br /><h1 style="color:red;text-align:left;">' . $this->language->lang('SEO_VALIDATE_INFO') . '</h1><ul style="text-align:left;">' . implode(' ', $seo_msg) . '</ul><br />' : '';
 
-					$msg_long_text = $this->user->lang['SEO_CACHE_MSG_OK'] . $msg . adm_back_link($this->u_action);
+					$msg_long_text = $this->language->lang('SEO_CACHE_MSG_OK') . $msg . adm_back_link($this->u_action);
 
 					if ($additional_notes)
 					{
@@ -810,7 +810,7 @@ class usu
 				}
 				else
 				{
-					trigger_error($this->user->lang['SEO_CACHE_MSG_FAIL'] . adm_back_link($this->u_action));
+					trigger_error($this->language->lang('SEO_CACHE_MSG_FAIL') . adm_back_link($this->u_action));
 				}
 			}
 		}
@@ -826,7 +826,7 @@ class usu
 		}
 
 		$this->template->assign_vars([
-			'L_TITLE'			=> $this->user->lang[$display_vars['title']],
+			'L_TITLE'			=> $this->language->lang($display_vars['title']),
 			'L_TITLE_EXPLAIN'	=> $l_title_explain,
 
 			'S_ERROR'			=> (sizeof($error)) ? true : false,
@@ -847,7 +847,7 @@ class usu
 			{
 				$this->template->assign_block_vars('options', [
 					'S_LEGEND'		=> true,
-					'LEGEND'		=> (isset($this->user->lang[$vars])) ? $this->user->lang[$vars] : $vars,
+					'LEGEND'		=> $this->language->is_set($vars) ? $this->language->lang($vars) : $vars,
 				]);
 
 				continue;
@@ -858,7 +858,7 @@ class usu
 
 			if ($vars['explain'] && isset($vars['lang_explain']))
 			{
-				$l_explain = (isset($this->user->lang[$vars['lang_explain']])) ? $this->user->lang[$vars['lang_explain']] : $vars['lang_explain'];
+				$l_explain = $this->language->is_set($vars['lang_explain']) ? $this->language->lang($vars['lang_explain']) : $vars['lang_explain'];
 			}
 			else if ($vars['explain'] && isset($vars['lang_explain_custom']))
 			{
@@ -866,12 +866,12 @@ class usu
 			}
 			else if ($vars['explain'])
 			{
-				$l_explain = (isset($this->user->lang[$vars['lang'] . '_EXPLAIN'])) ? $this->user->lang[$vars['lang'] . '_EXPLAIN'] : '';
+				$l_explain = $this->language->is_set($vars['lang'] . '_EXPLAIN') ? $this->language->lang($vars['lang'] . '_EXPLAIN') : '';
 			}
 
 			$this->template->assign_block_vars('options', [
 				'KEY'			=> $config_key,
-				'TITLE'			=> (isset($this->user->lang[$vars['lang']])) ? $this->user->lang[$vars['lang']] : $vars['lang'],
+				'TITLE'			=> $this->language->is_set($vars['lang']) ? $this->language->lang($vars['lang']) : $vars['lang'],
 				'S_EXPLAIN'		=> $vars['explain'],
 				'TITLE_EXPLAIN'	=> $l_explain,
 				'CONTENT'		=> build_cfg_template($type, $config_key, $this->new_config, $config_key, $vars),
@@ -932,7 +932,7 @@ class usu
 		if (strlen($url) > $this->lengh_limit)
 		{
 			// Size
-			$seo_advice .= '<li>&nbsp;' . $this->user->lang['SEO_ADVICE_LENGTH'] . '</li>';
+			$seo_advice .= '<li>&nbsp;' . $this->language->lang('SEO_ADVICE_LENGTH') . '</li>';
 		}
 
 		if (preg_match('`^[a-z0-9_-]+' . $this->core->seo_delim['forum'] . '[0-9]+$`i', $url))
@@ -940,14 +940,14 @@ class usu
 			// With delimiter and id
 			if (@$this->core->cache_config['settings']['rem_ids'])
 			{
-				$seo_advice .= '<li style="color:red">&nbsp;' . $this->user->lang['SEO_ADVICE_DELIM'] . '</li>';
+				$seo_advice .= '<li style="color:red">&nbsp;' . $this->language->lang('SEO_ADVICE_DELIM') . '</li>';
 			}
 		}
 
 		if ($this->core->seo_static['forum'] == $url)
 		{
 			// default
-			$seo_advice .= '<li>&nbsp;' . $this->user->lang['SEO_ADVICE_DEFAULT'] . '</li>';
+			$seo_advice .= '<li>&nbsp;' . $this->language->lang('SEO_ADVICE_DEFAULT') . '</li>';
 		}
 
 		// Check the number of word
@@ -955,7 +955,7 @@ class usu
 
 		if (count($url_words) > $this->word_limit)
 		{
-			$seo_advice .= '<li>&nbsp;' . $this->user->lang['SEO_ADVICE_WORDS'] . '</li>';
+			$seo_advice .= '<li>&nbsp;' . $this->language->lang('SEO_ADVICE_WORDS') . '</li>';
 		}
 
 		return $seo_advice ? '<ul  style="color:red">' . $seo_advice . '</ul>' : '';
@@ -1205,10 +1205,10 @@ class usu
 						],
 					],
 				],
-				'header_title' => $this->user->lang['SEO_APACHE_CONF'],
+				'header_title' => $this->language->lang('SEO_APACHE_CONF'),
 				'header_message' => $show_rewritebase_opt && $this->new_config['rbase'] ?
-					sprintf($this->user->lang['SEO_HTACCESS_FOLDER_MSG'], '<em style="color:#000">' . $this->core->seo_path['phpbb_url'] . '</em>') :
-					sprintf($this->user->lang['SEO_HTACCESS_ROOT_MSG'], '<em style="color:#000">' . $this->core->seo_path['root_url'] . '</em>'),
+					$this->language->lang('SEO_HTACCESS_FOLDER_MSG', '<em style="color:#000">' . $this->core->seo_path['phpbb_url'] . '</em>') :
+					$this->language->lang('SEO_HTACCESS_ROOT_MSG', '<em style="color:#000">' . $this->core->seo_path['root_url'] . '</em>'),
 				'filename' => '.htaccess',
 				'rewrite_padding' => '	',
 			],
@@ -1338,8 +1338,8 @@ http {
 						$rewritebase ? ($this->new_config['slash'] ? '' : '{RED_SLASH}') : '{RED_SLASH}',
 					],
 				],
-				'header_title' => $this->user->lang['SEO_NGIX_CONF'],
-				'header_message' => $this->user->lang['SEO_NGIX_CONF_EXPLAIN'],
+				'header_title' => $this->language->lang('SEO_NGIX_CONF'),
+				'header_message' => $this->language->lang('SEO_NGIX_CONF_EXPLAIN'),
 				'filename' => 'ngix.conf',
 				'rewrite_padding' => '			',
 			],
@@ -1534,13 +1534,13 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 				}
 
 				$rewrite_conf_result[$engine]['html_output'] = '<div class="content">
-	<div id="' . $engine . '_toggle" title="' . $this->user->lang['SEO_SHOW'] . '&nbsp;/&nbsp;' . $this->user->lang['SEO_HIDE'] . '">
+	<div id="' . $engine . '_toggle" title="' . $this->language->lang('SEO_SHOW') . '&nbsp;/&nbsp;' . $this->language->lang('SEO_HIDE') . '">
 		<h3>' . $setup['header_title'] . '</h3>
 		<b style="color:red">' . $setup['header_message'] . '</b><br><br>
 	</div>
 	<div id="' . $engine . '_code">
 		<dl style="padding:5px;background-color:#FFFFFF;border:1px solid #d8d8d8;font-size:12px;">
-			<dt style="border-bottom:1px solid #CCCCCC;margin-bottom:3px;font-weight:bold;display:block;">&nbsp;<a id="' . $engine . '_select">' . $this->user->lang['SEO_SELECT_ALL'] . '</a></dt>
+			<dt style="border-bottom:1px solid #CCCCCC;margin-bottom:3px;font-weight:bold;display:block;">&nbsp;<a id="' . $engine . '_select">' . $this->language->lang('SEO_SELECT_ALL') . '</a></dt>
 			<dd >
 				<code style="padding-top:5px;line-height:1.3em;color:#8b8b8b;font-weight:bold;font-family: monospace;white-space: pre;" id="' . $engine . '_code_select">
 ' . str_replace(["\n", "\t"], ['<br>', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'], $rewrite_conf_result[$engine]['html']) . '
@@ -1557,15 +1557,15 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 		{
 			// HTML output
 			$html_output = '</p>' . $html_output;
-			$html_output .= '<div style="padding:5px;margin-top:10px;background-color:#FFFFFF;border:1px solid #d8d8d8;font-size:12px;"><b>' . $this->user->lang['SEO_SERVER_CONF_CAPTION'] . ':</b><ul style="margin-left:30px;margin-top:10px;font-weight:bold;font-size:12px;">
-	<li style="color:blue">&nbsp;' . $this->user->lang['SEO_SERVER_CONF_CAPTION_COMMENT'] . '</li>
-	<li style="color:#A020F0">&nbsp;' . $this->user->lang['SEO_SERVER_CONF_CAPTION_STATIC'] . '</li>
-	<li style="color:#6A5ACD">&nbsp;' . $this->user->lang['SEO_SERVER_CONF_CAPTION_SUFFIX'] . '</li>
-	<li style="color:#FF00FF">&nbsp;' . $this->user->lang['SEO_SERVER_CONF_CAPTION_DELIM'] . '</li>' . "\n";
+			$html_output .= '<div style="padding:5px;margin-top:10px;background-color:#FFFFFF;border:1px solid #d8d8d8;font-size:12px;"><b>' . $this->language->lang('SEO_SERVER_CONF_CAPTION') . ':</b><ul style="margin-left:30px;margin-top:10px;font-weight:bold;font-size:12px;">
+	<li style="color:blue">&nbsp;' . $this->language->lang('SEO_SERVER_CONF_CAPTION_COMMENT') . '</li>
+	<li style="color:#A020F0">&nbsp;' . $this->language->lang('SEO_SERVER_CONF_CAPTION_STATIC') . '</li>
+	<li style="color:#6A5ACD">&nbsp;' . $this->language->lang('SEO_SERVER_CONF_CAPTION_SUFFIX') . '</li>
+	<li style="color:#FF00FF">&nbsp;' . $this->language->lang('SEO_SERVER_CONF_CAPTION_DELIM') . '</li>' . "\n";
 
 			if ($this->new_config['more_options'])
 			{
-				$html_output .= '<li style="color:red">&nbsp;' . $this->user->lang['SEO_SERVER_CONF_CAPTION_SLASH'] . '</li>' . "\n";
+				$html_output .= '<li style="color:red">&nbsp;' . $this->language->lang('SEO_SERVER_CONF_CAPTION_SLASH') . '</li>' . "\n";
 			}
 
 			$html_output .= '</ul></div><p>' . "\n";
@@ -1649,10 +1649,10 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 		}
 
 		$modrtype_lang['titles'] = [
-			1	=> $this->user->lang['ACP_SEO_SIMPLE'],
-			2	=> $this->user->lang['ACP_SEO_MIXED'],
-			3	=> $this->user->lang['ACP_SEO_ADVANCED'],
-			'u'	=> $this->user->lang['ACP_ULTIMATE_SEO_URL'],
+			1	=> $this->language->lang('ACP_SEO_SIMPLE'),
+			2	=> $this->language->lang('ACP_SEO_MIXED'),
+			3	=> $this->language->lang('ACP_SEO_ADVANCED'),
+			'u'	=> $this->language->lang('ACP_ULTIMATE_SEO_URL'),
 		];
 
 		$modrtype_lang['title'] = $modrtype_lang['titles'][$this->core->modrtype];
@@ -1699,10 +1699,10 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 		$modrtype_lang['ulinkurl'] = $modrtype_lang['modrlinks_en']['u'];
 		$modrtype_lang['uforumlinkurl'] = $modrtype_lang['modrforumlinks_en']['u'];
 
-		$modrtype_lang['link'] = '<a href="' . $modrtype_lang['linkurl'] . '" title="' . $this->user->lang['ACP_PHPBB_SEO_VERSION'] . ' ' . $modrtype_lang['title'] . '" onclick="window.open(this.href); return false;"><b>' . $modrtype_lang['title'] . '</b></a>';
-		$modrtype_lang['forumlink'] = '<a href="' . $modrtype_lang['forumlinkurl'] . '" title="' . $this->user->lang['ACP_SEO_SUPPORT_FORUM'] . '" onclick="window.open(this.href); return false;"><b>' . $this->user->lang['ACP_SEO_SUPPORT_FORUM'] . '</b></a>';
-		$modrtype_lang['ulink'] = '<a href="' . $modrtype_lang['ulinkurl'] . '" title="' . $this->user->lang['ACP_PHPBB_SEO_VERSION'] . ' ' . $modrtype_lang['utitle'] . '" onclick="window.open(this.href); return false;"><b>' . $modrtype_lang['utitle'] . '</b></a>';
-		$modrtype_lang['uforumlink'] = '<a href="' . $modrtype_lang['uforumlinkurl'] . '" title="' . $this->user->lang['ACP_SEO_SUPPORT_FORUM'] . '" onclick="window.open(this.href); return false;"><b>' . $this->user->lang['ACP_SEO_SUPPORT_FORUM'] . '</b></a>';
+		$modrtype_lang['link'] = '<a href="' . $modrtype_lang['linkurl'] . '" title="' . $this->language->lang('ACP_PHPBB_SEO_VERSION') . ' ' . $modrtype_lang['title'] . '" onclick="window.open(this.href); return false;"><b>' . $modrtype_lang['title'] . '</b></a>';
+		$modrtype_lang['forumlink'] = '<a href="' . $modrtype_lang['forumlinkurl'] . '" title="' . $this->language->lang('ACP_SEO_SUPPORT_FORUM') . '" onclick="window.open(this.href); return false;"><b>' . $this->language->lang('ACP_SEO_SUPPORT_FORUM') . '</b></a>';
+		$modrtype_lang['ulink'] = '<a href="' . $modrtype_lang['ulinkurl'] . '" title="' . $this->language->lang('ACP_PHPBB_SEO_VERSION') . ' ' . $modrtype_lang['utitle'] . '" onclick="window.open(this.href); return false;"><b>' . $modrtype_lang['utitle'] . '</b></a>';
+		$modrtype_lang['uforumlink'] = '<a href="' . $modrtype_lang['uforumlinkurl'] . '" title="' . $this->language->lang('ACP_SEO_SUPPORT_FORUM') . '" onclick="window.open(this.href); return false;"><b>' . $this->language->lang('ACP_SEO_SUPPORT_FORUM') . '</b></a>';
 
 		return $modrtype_lang;
 	}
@@ -1779,12 +1779,12 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 
 		if ($msg)
 		{
-			$exists = ($exists) ? '<b style="color:green">' . $this->user->lang['SEO_CACHE_FOUND'] . '</b>' : '<b style="color:red">' . $this->user->lang['SEO_CACHE_NOT_FOUND'] . '</b>';
-			$write = ($write) ? '<br/> <b style="color:green">' . $this->user->lang['SEO_CACHE_WRITABLE'] . '</b>' : (($exists) ? '<br/> <b style="color:red">' . $this->user->lang['SEO_CACHE_UNWRITABLE'] . '</b>' : '');
-			$inner_write = $inner_write ? '' : '<br/> <b style="color:red">' . $this->user->lang['SEO_CACHE_INNER_UNWRITABLE'] . '</b>';
-			$cache_msg = sprintf($this->user->lang['SEO_CACHE_STATUS'], $cache_dir) . '<br/>' . $exists . $write . $inner_write;
+			$exists = ($exists) ? '<b style="color:green">' . $this->language->lang('SEO_CACHE_FOUND') . '</b>' : '<b style="color:red">' . $this->language->lang('SEO_CACHE_NOT_FOUND') . '</b>';
+			$write = ($write) ? '<br/> <b style="color:green">' . $this->language->lang('SEO_CACHE_WRITABLE') . '</b>' : (($exists) ? '<br/> <b style="color:red">' . $this->language->lang('SEO_CACHE_UNWRITABLE') . '</b>' : '');
+			$inner_write = $inner_write ? '' : '<br/> <b style="color:red">' . $this->language->lang('SEO_CACHE_INNER_UNWRITABLE') . '</b>';
+			$cache_msg = $this->language->lang('SEO_CACHE_STATUS', $cache_dir) . '<br/>' . $exists . $write . $inner_write;
 
-			return '<br/><b>' . $this->user->lang['SEO_CACHE_FILE_TITLE'] . ':</b><br/>' . $cache_msg . '<br/><br/>';
+			return '<br/><b>' . $this->language->lang('SEO_CACHE_FILE_TITLE') . ':</b><br/>' . $cache_msg . '<br/><br/>';
 		}
 		else
 		{
@@ -1868,6 +1868,6 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 	*/
 	function language_select($default = '')
 	{
-		return '<option value="">' . $this->user->lang['DISABLED'] . '</option>' . language_select($default);
+		return '<option value="">' . $this->language->lang('DISABLED') . '</option>' . language_select($default);
 	}
 }

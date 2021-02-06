@@ -3,14 +3,14 @@
 	"type": "phpbb-extension",
 	"description": "This Extension will URL rewrite phpBB URLs in various manners, injecting, or not, forums and topic titles in their URLS, each URL being rewritten once, no matter the number of links using it on the page.",
 	"homepage": "http://www.phpBB-SEO.ir",
-	"version": "2.0.1-beta",
+	"version": "2.0.2-beta",
 	"keywords": [
 		"phpbbSEO",
 		"extension",
 		"seo",
-		"Friendly User"
+		"Friendly URL"
 	],
-	"time": "2021-01-04",
+	"time": "2021-01-07",
 	"license": "GPL-2.0-only",
 	"authors": [
 		{

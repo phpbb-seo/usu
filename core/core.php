@@ -282,7 +282,7 @@ class core
 		$this->cache_config['dynamic_options']['copyrights'] = $this->seo_opt['copyrights'] = ['img' => true, 'txt' => '', 'title' => ''];
 
 		// Caching config
-		define('PHPBB_SEO_USU_ROOT_DIR', rtrim(dirname(realpath(__FILE__)), '\\/') . '/');
+		define('PHPBB_SEO_USU_ROOT_DIR', rtrim($this->phpbb_root_path . 'ext/phpbbseo/usu/', '\\/') . '/');
 		$this->seo_opt['cache_folder'] = PHPBB_SEO_USU_ROOT_DIR . 'cache/'; // where the cache file is stored
 
 		$this->seo_opt['topic_type'] = []; // do not change

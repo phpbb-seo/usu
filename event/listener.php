@@ -558,7 +558,7 @@ class listener implements EventSubscriberInterface
 			$output = '<a href="http://www.phpBB-SEO.ir/" title="' . $this->core->seo_opt['copyrights']['title'] . '">' . $this->core->seo_opt['copyrights']['txt'] . '</a>';
 		}
 
-		$this->language->lang('TRANSLATION_INFO', (!empty($this->user->lang['TRANSLATION_INFO']) ? $this->user->lang['TRANSLATION_INFO'] . '<br>' : '') . $output);
+		$this->language->lang('TRANSLATION_INFO', (!empty($this->language->lang('TRANSLATION_INFO')) ? $this->language->lang('TRANSLATION_INFO') . '<br>' : '') . $output);
 
 		$this->template->assign_vars([
 			'U_CANONICAL'	=> $this->core->get_canonical(),
@@ -588,7 +588,7 @@ class listener implements EventSubscriberInterface
 		$row = $event['row'];
 
 		$post_row['U_APPROVE_ACTION'] = append_sid("{$this->phpbb_root_path}mcp.$this->php_ext", "i=queue&amp;p={$row['post_id']}&amp;f={$this->forum_id}&amp;redirect=" . urlencode(str_replace('&amp;', '&', append_sid("{$this->phpbb_root_path}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;p=" . $row['post_id']) . '#p' . $row['post_id'])));
-		$post_row['L_POST_DISPLAY'] = ($row['hide_post']) ? $this->user->lang('POST_DISPLAY', '<a class="display_post" data-post-id="' . $row['post_id'] . '" href="' . append_sid("{$this->phpbb_root_path}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}") . '">', '</a>') : '';
+		$post_row['L_POST_DISPLAY'] = ($row['hide_post']) ? $this->language->lang('POST_DISPLAY', '<a class="display_post" data-post-id="' . $row['post_id'] . '" href="' . append_sid("{$this->phpbb_root_path}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}") . '">', '</a>') : '';
 		$event['post_row'] = $post_row;
 	}
 
