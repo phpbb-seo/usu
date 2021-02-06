@@ -147,7 +147,7 @@ class usu
 				$i = 2;
 				$display_vars['vars']['legend1'] = 'ACP_PHPBB_SEO_CLASS';
 
-				foreach($this->core->cache_config['dynamic_options'] as $optionname => $optionvalue)
+				foreach ($this->core->cache_config['dynamic_options'] as $optionname => $optionvalue)
 				{
 					if (@is_bool($this->core->seo_opt[$optionvalue]))
 					{
@@ -242,7 +242,7 @@ class usu
 
 				$forum_url_title = $error_cust = '';
 
-				while($row = $this->db->sql_fetchrow($result))
+				while ($row = $this->db->sql_fetchrow($result))
 				{
 					$this->forum_ids[$row['forum_id']] = $row['forum_name'];
 				}
@@ -326,7 +326,7 @@ class usu
 			case 'server':
 
 				$display_vars['title'] = 'ACP_REWRITE_CONF';
-            	$display_vars['ACP_REWRITE_CONF_EXPLAIN'] =  $this->language->lang('ACP_REWRITE_CONF_EXPLAIN') . '</p><hr/><p><b>' . $this->language->lang('ACP_PHPBB_SEO_VERSION') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><p>';
+				$display_vars['ACP_REWRITE_CONF_EXPLAIN'] =  $this->language->lang('ACP_REWRITE_CONF_EXPLAIN') . '</p><hr/><p><b>' . $this->language->lang('ACP_PHPBB_SEO_VERSION') . ' : ' . $this->modrtype_lang['link'] . ' - ( ' . $this->modrtype_lang['forumlink'] . ' )</b></p><p>';
 
 				$display_vars['vars'] = [];
 				$display_vars['vars']['legend1'] = 'ACP_REWRITE_CONF';
@@ -597,7 +597,7 @@ class usu
 					$m_values = utf8_normalize_nfc($this->request->variable('multiple_' . $config_name, ['' => '']));
 					$validate_int = !empty($cfg_setup['multiple_validate']) && $cfg_setup['multiple_validate'] == 'int' ? true : false;
 
-					foreach($m_values as $k => $v)
+					foreach ($m_values as $k => $v)
 					{
 						if ($validate_int)
 						{
@@ -1601,7 +1601,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 			return false;
 		}
 
-		while(($file = @readdir($dir)) !== false)
+		while (($file = @readdir($dir)) !== false)
 		{
 			if (!trim($file, '. '))
 			{
@@ -1754,7 +1754,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 			// let's check all files
 			$inner_write = true;
 
-			foreach($checks as $check)
+			foreach ($checks as $check)
 			{
 				if (file_exists($check))
 				{
@@ -1797,7 +1797,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 	*/
 	function write_cache($file, $update)
 	{
-		if(!$this->core->cache_config['cache_enable'])
+		if (!$this->core->cache_config['cache_enable'])
 		{
 			return false;
 		}
@@ -1852,7 +1852,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 	{
 		$select_ary = make_forum_select(false, false, $ignore_acl, $ignore_nonpost, $ignore_emptycat, $only_acl_post, true);
 
-		foreach($select_ary as $f_id => $f_data)
+		foreach ($select_ary as $f_id => $f_data)
 		{
 			$select_ary[$f_id] = [
 				'title'		=> $f_data['padding'] . $f_data['forum_name'],

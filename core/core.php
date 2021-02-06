@@ -11,29 +11,36 @@
 namespace phpbbseo\usu\core;
 
 /**
+* @ignore
+*/
+use phpbb\config\config;
+use phpbb\request\request;
+use phpbb\user;
+use phpbb\auth\auth;
+
+/**
 * core Class
 * www.phpBB-SEO.ir
 * @package Ultimate phpBB SEO Friendly URL
 */
 class core
 {
-	/* @var \phpbb\config\config */
+	/**
+	 * Import All Trait
+	 */
+	use customise, rewriter, url, seo, get_set;
+
+	/** @var config */
 	private $config;
 
-	/* @var \phpbb\request\request */
+	/** @var request */
 	private $request;
 
-	/* @var \phpbb\user */
+	/** @var user */
 	private $user;
 
-	/** @var \phpbb\auth\auth */
+	/** @var auth */
 	private $auth;
-
-	/* @var \phpbbseo\usu\customise */
-	private $customise;
-
-	/* @var \phpbbseo\usu\rewriter */
-	private $rewriter;
 
 	/**
 	* Current $phpbb_root_path
@@ -222,22 +229,17 @@ class core
 	public $url = '';
 
 	/**
-	 * Import All Trait
-	 */
-	use customise, rewriter, url, seo, get_set;
-
-	/**
 	* Constructor
 	*
-	* @param	\phpbb\config\config		$config				Config object
-	* @param	\phpbb\request\request		$request			Request object
-	* @param	\phpbb\user					$user				User object
-	* @param	\phpbb\auth\auth			$auth				Auth object
-	* @param	string						$phpbb_root_path	Path to the phpBB root
-	* @param	string						$php_ext			PHP file extension
+	* @param	config		$config				Config object
+	* @param	request		$request			Request object
+	* @param	user		$user				User object
+	* @param	auth		$auth				Auth object
+	* @param	string		$phpbb_root_path	Path to the phpBB root
+	* @param	string		$php_ext			PHP file extension
 	*
 	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\request\request $request, \phpbb\user $user, \phpbb\auth\auth $auth, $phpbb_root_path, $php_ext)
+	public function __construct(config $config, request $request, user $user, auth $auth, $phpbb_root_path, $php_ext)
 	{
 		$this->config = $config;
 		$this->request = $request;

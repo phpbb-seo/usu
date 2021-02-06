@@ -14,35 +14,43 @@ namespace phpbbseo\usu\event;
 * @ignore
 */
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use phpbbseo\usu\core\core;
+use phpbb\config\config;
+use phpbb\auth\auth;
+use phpbb\template\template;
+use phpbb\user;
+use phpbb\request\request;
+use phpbb\db\driver\driver_interface as db_driver;
+use phpbb\language\language;
 
 /**
 * Event listener
 */
 class listener implements EventSubscriberInterface
 {
-	/* @var \phpbbseo\usu\core\core */
+	/** @var core */
 	private $core;
 
-	/* @var \phpbb\config\config */
+	/** @var config */
 	private $config;
 
-	/** @var \phpbb\auth\auth */
+	/** @var auth */
 	private $auth;
 
-	/* @var \phpbb\template\template */
+	/** @var template */
 	private $template;
 
-	/* @var \phpbb\user */
+	/** @var user */
 	private $user;
 
-	/* @var \phpbb\request\request */
+	/** @var request */
 	private $request;
 
-	/* @var \phpbb\db\driver\driver_interface */
+	/** @var db_driver */
 	private $db;
 
-    /** @var \phpbb\language\language */
-    private $language;
+	/** @var language */
+	private $language;
 
 	/**
 	* Current $phpbb_root_path
@@ -69,18 +77,19 @@ class listener implements EventSubscriberInterface
 	/**
 	* Constructor
 	*
-	* @param \phpbbseo\usu\core\core			$core
-	* @param \phpbb\config\config				$config				Config object
-	* @param \phpbb\auth\auth					$auth				Auth object
-	* @param \phpbb\template\template			$template			Template object
-	* @param \phpbb\user						$user				User object
-	* @param \phpbb\request\request				$request			Request object
-	* @param \phpbb\db\driver\driver_interface	$db					Database object
-	* @param string								$phpbb_root_path	Path to the phpBB root
-	* @param string								$php_ext			PHP file extension
+	* @param core			$core
+	* @param config			$config				Config object
+	* @param auth			$auth				Auth object
+	* @param template		$template			Template object
+	* @param user			$user				User object
+	* @param request		$request			Request object
+	* @param db_driver		$db					Database object
+	* @param language		$language			Language object
+	* @param string			$phpbb_root_path	Path to the phpBB root
+	* @param string			$php_ext			PHP file extension
 	*
 	*/
-	public function __construct(\phpbbseo\usu\core\core $core, \phpbb\config\config $config, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\request\request $request, \phpbb\db\driver\driver_interface $db, \phpbb\language\language $language, $phpbb_root_path, $php_ext)
+	public function __construct(core $core, config $config, auth $auth, template $template, user $user, request $request, db_driver $db, language $language, $phpbb_root_path, $php_ext)
 	{
 		$this->core = $core;
 		$this->template = $template;
@@ -123,7 +132,7 @@ class listener implements EventSubscriberInterface
 
 		$user_data = $event['user_data'];
 
-		switch($this->core->seo_opt['req_file'])
+		switch ($this->core->seo_opt['req_file'])
 		{
 			case 'viewforum':
 				global $forum_data; // god save the hax
@@ -376,7 +385,7 @@ class listener implements EventSubscriberInterface
 
 		$this->start = max(0, $this->request->variable('start', 0));
 
-		switch($this->core->seo_opt['req_file'])
+		switch ($this->core->seo_opt['req_file'])
 		{
 			case 'viewforum':
 				$this->forum_id = max(0, $this->request->variable('f', 0));
@@ -971,7 +980,8 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 			$result = $this->db->sql_query($this->db->sql_build_query('SELECT', $sql_array));
 			$seo_active_t_row = $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
-			if ($seo_active_t_row) {
+			if ($seo_active_t_row)
+			{
 				$active_t_row = array_merge($active_t_row, $seo_active_t_row);
 				$active_t_forum_id = (int) $active_t_row['forum_id'];
 				$this->core->prepare_topic_url($active_t_row);
