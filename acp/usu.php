@@ -35,6 +35,9 @@ class usu
 	/** @var \phpbb\user */
 	protected $user;
 
+	/** @var \phpbb\log\log */
+	protected $phpbb_log;
+
 	/** @var string */
 	protected $phpbb_root_path;
 
@@ -57,7 +60,7 @@ class usu
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $template, $request, $language;
+		global $config, $db, $user, $template, $request, $language, $phpbb_log;
 		global $phpbb_root_path, $phpbb_admin_path, $phpEx;
 		global $phpbb_container;
 
@@ -67,6 +70,7 @@ class usu
 		$this->request = $request;
 		$this->template = $template;
 		$this->user = $user;
+		$this->phpbb_log = $phpbb_log;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $phpEx;
 		$this->language = $language;
@@ -162,7 +166,7 @@ class usu
 							{
 								// we assume that the force server var will not break everything
 								// since this is in use in all cases in USU
-								set_config('force_server_vars', 1);
+								$this->config->set('force_server_vars', 1);
 							}
 						}
 
@@ -437,7 +441,7 @@ class usu
 
 					if (!isset($this->config[$config_name]))
 					{
-						set_config($config_name, $config_setup['default']);
+						$this->config->set($config_name, $config_setup['default']);
 						unset($display_vars['vars'][$config_name]['default']);
 					}
 				}
@@ -754,7 +758,7 @@ class usu
 				}
 				else if ($mode == 'extended')
 				{
-					set_config($config_name, $config_value);
+					$this->config->set($config_name, $config_value);
 				}
 			}
 		}
@@ -772,12 +776,12 @@ class usu
 				{
 					$this->seo_server_conf(false);
 
-					add_log('admin', 'SEO_LOG_CONFIG_' . strtoupper($mode));
+					$this->phpbb_log->add('admin', $this->user->data['user_id'], $this->user->ip, 'SEO_LOG_CONFIG_' . strtoupper($mode), time());
 				}
 			}
 			else if ($mode == 'extended')
 			{
-				add_log('admin', 'SEO_LOG_CONFIG_' . strtoupper($mode));
+				$this->phpbb_log->add('admin', $this->user->data['user_id'], $this->user->ip, 'SEO_LOG_CONFIG_' . strtoupper($mode), time());
 
 				trigger_error($this->language->lang('CONFIG_UPDATED') . adm_back_link($this->u_action));
 			}
@@ -795,7 +799,7 @@ class usu
 				{
 					global $msg_long_text;
 
-					add_log('admin', 'SEO_LOG_CONFIG_' . strtoupper($mode));
+					$this->phpbb_log->add('admin', $this->user->data['user_id'], $this->user->ip, 'SEO_LOG_CONFIG_' . strtoupper($mode), time());
 
 					$msg = !empty($seo_msg) ? '<br /><h1 style="color:red;text-align:left;">' . $this->language->lang('SEO_VALIDATE_INFO') . '</h1><ul style="text-align:left;">' . implode(' ', $seo_msg) . '</ul><br />' : '';
 
