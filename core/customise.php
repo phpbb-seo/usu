@@ -11,15 +11,6 @@
 namespace phpbbseo\usu\core;
 
 /**
- * DO NOT CHANGE
- * @ignore
- */
-if (!defined('IN_PHPBB'))
-{
-	exit;
-}
-
-/**
 * customize trait
 * www.phpBB-SEO.ir
 * @package Ultimate phpBB SEO Friendly URL
