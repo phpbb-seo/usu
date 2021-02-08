@@ -8,7 +8,7 @@
 *
 */
 
-namespace phpbbseo\usu\core;
+namespace phpbbseo\usu\core\traits;
 
 /**
 * rewriter trait

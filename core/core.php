@@ -17,6 +17,11 @@ use phpbb\config\config;
 use phpbb\request\request;
 use phpbb\user;
 use phpbb\auth\auth;
+use phpbbseo\usu\core\traits\customise;
+use phpbbseo\usu\core\traits\rewriter;
+use phpbbseo\usu\core\traits\url;
+use phpbbseo\usu\core\traits\seo;
+use phpbbseo\usu\core\traits\get_set;
 
 /**
 * core Class
