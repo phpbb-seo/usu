@@ -153,7 +153,7 @@ class usu
 
 				foreach ($this->core->cache_config['dynamic_options'] as $optionname => $optionvalue)
 				{
-					if (@is_bool($this->core->seo_opt[$optionvalue]))
+					if (is_string($optionvalue) && @is_bool($this->core->seo_opt[$optionvalue]))
 					{
 						if ($optionvalue == 'virtual_root')
 						{
@@ -588,7 +588,7 @@ class usu
 		// We go through the display_vars to make sure no one is trying to set variables he/she is not allowed to...
 		foreach ($display_vars['vars'] as $config_name => $cfg_setup)
 		{
-			if ((!isset($cfg_array[$config_name]) && @$cfg_setup['method'] != 'select_multiple') || strpos($config_name, 'legend') !== false)
+			if (strpos($config_name, 'legend') !== false || (!isset($cfg_array[$config_name]) && @$cfg_setup['method'] != 'select_multiple'))
 			{
 				continue;
 			}
