@@ -405,24 +405,16 @@ trait url
 			return ($this->seo_cache[$url] = $url) . $anchor;
 		}
 
-		parse_str(str_replace('&amp;', '&', $qs), $this->get_vars);
-
-		// strip slashes if necessary
-		if (defined('SEO_STRIP'))
-		{
-			$this->get_vars = array_map([$this, 'stripslashes'], $this->get_vars);
-		}
-
 		if (empty($this->user->data['is_registered']))
 		{
 			if ($this->seo_opt['rem_sid'])
 			{
-				unset($this->get_vars['sid']);
+				$qs = preg_replace('/(&?sid=[^&#]+)/', '', $qs);
 			}
 
 			if ($this->seo_opt['rem_hilit'])
 			{
-				unset($this->get_vars['hilit']);
+				$qs = preg_replace('/(&?hilit=[^&#]+)/', '', $qs);
 			}
 		}
 
@@ -434,7 +426,7 @@ trait url
 
 			$this->$rewrite_method_name();
 
-			return ($this->seo_cache[$url] = $this->path . $this->url . $this->query_string($this->get_vars, $amp_delim, '?')) . $anchor;
+			return ($this->seo_cache[$url] = $this->path . $this->url . ($qs ? '?' . $qs : '')) . $anchor;
 		}
 		else
 		{
