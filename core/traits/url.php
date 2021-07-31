@@ -405,18 +405,26 @@ trait url
 			return ($this->seo_cache[$url] = $url) . $anchor;
 		}
 
+		parse_str(str_replace('&amp;', '&', $qs), $this->get_vars);
+
 		if (empty($this->user->data['is_registered']))
 		{
 			if ($this->seo_opt['rem_sid'])
 			{
-				$qs = preg_replace('/(&?sid=[^&#]+)/', '', $qs);
+				unset($this->get_vars['sid']);
 			}
 
 			if ($this->seo_opt['rem_hilit'])
 			{
-				$qs = preg_replace('/(&?hilit=[^&#]+)/', '', $qs);
+				unset($this->get_vars['hilit']);
 			}
 		}
+
+		$data_sanitizer = function (&$value, $key) {
+			$type_cast_helper = new \phpbb\request\type_cast_helper();
+			$type_cast_helper->set_var($value, $value, gettype($value), true);
+		};
+		array_walk_recursive($this->get_vars, $data_sanitizer);
 
 		$this->url = $this->file;
 
@@ -426,7 +434,7 @@ trait url
 
 			$this->$rewrite_method_name();
 
-			return ($this->seo_cache[$url] = $this->path . $this->url . ($qs ? '?' . $qs : '')) . $anchor;
+			return ($this->seo_cache[$url] = $this->path . $this->url . $this->query_string($this->get_vars, $amp_delim, '?')) . $anchor;
 		}
 		else
 		{
