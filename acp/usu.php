@@ -18,34 +18,34 @@ namespace phpbbseo\usu\acp;
 class usu
 {
 	/** @var \phpbb\config\config */
-	protected $config;
+	protected \phpbb\config\config $config;
 
 	/** @var \phpbbseo\usu\core\core */
-	protected $core;
+	protected \phpbbseo\usu\core\core $core;
 
 	/** @var \phpbb\db\driver\driver_interface */
-	protected $db;
+	protected \phpbb\db\driver\driver_interface $db;
 
 	/** @var \phpbb\request\request */
-	protected $request;
+	protected \phpbb\request\request $request;
 
 	/** @var \phpbb\template\template */
-	protected $template;
+	protected \phpbb\template\template $template;
 
 	/** @var \phpbb\user */
-	protected $user;
+	protected \phpbb\user $user;
 
 	/** @var \phpbb\log\log */
-	protected $phpbb_log;
+	protected \phpbb\log\log $phpbb_log;
 
 	/** @var string */
-	protected $phpbb_root_path;
+	protected string $phpbb_root_path;
 
 	/** @var string */
-	protected $php_ext;
+	protected string $php_ext;
 
 	/** @var \phpbb\language\language */
-	protected $language;
+	protected \phpbb\language\language $language;
 
 	var $u_action;
 	var $new_config = [];
