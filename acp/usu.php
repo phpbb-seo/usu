@@ -47,16 +47,16 @@ class usu
 	/** @var \phpbb\language\language */
 	protected \phpbb\language\language $language;
 
-	var $u_action;
-	var $new_config = [];
-	var $dyn_select = [];
-	var $forum_ids = [];
-	var $array_type_cfg = [];
-	var $multiple_options = [];
-	var $modrtype_lang = [];
-	var $lengh_limit = 20;
-	var $word_limit = 3;
-	var $seo_unset_opts = [];
+	public $u_action;
+	public $new_config = [];
+	public $dyn_select = [];
+	public $forum_ids = [];
+	public $array_type_cfg = [];
+	public $multiple_options = [];
+	public $modrtype_lang = [];
+	public $lengh_limit = 20;
+	public $word_limit = 3;
+	public $seo_unset_opts = [];
 
 	function main($id, $mode)
 	{
