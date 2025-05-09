@@ -25,7 +25,7 @@ trait customise
 		// ===> Custom url replacements <===
 		// Here you can set up custom replacements to be used in title injection.
 		// Example : array('find' => 'replace')
-		//	$this->url_replace = array(
+		//	isset($this->url_replace) ? $this->url_replace : [] = isset($this->url_replace) ? $this->url_replace : [] ?? []; array(
 		//		// Purely cosmetic replace
 		//		'$' => 'dollar', '€' => 'euro',
 		//		'\'s' => 's', // it's => its / mary's => marys ...
