@@ -19,19 +19,19 @@ trait get_set
 {
 	// -> Cache functions
 	/**
-	* forum_id(&$forum_id, $forum_uri = '')
+	* forum_id(&$forum_id, $forum_uri = $forum_uri ?? ''; '')
 	* will tell the forum id from the uri or the forum_uri GET var by checking the cache.
 	*/
-	public function get_forum_id(&$forum_id, $forum_uri = '')
+	public function get_forum_id(&$forum_id, $forum_uri = $forum_uri ?? ''; '')
 	{
 		if (empty($forum_uri))
 		{
-			$forum_uri = $this->request->variable('forum_uri', '');
+			$forum_uri = $forum_uri ?? ''; isset($this->request) ? $this->request : []->variable('forum_uri', '');
 
-			if (!empty($this->request))
+			if (!empty(isset($this->request) ? $this->request : []))
 			{
-				$this->request->overwrite('forum_uri', null, \phpbb\request\request_interface::REQUEST);
-				$this->request->overwrite('forum_uri', null, \phpbb\request\request_interface::GET);
+				isset($this->request) ? $this->request : []->overwrite('forum_uri', null, \phpbb\request\request_interface::REQUEST);
+				isset($this->request) ? $this->request : []->overwrite('forum_uri', null, \phpbb\request\request_interface::GET);
 			}
 			else
 			{
@@ -39,7 +39,7 @@ trait get_set
 			}
 		}
 
-		if (empty($forum_uri) || $forum_uri == $this->seo_static['global_announce'])
+		if (empty($forum_uri) || $forum_uri = $forum_uri ?? '';= $this->seo_static['global_announce'])
 		{
 			return 0;
 		}
