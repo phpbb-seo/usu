@@ -91,7 +91,7 @@ class listener implements EventSubscriberInterface
 	*/
 	public function __construct(core $core, config $config, auth $auth, template $template, user $user, request $request, db_driver $db, language $language, $phpbb_root_path, $php_ext)
 	{
-		$this->core = $core;
+		isset($this->core) ? $this->core : null = $core;
 		$this->template = $template;
 		$this->user = $user;
 		$this->config = $config;
@@ -99,7 +99,7 @@ class listener implements EventSubscriberInterface
 		$this->request = $request;
 		$this->db = $db;
 		$this->language = $language;
-		$this->phpbb_root_path = $phpbb_root_path;
+		$this->phpbb_root_path ?? '' = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 	}
 
@@ -125,14 +125,14 @@ class listener implements EventSubscriberInterface
 
 	public function core_user_setup($event)
 	{
-		if (empty($this->core->seo_opt['url_rewrite']))
+		if (empty(isset($this->core) ? $this->core : null->seo_opt['url_rewrite']))
 		{
 			return;
 		}
 
 		$user_data = $event['user_data'];
 
-		switch ($this->core->seo_opt['req_file'])
+		switch (isset($this->core) ? $this->core : null->seo_opt['req_file'])
 		{
 			case 'viewforum':
 				global $forum_data; // god save the hax
@@ -144,7 +144,7 @@ class listener implements EventSubscriberInterface
 						$this->config['topics_per_page'] = $forum_data['forum_topics_per_page'];
 					}
 
-					$start = $this->core->seo_chk_start($this->start, $this->config['topics_per_page']);
+					$start = isset($this->core) ? $this->core : null->seo_chk_start($this->start, $this->config['topics_per_page']);
 
 					if ($this->start != $start)
 					{
@@ -153,10 +153,10 @@ class listener implements EventSubscriberInterface
 					}
 
 					$this->forum_id = max(0, (int) $forum_data['forum_id']);
-					$this->core->prepare_forum_url($forum_data);
-					$this->core->seo_path['canonical'] = $this->core->drop_sid(append_sid("{$this->phpbb_root_path}viewforum.{$this->php_ext}", "f={$this->forum_id}&amp;start={$this->start}"));
+					isset($this->core) ? $this->core : null->prepare_forum_url($forum_data);
+					isset($this->core) ? $this->core : null->seo_path['canonical'] = isset($this->core) ? $this->core : null->drop_sid(append_sid("{$this->phpbb_root_path ?? ''}viewforum.{$this->php_ext}", "f={$this->forum_id}&amp;start={$this->start}"));
 
-					$this->core->set_parent_urls($forum_data);
+					isset($this->core) ? $this->core : null->set_parent_urls($forum_data);
 
 					$default_sort_days = (!empty($user_data['user_topic_show_days'])) ? $user_data['user_topic_show_days'] : 0;
 					$default_sort_key = (!empty($user_data['user_topic_sortby_type'])) ? $user_data['user_topic_sortby_type'] : 't';
@@ -168,7 +168,7 @@ class listener implements EventSubscriberInterface
 					$sort_dir = $this->request->variable('sd', $default_sort_dir);
 					$keep_mark = in_array($mark_read, ['topics', 'topic', 'forums', 'all']) ? (boolean) ($user_data['is_registered'] || $config['load_anon_lastread']) : false;
 
-					$this->core->seo_opt['zero_dupe']['redir_def'] = [
+					isset($this->core) ? $this->core : null->seo_opt['zero_dupe']['redir_def'] = [
 						'hash'		=> ['val' => $this->request->variable('hash', ''), 'keep' => $keep_mark],
 						'f'		=> ['val' => $this->forum_id, 'keep' => true, 'force' => true],
 						'st'		=> ['val' => $sort_days, 'keep' => true],
@@ -179,13 +179,13 @@ class listener implements EventSubscriberInterface
 						'start'		=> ['val' => $this->start, 'keep' => true],
 					];
 
-					$this->core->zero_dupe();
+					isset($this->core) ? $this->core : null->zero_dupe();
 				}
 				else
 				{
-					if ($this->core->seo_opt['redirect_404_forum'])
+					if (isset($this->core) ? $this->core : null->seo_opt['redirect_404_forum'])
 					{
-						$this->core->seo_redirect($this->core->seo_path['phpbb_url']);
+						isset($this->core) ? $this->core : null->seo_redirect(isset($this->core) ? $this->core : null->seo_path['phpbb_url']);
 					}
 					else
 					{
@@ -200,9 +200,9 @@ class listener implements EventSubscriberInterface
 
 				if (empty($topic_data))
 				{
-					if ($this->core->seo_opt['redirect_404_topic'])
+					if (isset($this->core) ? $this->core : null->seo_opt['redirect_404_topic'])
 					{
-						$this->core->seo_redirect($this->core->seo_path['phpbb_url']);
+						isset($this->core) ? $this->core : null->seo_redirect(isset($this->core) ? $this->core : null->seo_path['phpbb_url']);
 					}
 					else
 					{
@@ -214,7 +214,7 @@ class listener implements EventSubscriberInterface
 				$this->topic_id = $topic_id = (int) $topic_data['topic_id'];
 				$this->forum_id = $forum_id;
 
-				$this->core->set_parent_urls($topic_data);
+				isset($this->core) ? $this->core : null->set_parent_urls($topic_data);
 
 				if (!empty($topic_data['topic_url']) || (isset($topic_data['topic_url']) && !empty($this->core->seo_opt['sql_rewrite'])))
 				{
@@ -223,33 +223,33 @@ class listener implements EventSubscriberInterface
 						// Let's make sure user will see global annoucements
 						// $this->auth->cache[$forum_id]['f_read'] = 1;
 
-						$_parent = $this->core->seo_static['global_announce'];
+						$_parent = isset($this->core) ? $this->core : null->seo_static['global_announce'];
 					}
 					else
 					{
-						$this->core->prepare_forum_url($topic_data);
-						$_parent = $this->core->seo_url['forum'][$forum_id];
+						isset($this->core) ? $this->core : null->prepare_forum_url($topic_data);
+						$_parent = isset($this->core) ? $this->core : null->seo_url['forum'][$forum_id];
 					}
 
-					if (!$this->core->check_url('topic', $topic_data['topic_url'], $_parent))
+					if (!isset($this->core) ? $this->core : null->check_url('topic', $topic_data['topic_url'], $_parent))
 					{
 						if (!empty($topic_data['topic_url']))
 						{
 							// Here we get rid of the seo delim (-t) and put it back even in simple mod
 							// to be able to handle all cases at once
-							$_url = preg_replace('`' . $this->core->seo_delim['topic'] . '$`i', '', $topic_data['topic_url']);
-							$_title = $this->core->get_url_info('topic', $_url . $this->core->seo_delim['topic'] . $topic_id, 'title');
+							$_url = preg_replace('`' . isset($this->core) ? $this->core : null->seo_delim['topic'] . '$`i', '', $topic_data['topic_url']);
+							$_title = isset($this->core) ? $this->core : null->get_url_info('topic', $_url . isset($this->core) ? $this->core : null->seo_delim['topic'] . $topic_id, 'title');
 						}
 						else
 						{
-							$_title = $this->core->modrtype > 2 ? censor_text($topic_data['topic_title']) : '';
+							$_title = isset($this->core) ? $this->core : null->modrtype > 2 ? censor_text($topic_data['topic_title']) : '';
 						}
 
-						unset($this->core->seo_url['topic'][$topic_id]);
+						unset(isset($this->core) ? $this->core : null->seo_url['topic'][$topic_id]);
 
-						$topic_data['topic_url'] = $this->core->get_url_info('topic', $this->core->prepare_url('topic', $_title, $topic_id, $_parent, ((empty($_title) || ($_title == $this->core->seo_static['topic'])) ? true : false)), 'url');
+						$topic_data['topic_url'] = isset($this->core) ? $this->core : null->get_url_info('topic', isset($this->core) ? $this->core : null->prepare_url('topic', $_title, $topic_id, $_parent, ((empty($_title) || ($_title == isset($this->core) ? $this->core : null->seo_static['topic'])) ? true : false)), 'url');
 
-						unset($this->core->seo_url['topic'][$topic_id]);
+						unset(isset($this->core) ? $this->core : null->seo_url['topic'][$topic_id]);
 
 						if ($topic_data['topic_url'])
 						{
@@ -265,7 +265,7 @@ class listener implements EventSubscriberInterface
 					$topic_data['topic_url'] = '';
 				}
 
-				$this->core->prepare_topic_url($topic_data, $this->forum_id);
+				isset($this->core) ? $this->core : null->prepare_topic_url($topic_data, $this->forum_id);
 
 				if (!$this->request->is_set('start'))
 				{
@@ -275,7 +275,7 @@ class listener implements EventSubscriberInterface
 					}
 				}
 
-				$start = $this->core->seo_chk_start($this->start, $this->config['posts_per_page']);
+				$start = isset($this->core) ? $this->core : null->seo_chk_start($this->start, $this->config['posts_per_page']);
 
 				if ($this->start != $start)
 				{
@@ -286,9 +286,9 @@ class listener implements EventSubscriberInterface
 					}
 				}
 
-				$this->core->seo_path['canonical'] = $this->core->drop_sid(append_sid("{$this->phpbb_root_path}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$topic_id}&amp;start={$this->start}"));
+				isset($this->core) ? $this->core : null->seo_path['canonical'] = isset($this->core) ? $this->core : null->drop_sid(append_sid("{$this->phpbb_root_path ?? ''}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$topic_id}&amp;start={$this->start}"));
 
-				if ($this->core->seo_opt['zero_dupe']['on'])
+				if (isset($this->core) ? $this->core : null->seo_opt['zero_dupe']['on'])
 				{
 					$highlight_match = $highlight = '';
 
@@ -301,9 +301,9 @@ class listener implements EventSubscriberInterface
 						$highlight_match = str_replace(' ', '|', $highlight_match);
 					}
 
-					if ($post_id && !$view && !$this->core->set_do_redir_post())
+					if ($post_id && !$view && !isset($this->core) ? $this->core : null->set_do_redir_post())
 					{
-						$this->core->seo_opt['zero_dupe']['redir_def'] = [
+						isset($this->core) ? $this->core : null->seo_opt['zero_dupe']['redir_def'] = [
 							'p'		=> ['val' => $post_id, 'keep' => true, 'force' => true, 'hash' => "p$post_id"],
 							'hilit'	=> ['val' => (($highlight_match) ? $highlight : ''), 'keep' => !empty($highlight_match)],
 						];
@@ -325,7 +325,7 @@ class listener implements EventSubscriberInterface
 						$keep_hash = (boolean) ($keep_watch || $keep_unwatch || $seo_bookmark);
 						$seo_uid = max(0, $this->request->variable('uid', 0));
 
-						$this->core->seo_opt['zero_dupe']['redir_def'] = [
+						isset($this->core) ? $this->core : null->seo_opt['zero_dupe']['redir_def'] = [
 							'uid'		=> ['val' => $seo_uid, 'keep' => (boolean) ($keep_hash && $seo_uid)],
 							'f'		=> ['val' => $forum_id, 'keep' => true, 'force' => true],
 							't'		=> ['val' => $topic_id, 'keep' => true, 'force' => true, 'hash' => $post_id ? "p{$post_id}" : ''],
@@ -339,19 +339,19 @@ class listener implements EventSubscriberInterface
 							'sk'		=> ['val' => $sort_key, 'keep' => true],
 							'sd'		=> ['val' => $sort_dir, 'keep' => true],
 							'view'		=> ['val' => $view, 'keep' => $view == 'print' ? (boolean) $this->auth->acl_get('f_print', $forum_id) : (($view == 'viewpoll' || $view == 'show') ? true : false)],
-							'hilit'		=> ['val' => (($highlight_match) ? $highlight : ''), 'keep' => (boolean) !(!$user_data['is_registered'] && $this->core->seo_opt['rem_hilit'])],
+							'hilit'		=> ['val' => (($highlight_match) ? $highlight : ''), 'keep' => (boolean) !(!$user_data['is_registered'] && isset($this->core) ? $this->core : null->seo_opt['rem_hilit'])],
 						];
 
-						if ($this->core->seo_opt['zero_dupe']['redir_def']['bookmark']['keep'])
+						if (isset($this->core) ? $this->core : null->seo_opt['zero_dupe']['redir_def']['bookmark']['keep'])
 						{
 							// Prevent unessecary redirections
 							// Note : bookmark, watch and unwatch cases could just not be handled by the zero dupe (no redirect at all when used),
 							// but the handling as well acts as a security shield so, it's worth it ;)
-							unset($this->core->seo_opt['zero_dupe']['redir_def']['start']);
+							unset(isset($this->core) ? $this->core : null->seo_opt['zero_dupe']['redir_def']['start']);
 						}
 					}
 
-					$this->core->zero_dupe();
+					isset($this->core) ? $this->core : null->zero_dupe();
 				}
 
 				break;
@@ -361,7 +361,7 @@ class listener implements EventSubscriberInterface
 				{
 					$un = rawurldecode($this->request->variable('un', '', true));
 
-					if (!$this->core->is_utf8($un))
+					if (!isset($this->core) ? $this->core : null->is_utf8($un))
 					{
 						$un = utf8_normalize_nfc(utf8_recode($un, 'ISO-8859-1'));
 					}
@@ -375,7 +375,7 @@ class listener implements EventSubscriberInterface
 
 	public function core_common($event)
 	{
-		if (empty($this->core->seo_opt['url_rewrite']))
+		if (empty(isset($this->core) ? $this->core : null->seo_opt['url_rewrite']))
 		{
 			return;
 		}
@@ -385,19 +385,19 @@ class listener implements EventSubscriberInterface
 
 		$this->start = max(0, $this->request->variable('start', 0));
 
-		switch ($this->core->seo_opt['req_file'])
+		switch (isset($this->core) ? $this->core : null->seo_opt['req_file'])
 		{
 			case 'viewforum':
 				$this->forum_id = max(0, $this->request->variable('f', 0));
 
 				if (!$this->forum_id)
 				{
-					$this->core->get_forum_id($this->forum_id);
+					isset($this->core) ? $this->core : null->get_forum_id($this->forum_id);
 
 					if (!$this->forum_id)
 					{
 						// here we need to find out if the uri really was a forum one
-						if (!preg_match('`^.+?\.' . $this->php_ext . '(\?.*)?$`', $this->core->seo_path['uri']))
+						if (!preg_match('`^.+?\.' . $this->php_ext . '(\?.*)?$`', isset($this->core) ? $this->core : null->seo_path['uri']))
 						{
 							// request url is rewriten
 							// re-route request to app.php
@@ -447,9 +447,9 @@ class listener implements EventSubscriberInterface
 
 						}
 
-						if ($this->core->seo_opt['redirect_404_forum'])
+						if (isset($this->core) ? $this->core : null->seo_opt['redirect_404_forum'])
 						{
-							$this->core->seo_redirect($this->core->seo_path['phpbb_url']);
+							isset($this->core) ? $this->core : null->seo_redirect(isset($this->core) ? $this->core : null->seo_path['phpbb_url']);
 						}
 						else
 						{
@@ -471,7 +471,7 @@ class listener implements EventSubscriberInterface
 
 				if (!$this->forum_id)
 				{
-					$this->core->get_forum_id($this->forum_id);
+					isset($this->core) ? $this->core : null->get_forum_id($this->forum_id);
 
 					if ($this->forum_id > 0)
 					{
@@ -485,7 +485,7 @@ class listener implements EventSubscriberInterface
 				{
 					$this->hilit_words = rawurldecode($this->hilit_words);
 
-					if (!$this->core->is_utf8($this->hilit_words))
+					if (!isset($this->core) ? $this->core : null->is_utf8($this->hilit_words))
 					{
 						$this->hilit_words = utf8_normalize_nfc(utf8_recode($this->hilit_words, 'iso-8859-1'));
 					}
@@ -495,15 +495,15 @@ class listener implements EventSubscriberInterface
 
 				if (!$this->topic_id && !$this->post_id)
 				{
-					if ($this->core->seo_opt['redirect_404_forum'])
+					if (isset($this->core) ? $this->core : null->seo_opt['redirect_404_forum'])
 					{
-						if ($this->forum_id && !empty($this->core->seo_url['forum'][$this->forum_id]))
+						if ($this->forum_id && !empty(isset($this->core) ? $this->core : null->seo_url['forum'][$this->forum_id]))
 						{
-							$this->core->seo_redirect(append_sid("{$this->phpbb_root_path}viewforum.{$this->php_ext}", 'f=' . $this->forum_id));
+							isset($this->core) ? $this->core : null->seo_redirect(append_sid("{$this->phpbb_root_path ?? ''}viewforum.{$this->php_ext}", 'f=' . $this->forum_id));
 						}
 						else
 						{
-							$this->core->seo_redirect($this->core->seo_path['phpbb_url']);
+							isset($this->core) ? $this->core : null->seo_redirect(isset($this->core) ? $this->core : null->seo_path['phpbb_url']);
 						}
 					}
 					else
@@ -519,16 +519,16 @@ class listener implements EventSubscriberInterface
 	public function core_page_header_after($event)
 	{
 		$this->template->assign_vars([
-			'SEO_PHPBB_URL'		=> $this->core->seo_path['phpbb_url'],
-			'SEO_ROOT_URL'		=> $this->core->seo_path['phpbb_url'],
-			'SEO_BASE_HREF'		=> $this->core->seo_opt['seo_base_href'],
-			'SEO_START_DELIM'	=> $this->core->seo_delim['start'],
-			'SEO_SATIC_PAGE'	=> $this->core->seo_static['pagination'],
-			'SEO_EXT_PAGE'		=> $this->core->seo_ext['pagination'],
+			'SEO_PHPBB_URL'		=> isset($this->core) ? $this->core : null->seo_path['phpbb_url'],
+			'SEO_ROOT_URL'		=> isset($this->core) ? $this->core : null->seo_path['phpbb_url'],
+			'SEO_BASE_HREF'		=> isset($this->core) ? $this->core : null->seo_opt['seo_base_href'],
+			'SEO_START_DELIM'	=> isset($this->core) ? $this->core : null->seo_delim['start'],
+			'SEO_SATIC_PAGE'	=> isset($this->core) ? $this->core : null->seo_static['pagination'],
+			'SEO_EXT_PAGE'		=> isset($this->core) ? $this->core : null->seo_ext['pagination'],
 			'SEO_EXTERNAL'		=> !empty($this->config['seo_ext_links']) ? 1 : '',
 			'SEO_EXTERNAL_SUB'	=> !empty($this->config['seo_ext_subdomain']) ? 1 : '',
 			'SEO_EXT_CLASSES'	=> !empty($this->config['seo_ext_classes']) ? preg_replace('`[^a-z0-9_|-]+`', '', str_replace(',', '|', trim($this->config['seo_ext_classes'], ', '))) : '',
-			'SEO_HASHFIX'		=> $this->core->seo_opt['url_rewrite'] && $this->core->seo_opt['virtual_folder'] ? 1 : '',
+			'SEO_HASHFIX'		=> isset($this->core) ? $this->core : null->seo_opt['url_rewrite'] && isset($this->core) ? $this->core : null->seo_opt['virtual_folder'] ? 1 : '',
 			'SEO_PHPEX'			=> $this->php_ext,
 		]);
 
@@ -548,29 +548,29 @@ class listener implements EventSubscriberInterface
 	*/
 	public function core_page_footer($event)
 	{
-		if (empty($this->core->seo_opt['copyrights']['title']))
+		if (empty(isset($this->core) ? $this->core : null->seo_opt['copyrights']['title']))
 		{
-			$this->core->seo_opt['copyrights']['title'] = strpos($this->config['default_lang'], 'fr') !== false  ?  'Optimisation du R&eacute;f&eacute;rencement par phpBB SEO' : 'Search Engine Optimization By phpBB SEO';
+			isset($this->core) ? $this->core : null->seo_opt['copyrights']['title'] = strpos($this->config['default_lang'], 'fr') !== false  ?  'Optimisation du R&eacute;f&eacute;rencement par phpBB SEO' : 'Search Engine Optimization By phpBB SEO';
 		}
 
-		if (empty($this->core->seo_opt['copyrights']['txt']))
+		if (empty(isset($this->core) ? $this->core : null->seo_opt['copyrights']['txt']))
 		{
-			$this->core->seo_opt['copyrights']['txt'] = 'phpBB SEO';
+			isset($this->core) ? $this->core : null->seo_opt['copyrights']['txt'] = 'phpBB SEO';
 		}
 
-		if ($this->core->seo_opt['copyrights']['img'])
+		if (isset($this->core) ? $this->core : null->seo_opt['copyrights']['img'])
 		{
-			$output = '<a href="http://www.phpBB-SEO.ir/" title="' . $this->core->seo_opt['copyrights']['title'] . '"><img src="' . $this->core->seo_path['phpbb_url'] . 'ext/phpbbseo/usu/img/phpbb-seo.png" alt="' . $this->core->seo_opt['copyrights']['txt'] . '" width="80" height="15"></a>';
+			$output = '<a href="http://www.phpBB-SEO.ir/" title="' . isset($this->core) ? $this->core : null->seo_opt['copyrights']['title'] . '"><img src="' . isset($this->core) ? $this->core : null->seo_path['phpbb_url'] . 'ext/phpbbseo/usu/img/phpbb-seo.png" alt="' . isset($this->core) ? $this->core : null->seo_opt['copyrights']['txt'] . '" width="80" height="15"></a>';
 		}
 		else
 		{
-			$output = '<a href="http://www.phpBB-SEO.ir/" title="' . $this->core->seo_opt['copyrights']['title'] . '">' . $this->core->seo_opt['copyrights']['txt'] . '</a>';
+			$output = '<a href="http://www.phpBB-SEO.ir/" title="' . isset($this->core) ? $this->core : null->seo_opt['copyrights']['title'] . '">' . isset($this->core) ? $this->core : null->seo_opt['copyrights']['txt'] . '</a>';
 		}
 
 		$this->language->lang('TRANSLATION_INFO', (!empty($this->language->lang('TRANSLATION_INFO')) ? $this->language->lang('TRANSLATION_INFO') . '<br>' : '') . $output);
 
 		$this->template->assign_vars([
-			'U_CANONICAL'	=> $this->core->get_canonical(),
+			'U_CANONICAL'	=> isset($this->core) ? $this->core : null->get_canonical(),
 		]);
 	}
 
@@ -582,10 +582,10 @@ class listener implements EventSubscriberInterface
 		$row = $event['row'];
 		$topic_row = $event['topic_row'];
 
-		$this->core->prepare_topic_url($row, $topic_forum_id);
+		isset($this->core) ? $this->core : null->prepare_topic_url($row, $topic_forum_id);
 
 		$view_topic_url_params = 'f=' . $topic_forum_id . '&amp;t=' . $topic_id;
-		$view_topic_url = $topic_row['U_VIEW_TOPIC'] = $this->core->url_rewrite("{$this->phpbb_root_path}viewtopic.{$this->php_ext}", $view_topic_url_params, true, false, false, true);
+		$view_topic_url = $topic_row['U_VIEW_TOPIC'] = isset($this->core) ? $this->core : null->url_rewrite("{$this->phpbb_root_path ?? ''}viewtopic.{$this->php_ext}", $view_topic_url_params, true, false, false, true);
 
 		$event['topic_row'] = $topic_row;
 		$event['row'] = $row;
@@ -596,37 +596,37 @@ class listener implements EventSubscriberInterface
 		$post_row = $event['post_row'];
 		$row = $event['row'];
 
-		$post_row['U_APPROVE_ACTION'] = append_sid("{$this->phpbb_root_path}mcp.$this->php_ext", "i=queue&amp;p={$row['post_id']}&amp;f={$this->forum_id}&amp;redirect=" . urlencode(str_replace('&amp;', '&', append_sid("{$this->phpbb_root_path}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;p=" . $row['post_id']) . '#p' . $row['post_id'])));
-		$post_row['L_POST_DISPLAY'] = ($row['hide_post']) ? $this->language->lang('POST_DISPLAY', '<a class="display_post" data-post-id="' . $row['post_id'] . '" href="' . append_sid("{$this->phpbb_root_path}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}") . '">', '</a>') : '';
+		$post_row['U_APPROVE_ACTION'] = append_sid("{$this->phpbb_root_path ?? ''}mcp.$this->php_ext", "i=queue&amp;p={$row['post_id']}&amp;f={$this->forum_id}&amp;redirect=" . urlencode(str_replace('&amp;', '&', append_sid("{$this->phpbb_root_path ?? ''}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;p=" . $row['post_id']) . '#p' . $row['post_id'])));
+		$post_row['L_POST_DISPLAY'] = ($row['hide_post']) ? $this->language->lang('POST_DISPLAY', '<a class="display_post" data-post-id="' . $row['post_id'] . '" href="' . append_sid("{$this->phpbb_root_path ?? ''}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}") . '">', '</a>') : '';
 		$event['post_row'] = $post_row;
 	}
 
 	public function core_viewtopic_modify_page_title($event)
 	{
 		$this->template->assign_vars([
-			'U_PRINT_TOPIC'		=> ($this->auth->acl_get('f_print', $this->forum_id)) ? append_sid("{$this->phpbb_root_path}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;view=print") : '',
-			'U_BOOKMARK_TOPIC'	=> ($this->user->data['is_registered'] && $this->config['allow_bookmarks']) ? append_sid("{$this->phpbb_root_path}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;bookmark=1&amp;hash=" . generate_link_hash("topic_{$this->topic_id}")) : '',
-			'U_VIEW_RESULTS'	=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", "f=$this->forum_id&amp;t=$this->topic_id&amp;view=viewpoll"),
+			'U_PRINT_TOPIC'		=> ($this->auth->acl_get('f_print', $this->forum_id)) ? append_sid("{$this->phpbb_root_path ?? ''}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;view=print") : '',
+			'U_BOOKMARK_TOPIC'	=> ($this->user->data['is_registered'] && $this->config['allow_bookmarks']) ? append_sid("{$this->phpbb_root_path ?? ''}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;bookmark=1&amp;hash=" . generate_link_hash("topic_{$this->topic_id}")) : '',
+			'U_VIEW_RESULTS'	=> append_sid("{$this->phpbb_root_path ?? ''}viewtopic.$this->php_ext", "f=$this->forum_id&amp;t=$this->topic_id&amp;view=viewpoll"),
 		]);
 	}
 
 	public function core_memberlist_view_profile($event)
 	{
-		if (empty($this->core->seo_opt['url_rewrite']))
+		if (empty(isset($this->core) ? $this->core : null->seo_opt['url_rewrite']))
 		{
 			return;
 		}
 
 		$member = $event['member'];
 
-		$this->core->set_user_url($member['username'], $member['user_id']);
-		$this->core->seo_path['canonical'] = $this->core->drop_sid(append_sid("{$this->phpbb_root_path}memberlist.{$this->php_ext}", "mode=viewprofile&amp;u=" . $member['user_id']));
-		$this->core->seo_opt['zero_dupe']['redir_def'] = [
+		isset($this->core) ? $this->core : null->set_user_url($member['username'], $member['user_id']);
+		isset($this->core) ? $this->core : null->seo_path['canonical'] = isset($this->core) ? $this->core : null->drop_sid(append_sid("{$this->phpbb_root_path ?? ''}memberlist.{$this->php_ext}", "mode=viewprofile&amp;u=" . $member['user_id']));
+		isset($this->core) ? $this->core : null->seo_opt['zero_dupe']['redir_def'] = [
 			'mode'	=> ['val' => 'viewprofile', 'keep' => true],
 			'u'		=> ['val' => $member['user_id'], 'keep' => true, 'force' => true],
 		];
 
-		$this->core->zero_dupe();
+		isset($this->core) ? $this->core : null->zero_dupe();
 
 		$event['member'] = $member;
 	}
@@ -656,7 +656,7 @@ class listener implements EventSubscriberInterface
 		$username = $event['username'];
 		$custom_profile_url = $event['custom_profile_url'];
 
-		$this->core->set_user_url($username, $user_id);
+		isset($this->core) ? $this->core : null->set_user_url($username, $user_id);
 
 		if ($custom_profile_url !== false)
 		{
@@ -664,7 +664,7 @@ class listener implements EventSubscriberInterface
 		}
 		else
 		{
-			$profile_url = append_sid("{$this->phpbb_root_path}memberlist.{$this->php_ext}", 'mode=viewprofile&amp;u=' . (int) $user_id);
+			$profile_url = append_sid("{$this->phpbb_root_path ?? ''}memberlist.{$this->php_ext}", 'mode=viewprofile&amp;u=' . (int) $user_id);
 		}
 
 		// Return profile
@@ -686,9 +686,9 @@ class listener implements EventSubscriberInterface
 	// www.phpBB-SEO.ir SEO TOOLKIT BEGIN
 	// We bypass events/hooks here, the same effect as a standalone event/hook,
 	// which we want, but much faster ;-)
-	if (!empty($this->core->seo_opt['url_rewrite']))
+	if (!empty(isset($this->core) ? $this->core : null->seo_opt['url_rewrite']))
 	{
-		return $this->core->url_rewrite($url, $params, $is_amp, $session_id);
+		return isset($this->core) ? $this->core : null->url_rewrite($url, $params, $is_amp, $session_id);
 	}
 	// www.phpBB-SEO.ir SEO TOOLKIT END
 
@@ -705,9 +705,9 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 	*/
 	public function core_append_sid($event)
 	{
-		if (!empty($this->core->seo_opt['url_rewrite']))
+		if (!empty(isset($this->core) ? $this->core : null->seo_opt['url_rewrite']))
 		{
-			$event['append_sid_overwrite'] = $this->core->url_rewrite($event['url'], $event['params'], $event['is_amp'], $event['session_id'], $event['is_route']);
+			$event['append_sid_overwrite'] = isset($this->core) ? $this->core : null->url_rewrite($event['url'], $event['params'], $event['is_amp'], $event['session_id'], $event['is_route']);
 		}
 	}
 
@@ -729,7 +729,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 		$base_url = trim($base_url, '?');
 		if (!isset($paginated[$base_url]))
 		{
-			$rewriten = $this->core->url_rewrite($base_url);
+			$rewriten = isset($this->core) ? $this->core : null->url_rewrite($base_url);
 
 			@list($rewriten, $qs) = explode('?', $rewriten, 2);
 			if (
@@ -750,12 +750,12 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 				if ($hasExt)
 				{
 					// start location is before the ext
-					$rewriten = preg_replace('`^((https?\:)?//[^/]+.+?)(\.[a-z0-9]+)$`i', '\1' . $this->core->seo_delim['start'] . '{SV}\3', $rewriten);
+					$rewriten = preg_replace('`^((https?\:)?//[^/]+.+?)(\.[a-z0-9]+)$`i', '\1' . isset($this->core) ? $this->core : null->seo_delim['start'] . '{SV}\3', $rewriten);
 				}
 				else
 				{
 					// start is appened
-					$rewriten = rtrim($rewriten, '/') . '/' . $this->core->seo_static['pagination'] .  '{SV}' . $this->core->seo_ext['pagination'];
+					$rewriten = rtrim($rewriten, '/') . '/' . isset($this->core) ? $this->core : null->seo_static['pagination'] .  '{SV}' . isset($this->core) ? $this->core : null->seo_ext['pagination'];
 				}
 
 				$paginated[$base_url] = $rewriten . ($qs ? "?$qs" : '');
@@ -792,31 +792,31 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 
 		if ($mode == 'post' || ($mode == 'edit' && $data['topic_first_post_id'] == $post_id))
 		{
-			$this->core->set_url($data['forum_name'], $forum_id, 'forum');
+			isset($this->core) ? $this->core : null->set_url($data['forum_name'], $forum_id, 'forum');
 
-			$_parent = $post_data['topic_type'] == POST_GLOBAL ? $this->core->seo_static['global_announce'] : $this->core->seo_url['forum'][$forum_id];
+			$_parent = $post_data['topic_type'] == POST_GLOBAL ? isset($this->core) ? $this->core : null->seo_static['global_announce'] : isset($this->core) ? $this->core : null->seo_url['forum'][$forum_id];
 			$_t = !empty($data['topic_id']) ? max(0, (int) $data['topic_id'] ) : 0;
 			$_url = $this->core->url_can_edit($forum_id) ? utf8_normalize_nfc($this->request->variable('url', '', true)) : (isset($post_data['topic_url']) ? $post_data['topic_url'] : '' );
 
-			if (!$this->core->check_url('topic', $_url, $_parent))
+			if (!isset($this->core) ? $this->core : null->check_url('topic', $_url, $_parent))
 			{
 				if (!empty($_url))
 				{
 					// Here we get rid of the seo delim (-t) and put it back even in simple mod
 					// to be able to handle all cases at once
-					$_url = preg_replace('`' . $this->core->seo_delim['topic'] . '$`i', '', $_url);
-					$_title = $this->core->get_url_info('topic', $_url . $this->core->seo_delim['topic'] . $_t);
+					$_url = preg_replace('`' . isset($this->core) ? $this->core : null->seo_delim['topic'] . '$`i', '', $_url);
+					$_title = isset($this->core) ? $this->core : null->get_url_info('topic', $_url . isset($this->core) ? $this->core : null->seo_delim['topic'] . $_t);
 				}
 				else
 				{
-					$_title = $this->core->modrtype > 2 ? censor_text($post_data['post_subject']) : '';
+					$_title = isset($this->core) ? $this->core : null->modrtype > 2 ? censor_text($post_data['post_subject']) : '';
 				}
 
-				unset($this->core->seo_url['topic'][$_t]);
+				unset(isset($this->core) ? $this->core : null->seo_url['topic'][$_t]);
 
-				$_url = $this->core->get_url_info('topic', $this->core->prepare_url('topic', $_title, $_t, $_parent, (( empty($_title) || ($_title == $this->core->seo_static['topic'])) ? true : false)), 'url');
+				$_url = isset($this->core) ? $this->core : null->get_url_info('topic', isset($this->core) ? $this->core : null->prepare_url('topic', $_title, $_t, $_parent, (( empty($_title) || ($_title == isset($this->core) ? $this->core : null->seo_static['topic'])) ? true : false)), 'url');
 
-				unset($this->core->seo_url['topic'][$_t]);
+				unset(isset($this->core) ? $this->core : null->seo_url['topic'][$_t]);
 			}
 
 			$data['topic_url'] = $post_data['topic_url'] = $_url;
@@ -838,7 +838,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 				break;
 		}
 
-		$this->core->set_url($data['forum_name'], $data['forum_id'], 'forum');
+		isset($this->core) ? $this->core : null->set_url($data['forum_name'], $data['forum_id'], 'forum');
 
 		$params = $add_anchor = '';
 
@@ -895,11 +895,11 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 		{
 			$data['topic_type'] = $post_data['topic_type'];
 
-			$this->core->prepare_topic_url($data);
+			isset($this->core) ? $this->core : null->prepare_topic_url($data);
 		}
 
-		$url = (!$params) ? "{$this->phpbb_root_path}viewforum.{$this->php_ext}" : "{$this->phpbb_root_path}viewtopic.{$this->php_ext}";
-		$url = $this->core->url_rewrite($url, 'f=' . $data['forum_id'] . $params, true, false, false, true) . $add_anchor;
+		$url = (!$params) ? "{$this->phpbb_root_path ?? ''}viewforum.{$this->php_ext}" : "{$this->phpbb_root_path ?? ''}viewtopic.{$this->php_ext}";
+		$url = isset($this->core) ? $this->core : null->url_rewrite($url, 'f=' . $data['forum_id'] . $params, true, false, false, true) . $add_anchor;
 
 		$event['url'] = $url;
 		$event['data'] = $data;
@@ -920,38 +920,38 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 		{
 			if ($mode == 'post' || ($mode == 'edit' && $post_data['topic_first_post_id'] == $post_id))
 			{
-				$this->core->set_url($post_data['forum_name'], $forum_id, 'forum');
+				isset($this->core) ? $this->core : null->set_url($post_data['forum_name'], $forum_id, 'forum');
 
-				$_parent = $post_data['topic_type'] == POST_GLOBAL ? $this->core->seo_static['global_announce'] : $this->core->seo_url['forum'][$forum_id];
+				$_parent = $post_data['topic_type'] == POST_GLOBAL ? isset($this->core) ? $this->core : null->seo_static['global_announce'] : isset($this->core) ? $this->core : null->seo_url['forum'][$forum_id];
 				$_t = !empty($post_data['topic_id']) ? max(0, (int) $post_data['topic_id'] ) : 0;
 				$_url = $this->core->url_can_edit($forum_id) ? utf8_normalize_nfc($this->request->variable('url', '', true)) : (isset($post_data['topic_url']) ? $post_data['topic_url'] : '');
 
-				if (!$this->core->check_url('topic', $_url, $_parent))
+				if (!isset($this->core) ? $this->core : null->check_url('topic', $_url, $_parent))
 				{
 					if (!empty($_url))
 					{
 						// Here we get rid of the seo delim (-t) and put it back even in simple mod
 						// to be able to handle all cases at once
-						$_url = preg_replace('`' . $this->core->seo_delim['topic'] . '$`i', '', $_url);
-						$_title = $this->core->get_url_info('topic', $_url . $this->core->seo_delim['topic'] . $_t);
+						$_url = preg_replace('`' . isset($this->core) ? $this->core : null->seo_delim['topic'] . '$`i', '', $_url);
+						$_title = isset($this->core) ? $this->core : null->get_url_info('topic', $_url . isset($this->core) ? $this->core : null->seo_delim['topic'] . $_t);
 					}
 					else
 					{
-						$_title = $this->core->modrtype > 2 ? censor_text($post_data['post_subject']) : '';
+						$_title = isset($this->core) ? $this->core : null->modrtype > 2 ? censor_text($post_data['post_subject']) : '';
 					}
 
-					unset($this->core->seo_url['topic'][$_t]);
+					unset(isset($this->core) ? $this->core : null->seo_url['topic'][$_t]);
 
-					$_url = $this->core->get_url_info('topic', $this->core->prepare_url('topic', $_title, $_t, $_parent, ((empty($_title) || ($_title == $this->core->seo_static['topic'])) ? true : false)), 'url');
+					$_url = isset($this->core) ? $this->core : null->get_url_info('topic', isset($this->core) ? $this->core : null->prepare_url('topic', $_title, $_t, $_parent, ((empty($_title) || ($_title == isset($this->core) ? $this->core : null->seo_static['topic'])) ? true : false)), 'url');
 
-					unset($this->core->seo_url['topic'][$_t]);
+					unset(isset($this->core) ? $this->core : null->seo_url['topic'][$_t]);
 				}
 
 				$post_data['topic_url'] = $_url;
 			}
 		}
 		$page_data['TOPIC_URL'] = isset($post_data['topic_url']) ? preg_replace('`' . $this->core->seo_delim['topic'] . '$`i', '', $post_data['topic_url']) : '';
-		$page_data['S_URL'] = ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id'])) ? $this->core->url_can_edit($forum_id) : false;
+		$page_data['S_URL'] = ($mode == 'post' || ($mode == 'edit' && $post_id == $post_data['topic_first_post_id'])) ? isset($this->core) ? $this->core : null->url_can_edit($forum_id) : false;
 
 		$event['page_data'] = $page_data;
 	}
@@ -965,7 +965,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 		if (!empty($active_t_row))
 		{
 			$sql_array = [
-				'SELECT'	=> 't.topic_title, t.topic_type ' . (!empty($this->core->seo_opt['sql_rewrite']) ? ', t.topic_url' : '') . ', f.forum_id, f.forum_name',
+				'SELECT'	=> 't.topic_title, t.topic_type ' . (!empty(isset($this->core) ? $this->core : null->seo_opt['sql_rewrite']) ? ', t.topic_url' : '') . ', f.forum_id, f.forum_name',
 				'FROM'		=> [
 					TOPICS_TABLE	=> 't',
 				],
@@ -984,13 +984,13 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 			{
 				$active_t_row = array_merge($active_t_row, $seo_active_t_row);
 				$active_t_forum_id = (int) $active_t_row['forum_id'];
-				$this->core->prepare_topic_url($active_t_row);
+				isset($this->core) ? $this->core : null->prepare_topic_url($active_t_row);
 			}
 		}
 
 		if (!empty($active_f_row['num_posts']))
 		{
-			$this->core->set_url($active_f_row['forum_name'], $active_f_row['forum_id'], 'forum');
+			isset($this->core) ? $this->core : null->set_url($active_f_row['forum_name'], $active_f_row['forum_id'], 'forum');
 		}
 	}
 }
