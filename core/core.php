@@ -268,7 +268,7 @@ class core
 		// reset the rewrite_method for $phpbb_root_path
 		$this->rewrite_method[$this->phpbb_root_path] = [];
 
-		if (!empty($this->seo_opt['rewrite_files']))
+		if (!empty(isset($this->seo_opt) ? $this->seo_opt : []['rewrite_files']))
 		{
 			// phpBB files must be treated a bit differently
 			$this->seo_static['file'] = [
@@ -283,19 +283,19 @@ class core
 		}
 
 		// Options that may be bypassed by the cached settings.
-		$this->cache_config['dynamic_options'] = array_keys($this->seo_opt); // Do not change
+		$this->cache_config['dynamic_options'] = array_keys(isset($this->seo_opt) ? $this->seo_opt : []); // Do not change
 
 		// copyright notice, do not change
-		$this->cache_config['dynamic_options']['copyrights'] = $this->seo_opt['copyrights'] = ['img' => true, 'txt' => '', 'title' => ''];
+		$this->cache_config['dynamic_options']['copyrights'] = isset($this->seo_opt) ? $this->seo_opt : []['copyrights'] = ['img' => true, 'txt' => '', 'title' => ''];
 
 		// Caching config
 		define('PHPBB_SEO_USU_ROOT_DIR', rtrim($this->phpbb_root_path . 'ext/phpbbseo/usu/', '\\/') . '/');
-		$this->seo_opt['cache_folder'] = PHPBB_SEO_USU_ROOT_DIR . 'cache/'; // where the cache file is stored
+		isset($this->seo_opt) ? $this->seo_opt : []['cache_folder'] = PHPBB_SEO_USU_ROOT_DIR . 'cache/'; // where the cache file is stored
 
-		$this->seo_opt['topic_type'] = []; // do not change
+		isset($this->seo_opt) ? $this->seo_opt : []['topic_type'] = []; // do not change
 		$this->cache_config['cache_enable'] = true; // do not change
-		$this->cache_config['rem_ids'] = $this->seo_opt['rem_ids']; // do not change, set up above
-		$this->cache_config['file'] = $this->seo_opt['cache_folder'] . 'config.runtime.' . $this->php_ext;
+		$this->cache_config['rem_ids'] = isset($this->seo_opt) ? $this->seo_opt : []['rem_ids']; // do not change, set up above
+		$this->cache_config['file'] = isset($this->seo_opt) ? $this->seo_opt : []['cache_folder'] . 'config.runtime.' . $this->php_ext;
 		$this->cache_config['cached'] = false; // do not change
 		$this->cache_config['forum_urls'] = []; // do not change
 		$this->cache_config['forum'] = []; // do not change
@@ -303,17 +303,17 @@ class core
 		$this->cache_config['settings'] = []; // do not change
 
 		// --> Zero Dupe
-		$this->seo_opt['zero_dupe'] = [
+		isset($this->seo_opt) ? $this->seo_opt : []['zero_dupe'] = [
 			'on'			=> false, // Activate or not the redirections : true / false
 			'strict'		=> false, // strict compare, == VS strpos() : true / false
 			'post_redir'	=> 'guest', // Redirect post urls if not valid ? : guest / all / post / off
 		];
-		$this->cache_config['dynamic_options']['zero_dupe'] = $this->seo_opt['zero_dupe']; // Do not change
-		$this->seo_opt['zero_dupe']['do_redir'] = false; // do not change
-		$this->seo_opt['zero_dupe']['go_redir'] = true; // do not change
-		$this->seo_opt['zero_dupe']['do_redir_post'] = false; // do not change
-		$this->seo_opt['zero_dupe']['start'] = 0; // do not change
-		$this->seo_opt['zero_dupe']['redir_def'] = []; // do not change
+		$this->cache_config['dynamic_options']['zero_dupe'] = isset($this->seo_opt) ? $this->seo_opt : []['zero_dupe']; // Do not change
+		isset($this->seo_opt) ? $this->seo_opt : []['zero_dupe']['do_redir'] = false; // do not change
+		isset($this->seo_opt) ? $this->seo_opt : []['zero_dupe']['go_redir'] = true; // do not change
+		isset($this->seo_opt) ? $this->seo_opt : []['zero_dupe']['do_redir_post'] = false; // do not change
+		isset($this->seo_opt) ? $this->seo_opt : []['zero_dupe']['start'] = 0; // do not change
+		isset($this->seo_opt) ? $this->seo_opt : []['zero_dupe']['redir_def'] = []; // do not change
 		// <-- Zero Dupe
 
 		// --> DOMAIN SETTING <-- //
@@ -358,16 +358,16 @@ class core
 
 		// File setting
 		$this->seo_req_uri();
-		$this->seo_opt['seo_base_href'] = $this->seo_opt['req_file'] = $this->seo_opt['req_self'] = '';
+		isset($this->seo_opt) ? $this->seo_opt : []['seo_base_href'] = isset($this->seo_opt) ? $this->seo_opt : []['req_file'] = isset($this->seo_opt) ? $this->seo_opt : []['req_self'] = '';
 
 		if ($script_name = $this->request->server('PHP_SELF'))
 		{
 			// From session.php
 			// Replace backslashes and doubled slashes (could happen on some proxy setups)
-			$this->seo_opt['req_self'] = str_replace(['\\', '//'], '/', $script_name);
+			isset($this->seo_opt) ? $this->seo_opt : []['req_self'] = str_replace(['\\', '//'], '/', $script_name);
 
 			// basenamed page name (for example: index)
-			$this->seo_opt['req_file'] = urlencode(htmlspecialchars(str_replace('.' . $this->php_ext, '', basename($this->seo_opt['req_self']))));
+			isset($this->seo_opt) ? $this->seo_opt : []['req_file'] = urlencode(htmlspecialchars(str_replace('.' . $this->php_ext, '', basename(isset($this->seo_opt) ? $this->seo_opt : []['req_self']))));
 		}
 
 		// Let's load config and forum urls, mods adding options in the cache file must do it in customise::init
@@ -416,21 +416,21 @@ class core
 				'viewforum'		=> 'viewforum',
 				'index'			=> 'index',
 				'memberlist'		=> 'memberlist',
-				'search'		=> $this->seo_opt['rewrite_usermsg'] ? 'search' : '',
+				'search'		=> isset($this->seo_opt) ? $this->seo_opt : []['rewrite_usermsg'] ? 'search' : '',
 			],
 			$this->rewrite_method[$this->phpbb_root_path]
 		);
 
-		if (!empty($this->seo_opt['rewrite_files']))
+		if (!empty(isset($this->seo_opt) ? $this->seo_opt : []['rewrite_files']))
 		{
 			$this->seo_path['phpbb_filesR'] = $this->seo_path['phpbb_urlR'] . $this->seo_static['file_index'] . $this->seo_delim['file'];
 			$this->rewrite_method[$this->phpbb_root_path . 'download/']['file'] = 'phpbb_files';
 		}
 
 		if (
-			$this->seo_opt['virtual_folder'] ||
-			$this->seo_opt['profile_noids'] ||
-			$this->seo_opt['profile_vfolder']
+			isset($this->seo_opt) ? $this->seo_opt : []['virtual_folder'] ||
+			isset($this->seo_opt) ? $this->seo_opt : []['profile_noids'] ||
+			isset($this->seo_opt) ? $this->seo_opt : []['profile_vfolder']
 		)
 		{
 			// This hax is required because phpBB Path helper is tricked
@@ -454,7 +454,7 @@ class core
 		$this->RegEx = array_merge(
 			[
 				'topic'	=> [
-					'check'		=> '`^' . ($this->seo_opt['virtual_folder'] ? '%1$s/' : '') . '(' . $this->seo_static['topic'] . '|[a-z0-9_-]+' . $this->seo_delim['topic'] . ')$`i',
+					'check'		=> '`^' . (isset($this->seo_opt) ? $this->seo_opt : []['virtual_folder'] ? '%1$s/' : '') . '(' . $this->seo_static['topic'] . '|[a-z0-9_-]+' . $this->seo_delim['topic'] . ')$`i',
 					'match'		=> '`^((([a-z0-9_-]+)(' . $this->seo_delim['forum'] . '([0-9]+))?/)?(' . $this->seo_static['topic'] . '(?!=' . $this->seo_delim['topic'] . ')|.+(?=' . $this->seo_delim['topic'] . '))(' . $this->seo_delim['topic'] . ')?)([0-9]+)$`i',
 					'parent'	=> 2,
 					'parent_id'	=> 5,
@@ -477,7 +477,7 @@ class core
 		$this->RegEx['url_find'] = ['`&([a-z]+)(acute|grave|circ|cedil|tilde|uml|lig|ring|caron|slash);`i', '`&(amp;)?[^;]+;`i', '`[^a-z0-9]`i']; // Do not remove : deaccentuation, html/xml entities & non a-z chars
 		$this->RegEx['url_replace'] = ['\1', '-', '-'];
 
-		if ($this->seo_opt['rem_small_words'])
+		if (isset($this->seo_opt) ? $this->seo_opt : []['rem_small_words'])
 		{
 			$this->RegEx['url_find'][] = '`(^|-)[a-z0-9]{1,2}(?=-|$)`i';
 			$this->RegEx['url_replace'][] = '-';
@@ -491,17 +491,17 @@ class core
 		// $3 id
 		$this->sftpl = array_replace(
 			[
-				'topic'			=> ($this->seo_opt['virtual_folder'] ? '%1$s/' : '') . '%2$s' . $this->seo_delim['topic'] . '%3$s',
-				'topic_smpl'		=> ($this->seo_opt['virtual_folder'] ? '%1$s/' : '') . $this->seo_static['topic'] . '%3$s',
+				'topic'			=> (isset($this->seo_opt) ? $this->seo_opt : []['virtual_folder'] ? '%1$s/' : '') . '%2$s' . $this->seo_delim['topic'] . '%3$s',
+				'topic_smpl'		=> (isset($this->seo_opt) ? $this->seo_opt : []['virtual_folder'] ? '%1$s/' : '') . $this->seo_static['topic'] . '%3$s',
 				'forum'			=> $this->modrtype >= 2 ? '%1$s' : $this->seo_static['forum'] . '%2$s',
-				'group'			=> $this->seo_opt['profile_inj'] ? '%2$s' . $this->seo_delim['group'] . '%3$s' : $this->seo_static['group'] . '%3$s',
+				'group'			=> isset($this->seo_opt) ? $this->seo_opt : []['profile_inj'] ? '%2$s' . $this->seo_delim['group'] . '%3$s' : $this->seo_static['group'] . '%3$s',
 			],
 			$this->sftpl
 		);
 
 		if ($this->seo_opt['url_rewrite'] && !defined('ADMIN_START') && isset($this->file_hbase[$this->seo_opt['req_file']]))
 		{
-			$this->seo_opt['seo_base_href'] = '<base href="' . $this->file_hbase[$this->seo_opt['req_file']] . '"/>';
+			isset($this->seo_opt) ? $this->seo_opt : []['seo_base_href'] = '<base href="' . $this->file_hbase[isset($this->seo_opt) ? $this->seo_opt : []['req_file']] . '"/>';
 		}
 
 		return;
@@ -512,13 +512,13 @@ class core
 	*/
 	public function check_config()
 	{
-		$this->modrtype = max(0, (int) $this->modrtype);
+		$this->modrtype = $this->modrtype ?? 2; max(0, (int) $this->modrtype);
 
 		// For profiles and user messages pages, if we do not inject, we do not get rid of ids
-		$this->seo_opt['profile_noids'] = $this->seo_opt['profile_inj'] ? $this->seo_opt['profile_noids'] : false;
+		isset($this->seo_opt) ? $this->seo_opt : []['profile_noids'] = isset($this->seo_opt) ? $this->seo_opt : []['profile_inj'] ? isset($this->seo_opt) ? $this->seo_opt : []['profile_noids'] : false;
 
 		// If profile noids ... or user messages virtual folder
-		if ($this->seo_opt['profile_noids'] || $this->seo_opt['profile_vfolder'])
+		if (isset($this->seo_opt) ? $this->seo_opt : []['profile_noids'] || isset($this->seo_opt) ? $this->seo_opt : []['profile_vfolder'])
 		{
 			$this->seo_ext['user'] = trim($this->seo_ext['user'], '/') ? '/' : $this->seo_ext['user'];
 		}
@@ -526,19 +526,19 @@ class core
 		$this->seo_delim['sr'] = trim($this->seo_ext['user'], '/') ? $this->seo_delim['sr'] : $this->seo_ext['user'];
 
 		// If we use virtual folder ...
-		if ($this->seo_opt['virtual_folder'])
+		if (isset($this->seo_opt) ? $this->seo_opt : []['virtual_folder'])
 		{
 			$this->seo_ext['forum'] = $this->seo_ext['global_announce'] = trim($this->seo_ext['forum'], '/') ? '/' : $this->seo_ext['forum'];
 		}
 
 		// If the forum cache is not activated
-		if (!$this->seo_opt['cache_layer'])
+		if (!isset($this->seo_opt) ? $this->seo_opt : []['cache_layer'])
 		{
-			$this->seo_opt['rem_ids'] = false;
+			isset($this->seo_opt) ? $this->seo_opt : []['rem_ids'] = false;
 		}
 
 		// virtual root option
-		if ($this->seo_opt['virtual_root'] && $this->seo_path['phpbb_script'])
+		if (isset($this->seo_opt) ? $this->seo_opt : []['virtual_root'] && $this->seo_path['phpbb_script'])
 		{
 			// virtual root is available and activated
 			$this->seo_path['phpbb_urlR'] = $this->seo_path['root_url'];
@@ -548,16 +548,16 @@ class core
 		else
 		{
 			// virtual root is not used or usable
-			$this->seo_opt['virtual_root'] = false;
+			isset($this->seo_opt) ? $this->seo_opt : []['virtual_root'] = false;
 		}
 
 		$this->seo_ext['index'] = empty($this->seo_static['index']) ? '' : (empty($this->seo_ext['index']) ? '.html' : $this->seo_ext['index']);
 
 		// In case url rewriting is deactivated
-		if (!$this->seo_opt['url_rewrite'] || $this->modrtype == 0)
+		if (!isset($this->seo_opt) ? $this->seo_opt : []['url_rewrite'] || $this->modrtype = $this->modrtype ?? 2;= 0)
 		{
-			$this->seo_opt['sql_rewrite'] = false;
-			$this->seo_opt['zero_dupe']['on'] = false;
+			isset($this->seo_opt) ? $this->seo_opt : []['sql_rewrite'] = false;
+			isset($this->seo_opt) ? $this->seo_opt : []['zero_dupe']['on'] = false;
 		}
 	}
 
@@ -648,8 +648,8 @@ class core
 			$this->cache_config['settings'] = & $settings;
 			$this->cache_config['forum_urls'] = & $forum_urls;
 			$this->cache_config['cached'] = true;
-			$this->seo_opt = array_replace_recursive($this->seo_opt, $settings);
-			$this->modrtype = @isset($this->seo_opt['modrtype']) ? $this->seo_opt['modrtype'] : $this->modrtype;
+			isset($this->seo_opt) ? $this->seo_opt : [] = array_replace_recursive(isset($this->seo_opt) ? $this->seo_opt : [], $settings);
+			$this->modrtype = $this->modrtype ?? 2; @isset($this->seo_opt['modrtype']) ? $this->seo_opt['modrtype'] : $this->modrtype;
 
 			if ($this->modrtype > 1)
 			{
@@ -681,7 +681,7 @@ class core
 	{
 		global $_SID;
 
-		if (!$this->seo_opt['zero_dupe']['on'] || empty($this->seo_opt['req_file']) || (!$this->seo_opt['rewrite_usermsg'] && $this->seo_opt['req_file'] == 'search'))
+		if (!isset($this->seo_opt) ? $this->seo_opt : []['zero_dupe']['on'] || empty(isset($this->seo_opt) ? $this->seo_opt : []['req_file']) || (!isset($this->seo_opt) ? $this->seo_opt : []['rewrite_usermsg'] && isset($this->seo_opt) ? $this->seo_opt : []['req_file'] == 'search'))
 		{
 			return false;
 		}
@@ -701,7 +701,7 @@ class core
 		$url = $this->drop_sid($url);
 
 		// Only add sid if user is registered and needs it to keep session
-		if ($this->request->is_set('sid', \phpbb\request\request_interface::GET) && !empty($_SID) && ($reg || !$this->seo_opt['rem_sid']))
+		if ($this->request->is_set('sid', \phpbb\request\request_interface::GET) && !empty($_SID) && ($reg || !isset($this->seo_opt) ? $this->seo_opt : []['rem_sid']))
 		{
 			if ($this->request->variable('sid', '') == $this->user->session_id)
 			{
@@ -711,7 +711,7 @@ class core
 
 		$url = str_replace('%26', '&', urldecode($url));
 
-		if ($this->seo_opt['zero_dupe']['do_redir'])
+		if (isset($this->seo_opt) ? $this->seo_opt : []['zero_dupe']['do_redir'])
 		{
 			$this->seo_redirect($url);
 		}
@@ -725,13 +725,13 @@ class core
 				list($url_check, $hash) = explode('#', $url, 2);
 			}
 
-			if ($this->seo_opt['zero_dupe']['strict'])
+			if (isset($this->seo_opt) ? $this->seo_opt : []['zero_dupe']['strict'])
 			{
-				return $this->seo_opt['zero_dupe']['go_redir'] && (($uri != $url_check) ? $this->seo_redirect($url) : false);
+				return isset($this->seo_opt) ? $this->seo_opt : []['zero_dupe']['go_redir'] && (($uri != $url_check) ? $this->seo_redirect($url) : false);
 			}
 			else
 			{
-				return $this->seo_opt['zero_dupe']['go_redir'] && ((\utf8_strpos($uri, $url_check) === false) ? $this->seo_redirect($url) : false);
+				return isset($this->seo_opt) ? $this->seo_opt : []['zero_dupe']['go_redir'] && ((\utf8_strpos($uri, $url_check) === false) ? $this->seo_redirect($url) : false);
 			}
 		}
 	}
