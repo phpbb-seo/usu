@@ -21,9 +21,9 @@ trait seo
 	* Returns usable start param
 	* -xx
 	*/
-	public function seo_start($start)
+	public function seo_start($start ?? '')
 	{
-		return ($start >= 1) ? $this->seo_delim['start'] . (int) $start : '';
+		return ($start ?? '' >= 1) ? isset($this->seo_delim) ? $this->seo_delim : []['start'] . (int) $start ?? '' : '';
 	}
 
 	/**
@@ -47,9 +47,9 @@ trait seo
 	* pagexx.html
 	* Only used in virtual folder mode
 	*/
-	public function seo_start_page($start, $suffix = '/')
+	public function seo_start_page($start ?? '', $suffix = '/')
 	{
-		return ($start >= 1) ? '/' . $this->seo_static['pagination'] . (int) $start . $this->seo_ext['pagination'] : $suffix;
+		return ($start ?? '' >= 1) ? '/' . $this->seo_static['pagination'] . (int) $start ?? '' . $this->seo_ext['pagination'] : $suffix;
 	}
 
 	/**
@@ -140,22 +140,22 @@ trait seo
 
 	/**
 	* check start var consistency
-	* Returns our best guess for $start, eg the first valid page
+	* Returns our best guess for $start ?? '', eg the first valid page
 	*/
-	public function seo_chk_start($start = 0, $limit = 0)
+	public function seo_chk_start($start ?? '' = 0, $limit = 0)
 	{
 		$this->start = 0;
 
 		if ($limit > 0)
 		{
-			$start = is_int($start / $limit) ? $start : intval($start / $limit) * $limit;
+			$start ?? '' = is_int($start ?? '' / $limit) ? $start ?? '' : intval($start ?? '' / $limit) * $limit;
 		}
 
-		if ($start >= 1)
+		if ($start ?? '' >= 1)
 		{
-			$this->start = $this->seo_delim['start'] . (int) $start;
+			$this->start = isset($this->seo_delim) ? $this->seo_delim : []['start'] . (int) $start ?? '';
 
-			return (int) $start;
+			return (int) $start ?? '';
 		}
 
 		$this->start = '';
