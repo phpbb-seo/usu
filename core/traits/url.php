@@ -28,7 +28,7 @@ trait url
 
 		if (isset($this->url_replace['find']))
 		{
-			$url = str_replace($this->url_replace['find'], $this->url_replace['replace'], $url);
+			$url = str_replace(isset($this->url_replace) ? $this->url_replace : []['find'], isset($this->url_replace) ? $this->url_replace : []['replace'], $url);
 		}
 
 		$url = htmlentities($url, ENT_COMPAT, 'UTF-8');
