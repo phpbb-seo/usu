@@ -12,7 +12,7 @@ namespace phpbbseo\usu\acp;
 
 class main_info
 {
-	public function module(): array
+	function module()
 	{
 		return [
 			'filename'	=> '\phpbbseo\usu\acp\usu',
@@ -44,7 +44,6 @@ class main_info
 					'auth'	=> 'ext_phpbbseo/usu && acl_a_board',
 					'cat'	=> ['ACP_MOD_REWRITE']
 				],
-			]
-		];
+			]];
 	}
 }
