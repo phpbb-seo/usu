@@ -26,11 +26,11 @@ trait rewriter
 		$this->filter_url($this->stop_vars);
 		$this->path = $this->seo_path['phpbb_urlR'];
 
-		if (!empty(isset($this->get_vars) ? $this->get_vars : []['p'] ?? ''))
+		if (!empty($this->get_vars['p']))
 		{
-			$this->url = $this->seo_static['post'] . isset($this->get_vars) ? $this->get_vars : []['p'] ?? '' . $this->seo_ext['post'];
+			$this->url = $this->seo_static['post'] . $this->get_vars['p'] . $this->seo_ext['post'];
 
-			unset(isset($this->get_vars) ? $this->get_vars : []['p'] ?? '', isset($this->get_vars) ? $this->get_vars : []['f'], isset($this->get_vars) ? $this->get_vars : []['t'], isset($this->get_vars) ? $this->get_vars : []['start']);
+			unset($this->get_vars['p'], $this->get_vars['f'], $this->get_vars['t'], $this->get_vars['start']);
 
 			return;
 		}
@@ -42,22 +42,22 @@ trait rewriter
 			// Filter default params
 			$this->filter_get_var($this->get_filter['topic']);
 			$this->$paginate_method_name($this->seo_ext['topic']);
-			$this->url = $this->seo_url['topic'][isset($this->get_vars) ? $this->get_vars : []['t']] . $this->start;
+			$this->url = $this->seo_url['topic'][$this->get_vars['t']] . $this->start;
 
-			unset(isset($this->get_vars) ? $this->get_vars : []['t'], isset($this->get_vars) ? $this->get_vars : []['f'], isset($this->get_vars) ? $this->get_vars : []['p'] ?? '');
+			unset($this->get_vars['t'], $this->get_vars['f'], $this->get_vars['p']);
 
 			return;
 		}
-		else if (!empty(isset($this->get_vars) ? $this->get_vars : []['t']))
+		else if (!empty($this->get_vars['t']))
 		{
 			$paginate_method_name = $this->paginate_method['topic'];
 
 			// Filter default params
 			$this->filter_get_var($this->get_filter['topic']);
 			$this->$paginate_method_name($this->seo_ext['topic']);
-			$this->url = $this->seo_static['topic'] . isset($this->get_vars) ? $this->get_vars : []['t'] . $this->start;
+			$this->url = $this->seo_static['topic'] . $this->get_vars['t'] . $this->start;
 
-			unset(isset($this->get_vars) ? $this->get_vars : []['t'], isset($this->get_vars) ? $this->get_vars : []['f'], isset($this->get_vars) ? $this->get_vars : []['p'] ?? '');
+			unset($this->get_vars['t'], $this->get_vars['f'], $this->get_vars['p']);
 
 			return;
 		}
@@ -75,7 +75,7 @@ trait rewriter
 		$this->path = $this->seo_path['phpbb_urlR'];
 		$this->filter_url($this->stop_vars);
 
-		if (!empty(isset($this->get_vars) ? $this->get_vars : []['f']))
+		if (!empty($this->get_vars['f']))
 		{
 			$paginate_method_name = $this->paginate_method['forum'];
 
@@ -83,16 +83,16 @@ trait rewriter
 			$this->filter_get_var($this->get_filter['forum']);
 			$this->$paginate_method_name($this->seo_ext['forum']);
 
-			if (empty($this->seo_url['forum'][isset($this->get_vars) ? $this->get_vars : []['f']]))
+			if (empty($this->seo_url['forum'][$this->get_vars['f']]))
 			{
-				$this->url = $this->seo_static['forum'] . isset($this->get_vars) ? $this->get_vars : []['f'] . $this->start;
+				$this->url = $this->seo_static['forum'] . $this->get_vars['f'] . $this->start;
 			}
 			else
 			{
-				$this->url = $this->seo_url['forum'][isset($this->get_vars) ? $this->get_vars : []['f']] . $this->start;
+				$this->url = $this->seo_url['forum'][$this->get_vars['f']] . $this->start;
 			}
 
-			unset(isset($this->get_vars) ? $this->get_vars : []['f']);
+			unset($this->get_vars['f']);
 
 			return;
 		}
@@ -110,30 +110,30 @@ trait rewriter
 	{
 		$this->path = $this->seo_path['phpbb_urlR'];
 
-		if (@isset($this->get_vars) ? $this->get_vars : []['mode'] === 'viewprofile' && !@empty($this->seo_url['user'][isset($this->get_vars) ? $this->get_vars : []['u']]))
+		if (@$this->get_vars['mode'] === 'viewprofile' && !@empty($this->seo_url['user'][$this->get_vars['u']]))
 		{
-			$this->url = $this->seo_url['user'][isset($this->get_vars) ? $this->get_vars : []['u']] . $this->seo_ext['user'];
+			$this->url = $this->seo_url['user'][$this->get_vars['u']] . $this->seo_ext['user'];
 
-			unset(isset($this->get_vars) ? $this->get_vars : []['mode'], isset($this->get_vars) ? $this->get_vars : []['u']);
+			unset($this->get_vars['mode'], $this->get_vars['u']);
 
 			return;
 		}
-		else if (@isset($this->get_vars) ? $this->get_vars : []['mode'] === 'group' && !@empty($this->seo_url['group'][isset($this->get_vars) ? $this->get_vars : []['g']]))
+		else if (@$this->get_vars['mode'] === 'group' && !@empty($this->seo_url['group'][$this->get_vars['g']]))
 		{
 			$paginate_method_name = $this->paginate_method['group'];
 
 			$this->$paginate_method_name($this->seo_ext['group']);
-			$this->url =  $this->seo_url['group'][isset($this->get_vars) ? $this->get_vars : []['g']] . $this->start;
+			$this->url =  $this->seo_url['group'][$this->get_vars['g']] . $this->start;
 
-			unset(isset($this->get_vars) ? $this->get_vars : []['mode'], isset($this->get_vars) ? $this->get_vars : []['g']);
+			unset($this->get_vars['mode'], $this->get_vars['g']);
 
 			return;
 		}
-		else if (@isset($this->get_vars) ? $this->get_vars : []['mode'] === 'team')
+		else if (@$this->get_vars['mode'] === 'team')
 		{
 			$this->url =  $this->seo_static['leaders'] . $this->seo_ext['leaders'];
 
-			unset(isset($this->get_vars) ? $this->get_vars : []['mode']);
+			unset($this->get_vars['mode']);
 
 			return;
 		}
@@ -150,7 +150,7 @@ trait rewriter
 	{
 		if (isset($this->get_vars['fid']))
 		{
-			isset($this->get_vars) ? $this->get_vars : [] = [];
+			$this->get_vars = [];
 			$this->url = $this->url_in;
 
 			return;
@@ -162,7 +162,7 @@ trait rewriter
 
 		if ($user_id && isset($this->seo_url['user'][$user_id]))
 		{
-			$sr = (@isset($this->get_vars) ? $this->get_vars : []['sr'] == 'topics' ) ? 'topics' : 'posts';
+			$sr = (@$this->get_vars['sr'] == 'topics' ) ? 'topics' : 'posts';
 
 			$paginate_method_name = $this->paginate_method['user'];
 
@@ -171,26 +171,26 @@ trait rewriter
 			$this->$paginate_method_name($this->seo_ext['user']);
 			$this->url = $this->seo_url['user'][$user_id] . $this->seo_delim['sr'] . $sr . $this->start;
 
-			unset(isset($this->get_vars) ? $this->get_vars : []['author_id'], isset($this->get_vars) ? $this->get_vars : []['author'], isset($this->get_vars) ? $this->get_vars : []['sr']);
+			unset($this->get_vars['author_id'], $this->get_vars['author'], $this->get_vars['sr']);
 
 			return;
 		}
-		else if ($this->seo_opt['profile_noids'] && !empty(isset($this->get_vars) ? $this->get_vars : []['author']))
+		else if ($this->seo_opt['profile_noids'] && !empty($this->get_vars['author']))
 		{
-			$sr = (@isset($this->get_vars) ? $this->get_vars : []['sr'] == 'topics') ? '/topics' : '/posts';
+			$sr = (@$this->get_vars['sr'] == 'topics') ? '/topics' : '/posts';
 
 			// Filter default params
 			$this->filter_get_var($this->get_filter['search']);
 			$this->rewrite_pagination_page();
-			$this->url = $this->seo_static['user'] . '/' . $this->seo_url_encode(isset($this->get_vars) ? $this->get_vars : []['author']) . $sr . $this->start;
+			$this->url = $this->seo_static['user'] . '/' . $this->seo_url_encode($this->get_vars['author']) . $sr . $this->start;
 
-			unset(isset($this->get_vars) ? $this->get_vars : []['author'], isset($this->get_vars) ? $this->get_vars : []['author_id'], isset($this->get_vars) ? $this->get_vars : []['sr']);
+			unset($this->get_vars['author'], $this->get_vars['author_id'], $this->get_vars['sr']);
 
 			return;
 		}
-		else if (!empty(isset($this->get_vars) ? $this->get_vars : []['search_id']))
+		else if (!empty($this->get_vars['search_id']))
 		{
-			switch (isset($this->get_vars) ? $this->get_vars : []['search_id'])
+			switch ($this->get_vars['search_id'])
 			{
 				case 'active_topics':
 					$paginate_method_name = $this->paginate_method['atopic'];
@@ -199,11 +199,11 @@ trait rewriter
 					$this->$paginate_method_name($this->seo_ext['atopic']);
 					$this->url = $this->seo_static['atopic'] . $this->start;
 
-					unset(isset($this->get_vars) ? $this->get_vars : []['search_id'], isset($this->get_vars) ? $this->get_vars : []['sr']);
+					unset($this->get_vars['search_id'], $this->get_vars['sr']);
 
-					if (@isset($this->get_vars) ? $this->get_vars : []['st'] == 7)
+					if (@$this->get_vars['st'] == 7)
 					{
-						unset(isset($this->get_vars) ? $this->get_vars : []['st']);
+						unset($this->get_vars['st']);
 					}
 
 					return;
@@ -214,11 +214,11 @@ trait rewriter
 					$this->$paginate_method_name($this->seo_ext['utopic']);
 					$this->url = $this->seo_static['utopic'] . $this->start;
 
-					unset(isset($this->get_vars) ? $this->get_vars : []['search_id']);
+					unset($this->get_vars['search_id']);
 
-					if (@isset($this->get_vars) ? $this->get_vars : []['sr'] == 'topics')
+					if (@$this->get_vars['sr'] == 'topics')
 					{
-						unset(isset($this->get_vars) ? $this->get_vars : []['sr']);
+						unset($this->get_vars['sr']);
 					}
 
 					return;
@@ -226,7 +226,7 @@ trait rewriter
 					$this->set_user_url($this->user->data['username'], $this->user->data['user_id']);
 					$this->url = $this->seo_url['user'][$this->user->data['user_id']] . $this->seo_delim['sr'] . 'topics' . $this->seo_ext['user'];
 
-					unset(isset($this->get_vars) ? $this->get_vars : []['search_id']);
+					unset($this->get_vars['search_id']);
 
 					return;
 				case 'newposts':
@@ -236,11 +236,11 @@ trait rewriter
 					$this->$paginate_method_name($this->seo_ext['npost']);
 					$this->url = $this->seo_static['npost'] . $this->start;
 
-					unset(isset($this->get_vars) ? $this->get_vars : []['search_id']);
+					unset($this->get_vars['search_id']);
 
-					if (@isset($this->get_vars) ? $this->get_vars : []['sr'] == 'topics')
+					if (@$this->get_vars['sr'] == 'topics')
 					{
-						unset(isset($this->get_vars) ? $this->get_vars : []['sr']);
+						unset($this->get_vars['sr']);
 					}
 
 					return;
@@ -251,11 +251,11 @@ trait rewriter
 					$this->$paginate_method_name($this->seo_ext['urpost']);
 					$this->url = $this->seo_static['urpost'] . $this->start;
 
-					unset(isset($this->get_vars) ? $this->get_vars : []['search_id']);
+					unset($this->get_vars['search_id']);
 
-					if (@isset($this->get_vars) ? $this->get_vars : []['sr'] == 'topics')
+					if (@$this->get_vars['sr'] == 'topics')
 					{
-						unset(isset($this->get_vars) ? $this->get_vars : []['sr']);
+						unset($this->get_vars['sr']);
 					}
 
 					return;
@@ -277,22 +277,22 @@ trait rewriter
 
 		if (isset($this->get_vars['id']) && !empty($this->seo_url['file'][$this->get_vars['id']]))
 		{
-			$this->url = $this->seo_url['file'][isset($this->get_vars) ? $this->get_vars : []['id']];
+			$this->url = $this->seo_url['file'][$this->get_vars['id']];
 
-			if (!empty(isset($this->get_vars) ? $this->get_vars : []['t']))
+			if (!empty($this->get_vars['t']))
 			{
 				$this->url .= $this->seo_delim['file'] . $this->seo_static['thumb'];
 			}
 			/*
-			else if (@isset($this->get_vars) ? $this->get_vars : []['mode'] == 'view')
+			else if (@$this->get_vars['mode'] == 'view')
 			{
 				$this->url .= $this->seo_delim['file'] . 'view';
 			}
 			*/
 
-			$this->url .= $this->seo_delim['file'] . isset($this->get_vars) ? $this->get_vars : []['id'];
+			$this->url .= $this->seo_delim['file'] . $this->get_vars['id'];
 
-			unset(isset($this->get_vars) ? $this->get_vars : []['id'], isset($this->get_vars) ? $this->get_vars : []['t'], isset($this->get_vars) ? $this->get_vars : []['mode']);
+			unset($this->get_vars['id'], $this->get_vars['t'], $this->get_vars['mode']);
 
 			return;
 		}
@@ -327,9 +327,9 @@ trait rewriter
 	*/
 	public function rewrite_pagination($suffix)
 	{
-		$this->start = $this->seo_start(@isset($this->get_vars) ? $this->get_vars : []['start']) . $suffix;
+		$this->start = $this->seo_start(@$this->get_vars['start']) . $suffix;
 
-		unset(isset($this->get_vars) ? $this->get_vars : []['start']);
+		unset($this->get_vars['start']);
 	}
 
 	/**
@@ -338,9 +338,9 @@ trait rewriter
 	*/
 	public function rewrite_pagination_page($suffix = '/')
 	{
-		$this->start = $this->seo_start_page(@isset($this->get_vars) ? $this->get_vars : []['start'], $suffix);
+		$this->start = $this->seo_start_page(@$this->get_vars['start'], $suffix);
 
-		unset(isset($this->get_vars) ? $this->get_vars : []['start']);
+		unset($this->get_vars['start']);
 
 		return $this->start;
 	}
