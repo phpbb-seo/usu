@@ -320,7 +320,7 @@ class core
 		// SSL, beware with cookie secure, it won't force ssl here,
 		// so you will need to switch to ssl for your user to use cookie based session (no sid)
 		// could be done by using an https link to login form (or within the redirect after login)
-        $this->ssl['requested'] = (bool) ($this->request->server('HTTPS') != 'off' || ($this->request->server('SERVER_PORT') === 443));
+		$this->ssl['requested'] = (bool) ($this->request->server('HTTPS') || ($this->request->server('SERVER_PORT') === 443));
 		$this->ssl['forced'] = (bool) (($this->config['server_protocol'] === 'https://'));
 		$this->ssl['use'] = (bool) ($this->ssl['requested'] || $this->ssl['forced']);
 
