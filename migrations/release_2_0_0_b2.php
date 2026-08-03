@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
 *
 * @package Ultimate phpBB SEO Friendly URL
@@ -14,7 +16,7 @@ use phpbb\db\migration\migration;
 
 class release_2_0_0_b2 extends migration
 {
-	public function effectively_installed()
+	public function effectively_installed(): bool
 	{
 		if (!empty($this->config['seo_usu_version']))
 		{
@@ -24,12 +26,12 @@ class release_2_0_0_b2 extends migration
 		return false;
 	}
 
-	static public function depends_on()
+	static public function depends_on(): array
 	{
 		return ['\phpbbseo\usu\migrations\release_2_0_0_b1'];
 	}
 
-	public function update_data()
+	public function update_data(): array
 	{
 		return [
 			['config.add', ['seo_usu_version', '2.0.0-b2']],

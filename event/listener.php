@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
 *
 * @package Ultimate phpBB SEO Friendly URL
@@ -28,82 +30,27 @@ use phpbb\language\language;
 */
 class listener implements EventSubscriberInterface
 {
-	/** @var core */
-	private $core;
+	private int $forum_id = 0;
+	private int $topic_id = 0;
+	private int $post_id = 0;
+	private int $start = 0;
+	private string $hilit_words = '';
 
-	/** @var config */
-	private $config;
-
-	/** @var auth */
-	private $auth;
-
-	/** @var template */
-	private $template;
-
-	/** @var user */
-	private $user;
-
-	/** @var request */
-	private $request;
-
-	/** @var db_driver */
-	private $db;
-
-	/** @var language */
-	private $language;
-
-	/**
-	* Current $phpbb_root_path
-	* @var string
-	*/
-	private $phpbb_root_path;
-
-	/**
-	* Current $php_ext
-	* @var string
-	*/
-	private $php_ext;
-
-	private $forum_id = 0;
-
-	private $topic_id = 0;
-
-	private $post_id = 0;
-
-	private $start = 0;
-
-	private $hilit_words = '';
-
-	/**
-	* Constructor
-	*
-	* @param core			$core
-	* @param config			$config				Config object
-	* @param auth			$auth				Auth object
-	* @param template		$template			Template object
-	* @param user			$user				User object
-	* @param request		$request			Request object
-	* @param db_driver		$db					Database object
-	* @param language		$language			Language object
-	* @param string			$phpbb_root_path	Path to the phpBB root
-	* @param string			$php_ext			PHP file extension
-	*
-	*/
-	public function __construct(core $core, config $config, auth $auth, template $template, user $user, request $request, db_driver $db, language $language, $phpbb_root_path, $php_ext)
-	{
-		$this->core = $core;
-		$this->template = $template;
-		$this->user = $user;
-		$this->config = $config;
-		$this->auth = $auth;
-		$this->request = $request;
-		$this->db = $db;
-		$this->language = $language;
-		$this->phpbb_root_path = $phpbb_root_path;
-		$this->php_ext = $php_ext;
+	public function __construct(
+		private readonly core $core,
+		private readonly config $config,
+		private readonly auth $auth,
+		private readonly template $template,
+		private readonly user $user,
+		private readonly request $request,
+		private readonly db_driver $db,
+		private readonly language $language,
+		private readonly string $phpbb_root_path,
+		private readonly string $php_ext
+	) {
 	}
 
-	public static function getSubscribedEvents()
+		public static function getSubscribedEvents(): array
 	{
 		return [
 			'core.common'								=> 'core_common',
@@ -123,7 +70,7 @@ class listener implements EventSubscriberInterface
 		];
 	}
 
-	public function core_user_setup($event)
+	public function core_user_setup(mixed $event): void
 	{
 		if (empty($this->core->seo_opt['url_rewrite']))
 		{
@@ -373,7 +320,7 @@ class listener implements EventSubscriberInterface
 		}
 	}
 
-	public function core_common($event)
+	public function core_common(mixed $event): void
 	{
 		if (empty($this->core->seo_opt['url_rewrite']))
 		{
@@ -516,7 +463,7 @@ class listener implements EventSubscriberInterface
 		}
 	}
 
-	public function core_page_header_after($event)
+	public function core_page_header_after(mixed $event): void
 	{
 		$this->template->assign_vars([
 			'SEO_PHPBB_URL'		=> $this->core->seo_path['phpbb_url'],
@@ -546,7 +493,7 @@ class listener implements EventSubscriberInterface
 	* (can be small but visible) link on your home page or your forum Index using this code for example :
 	* <a href="http://www.phpBB-SEO.ir/" title="Search Engine Optimization By phpBB SEO">phpBB SEO</a>
 	*/
-	public function core_page_footer($event)
+	public function core_page_footer(mixed $event): void
 	{
 		if (empty($this->core->seo_opt['copyrights']['title']))
 		{
@@ -574,7 +521,7 @@ class listener implements EventSubscriberInterface
 		]);
 	}
 
-	public function core_viewforum_modify_topicrow($event)
+	public function core_viewforum_modify_topicrow(mixed $event): void
 	{
 		// Unfortunately, we do not have direct access to $topic_forum_id here
 		global $topic_forum_id, $topic_id, $view_topic_url; // god save the hax
@@ -591,7 +538,7 @@ class listener implements EventSubscriberInterface
 		$event['row'] = $row;
 	}
 
-	public function core_viewtopic_modify_post_row($event)
+	public function core_viewtopic_modify_post_row(mixed $event): void
 	{
 		$post_row = $event['post_row'];
 		$row = $event['row'];
@@ -601,7 +548,7 @@ class listener implements EventSubscriberInterface
 		$event['post_row'] = $post_row;
 	}
 
-	public function core_viewtopic_modify_page_title($event)
+	public function core_viewtopic_modify_page_title(mixed $event): void
 	{
 		$this->template->assign_vars([
 			'U_PRINT_TOPIC'		=> ($this->auth->acl_get('f_print', $this->forum_id)) ? append_sid("{$this->phpbb_root_path}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;view=print") : '',
@@ -610,7 +557,7 @@ class listener implements EventSubscriberInterface
 		]);
 	}
 
-	public function core_memberlist_view_profile($event)
+	public function core_memberlist_view_profile(mixed $event): void
 	{
 		if (empty($this->core->seo_opt['url_rewrite']))
 		{
@@ -631,7 +578,7 @@ class listener implements EventSubscriberInterface
 		$event['member'] = $member;
 	}
 
-	public function core_modify_username_string($event)
+	public function core_modify_username_string(mixed $event): void
 	{
 		$modes = ['profile' => 1, 'full' => 1];
 
@@ -678,32 +625,7 @@ class listener implements EventSubscriberInterface
 		$event['username_string'] = str_replace(['{PROFILE_URL}', '{USERNAME_COLOUR}', '{USERNAME}'], [$profile_url, $event['username_colour'], $event['username']], (!$event['username_colour']) ? $event['_profile_cache']['tpl_profile'] : $event['_profile_cache']['tpl_profile_colour']);
 	}
 
-	/*
-	* core_append_sid event
-	* you can speed up this if you add :
-	*
-
-	// www.phpBB-SEO.ir SEO TOOLKIT BEGIN
-	// We bypass events/hooks here, the same effect as a standalone event/hook,
-	// which we want, but much faster ;-)
-	if (!empty($this->core->seo_opt['url_rewrite']))
-	{
-		return $this->core->url_rewrite($url, $params, $is_amp, $session_id);
-	}
-	// www.phpBB-SEO.ir SEO TOOLKIT END
-
-	*
-	* after :
-	*
-
-function append_sid($url, $params = false, $is_amp = true, $session_id = false)
-{
-
-	*
-	* in includes/fucntions.php
-	*
-	*/
-	public function core_append_sid($event)
+	public function core_append_sid(mixed $event): void
 	{
 		if (!empty($this->core->seo_opt['url_rewrite']))
 		{
@@ -711,7 +633,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 		}
 	}
 
-	public function core_pagination_generate_page_link($event)
+	public function core_pagination_generate_page_link(mixed $event): void
 	{
 		static $paginated = [], $find = ['{SN}', '{SV}'];
 
@@ -731,7 +653,9 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 		{
 			$rewriten = $this->core->url_rewrite($base_url);
 
-			@list($rewriten, $qs) = explode('?', $rewriten, 2);
+			$parts = explode('?', $rewriten, 2);
+			$rewriten = $parts[0];
+			$qs = $parts[1] ?? '';
 			if (
 				// rewriten urls are absolute
 				!preg_match('`^(https?\:)?//`i', $rewriten) ||
@@ -766,7 +690,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 		$event['generate_page_link_override'] = ($on_page > 1) ? str_replace($find, [$start_name, ($on_page - 1) * $per_page], $paginated[$base_url]) : $base_url;
 	}
 
-	public function core_submit_post_end($event)
+	public function core_submit_post_end(mixed $event): void
 	{
 		global $post_data; // god save hax
 
@@ -905,7 +829,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 		$event['data'] = $data;
 	}
 
-	public function core_posting_modify_template_vars($event)
+	public function core_posting_modify_template_vars(mixed $event): void
 	{
 		$page_data = $event['page_data'];
 		$submit = $event['submit'];
@@ -956,7 +880,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = false)
 		$event['page_data'] = $page_data;
 	}
 
-	public function core_display_user_activity_modify_actives($event)
+	public function core_display_user_activity_modify_actives(mixed $event): void
 	{
 
 		$active_t_row = $event['active_t_row'];

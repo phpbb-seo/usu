@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
 *
 * @package Ultimate phpBB SEO Friendly URL
@@ -12,7 +14,7 @@ namespace phpbbseo\usu\acp;
 
 class main_info
 {
-	function module()
+	public function module(): array
 	{
 		return [
 			'filename'	=> '\phpbbseo\usu\acp\usu',

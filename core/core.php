@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
 *
 * @package Ultimate phpBB SEO Friendly URL
@@ -36,28 +38,28 @@ class core
 	use customise, rewriter, url, seo, get_set;
 
 	/** @var config */
-	private $config;
+	private config $config;
 
 	/** @var request */
-	private $request;
+	private request $request;
 
 	/** @var user */
-	private $user;
+	private user $user;
 
 	/** @var auth */
-	private $auth;
+	private auth $auth;
 
 	/**
 	* Current $phpbb_root_path
 	* @var string
 	*/
-	private $phpbb_root_path;
+	private string $phpbb_root_path;
 
 	/**
 	* Current $php_ext
 	* @var string
 	*/
-	private $php_ext;
+	private string $php_ext;
 
 	/**
 	* mod rewrite type
@@ -65,17 +67,17 @@ class core
 	* 	2 : mixed
 	* 	3 : advanced
 	*/
-	public $modrtype = 2; // We set it to mixed as a default value
+	public int $modrtype = 2; // We set it to mixed as a default value
 
 	/**
 	* paths
 	*/
-	public $seo_path = [];
+	public array $seo_path = [];
 
 	/**
 	* uri cache
 	*/
-	public $seo_url = [
+	public array $seo_url = [
 		'forum'		=> [],
 		'topic'		=> [],
 		'user'		=> [],
@@ -87,7 +89,7 @@ class core
 	/**
 	* GET filters
 	*/
-	public $get_filter = [
+	public array $get_filter = [
 		'forum'		=> ['st' => 0, 'sk' => 't', 'sd' => 'd'],
 		'topic'		=> ['st' => 0, 'sk' => 't', 'sd' => 'a', 'hilit' => ''],
 		'search'	=> ['st' => 0, 'sk' => 't', 'sd' => 'd', 'ch' => ''],
@@ -96,7 +98,7 @@ class core
 	/**
 	* file filters
 	*/
-	private $stop_files = [
+	private array $stop_files = [
 		'posting'	=> 1,
 		'faq'		=> 1,
 		'ucp'		=> 1,
@@ -109,17 +111,17 @@ class core
 	/**
 	* dir filters
 	*/
-	public $stop_dirs = [];
+	public array $stop_dirs = [];
 
 	/**
 	* qs filters
 	*/
-	public $stop_vars = ['view=', 'mark=', 'watch=', 'hash='];
+	public array $stop_vars = ['view=', 'mark=', 'watch=', 'hash='];
 
 	/**
 	* seo delimiters
 	*/
-	public $seo_delim = [
+	public array $seo_delim = [
 		'forum'	=> '-f',
 		'topic'	=> '-t',
 		'user'	=> '-u',
@@ -132,7 +134,7 @@ class core
 	/**
 	* seo suffixes
 	*/
-	public $seo_ext = [
+	public array $seo_ext = [
 		'forum'			=> '.html',
 		'topic'			=> '.html',
 		'post'			=> '.html',
@@ -152,7 +154,7 @@ class core
 	/**
 	* seo static
 	*/
-	public $seo_static = [
+	public array $seo_static = [
 		'forum'			=> 'forum',
 		'topic'			=> 'topic',
 		'post'			=> 'post',
@@ -174,17 +176,17 @@ class core
 	/**
 	* hbase
 	*/
-	public $file_hbase = [];
+	public array $file_hbase = [];
 
 	/**
 	* current page url
 	*/
-	public $page_url = '';
+	public string $page_url = '';
 
 	/**
 	* options with default values
 	*/
-	public $seo_opt = [
+	public array $seo_opt = [
 		'url_rewrite'			=> false,
 		'modrtype'				=> 2,
 		'sql_rewrite'			=> false,
@@ -211,27 +213,27 @@ class core
 	/**
 	* runtime variables
 	*/
-	public $rewrite_method = [];
-	public $paginate_method = [];
-	public $seo_cache = [];
-	public $cache_config = [];
-	public $RegEx = [];
-	public $sftpl = [];
-	public $url_replace = [];
-	public $ssl = ['requested' => false, 'forced' => false];
-	public $forum_redirect = [];
+	public array $rewrite_method = [];
+	public array $paginate_method = [];
+	public array $seo_cache = [];
+	public array $cache_config = [];
+	public array $RegEx = [];
+	public array $sftpl = [];
+	public array $url_replace = [];
+	public array $ssl = ['requested' => false, 'forced' => false];
+	public array $forum_redirect = [];
 
 	/**
 	* rewriting private variable
 	* per url values
 	*/
-	public $get_vars = [];
-	public $path = '';
-	public $start = '';
-	public $filename = '';
-	public $file = '';
-	public $url_in = '';
-	public $url = '';
+	public array $get_vars = [];
+	public string $path = '';
+	public string $start = '';
+	public string $filename = '';
+	public string $file = '';
+	public string $url_in = '';
+	public string $url = '';
 
 	/**
 	* Constructor
@@ -244,7 +246,7 @@ class core
 	* @param	string		$php_ext			PHP file extension
 	*
 	*/
-	public function __construct(config $config, request $request, user $user, auth $auth, $phpbb_root_path, $php_ext)
+	public function __construct(config $config, request $request, user $user, auth $auth, string $phpbb_root_path, string $php_ext)
 	{
 		$this->config = $config;
 		$this->request = $request;
@@ -259,11 +261,11 @@ class core
 	/**
 	* Initialize Core
 	*/
-	private function core_init()
+	private function core_init(): void
 	{
 		// fix for an interesting bug with parse_str http://bugs.php.net/bug.php?id=48697
 		// and apparently, the bug is still here in php5.3
-		@ini_set("mbstring.internal_encoding", 'UTF-8');
+		ini_set("mbstring.internal_encoding", 'UTF-8');
 
 		// reset the rewrite_method for $phpbb_root_path
 		$this->rewrite_method[$this->phpbb_root_path] = [];
@@ -341,17 +343,7 @@ class core
 		$this->seo_path['canonical'] = '';
 
 		// magic quotes, do it like this in case phpbbseo class is not started in common.php
-		if (!defined('STRIP'))
-		{
-			if (version_compare(PHP_VERSION, '6.0.0-dev', '<'))
-			{
-				if (get_magic_quotes_gpc())
-				{
-					define('SEO_STRIP', true);
-				}
-			}
-		}
-		else if (STRIP)
+		if (defined('STRIP') && STRIP)
 		{
 			define('SEO_STRIP', true);
 		}
@@ -510,7 +502,7 @@ class core
 	/**
 	* will make sure that configured options are consistent
 	*/
-	public function check_config()
+	public function check_config(): void
 	{
 		$this->modrtype = max(0, (int) $this->modrtype);
 
@@ -565,7 +557,7 @@ class core
 	* Of course, there should ba a better way to do that
 	* @TODO investigate if extending helper service is feasible
 	*/
-	public function helper_trick()
+	public function helper_trick(): void
 	{
 
 		static $been_here;
@@ -597,7 +589,7 @@ class core
 	* Appends the GET vars in the query string
 	* @access public
 	*/
-	public function query_string($get_vars = [], $amp_delim = '&amp;', $url_delim = '?')
+	public function query_string(array $get_vars = [], string $amp_delim = '&amp;', string $url_delim = '?'): string
 	{
 		if (empty($get_vars))
 		{
@@ -629,7 +621,7 @@ class core
 	/**
 	* read_config()
 	*/
-	public function read_config($from_bkp = false)
+	public function read_config(bool $from_bkp = false): bool
 	{
 		if (
 			!$this->cache_config['cache_enable'] ||
@@ -649,7 +641,7 @@ class core
 			$this->cache_config['forum_urls'] = & $forum_urls;
 			$this->cache_config['cached'] = true;
 			$this->seo_opt = array_replace_recursive($this->seo_opt, $settings);
-			$this->modrtype = @isset($this->seo_opt['modrtype']) ? $this->seo_opt['modrtype'] : $this->modrtype;
+			$this->modrtype = $this->seo_opt['modrtype'] ?? $this->modrtype;
 
 			if ($this->modrtype > 1)
 			{
@@ -662,7 +654,7 @@ class core
 			if (!$from_bkp)
 			{
 				// Try the current backup
-				@copy($file . '.current', $file);
+				if (file_exists($file . '.current')) { copy($file . '.current', $file); }
 
 				return $this->read_config(true);
 			}
@@ -677,7 +669,7 @@ class core
 	* Redirects if the uri sent does not match (fully) the
 	* attended url
 	*/
-	public function zero_dupe($url = '', $uri = '', $path = '')
+	public function zero_dupe(string $url = '', string $uri = '', string $path = ''): bool
 	{
 		global $_SID;
 
@@ -714,6 +706,7 @@ class core
 		if ($this->seo_opt['zero_dupe']['do_redir'])
 		{
 			$this->seo_redirect($url);
+			return false;
 		}
 		else
 		{

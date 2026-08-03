@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
 *
 * @package Ultimate phpBB SEO Friendly URL
@@ -11,7 +13,7 @@ namespace phpbbseo\usu;
 
 class ext extends \phpbb\extension\base
 {
-    public function is_enableable()
+    public function is_enableable(): bool
     {
         return version_compare(PHP_VERSION, '7.4', '>=');
     }

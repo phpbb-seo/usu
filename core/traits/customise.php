@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
 *
 * @package Ultimate phpBB SEO Friendly URL
@@ -20,7 +22,7 @@ trait customise
 	/**
 	* inject()
 	*/
-	public function inject()
+	public function inject(): void
 	{
 		// ===> Custom url replacements <===
 		// Here you can set up custom replacements to be used in title injection.
@@ -28,7 +30,7 @@ trait customise
 		//	$this->url_replace = array(
 		//		// Purely cosmetic replace
 		//		'$' => 'dollar', '€' => 'euro',
-		//		'\'s' => 's', // it's => its / mary's => marys ...
+		//		\'s' => 's', // it's => its / mary's => marys ...
 		//		// Language specific replace (German example)
 		//		'ß' => 'ss',
 		//		'Ä' => 'Ae', 'ä' => 'ae',
@@ -71,7 +73,7 @@ trait customise
 		//
 
 		// ==> Special for lazy French, others may delete this part
-		if (strpos($this->config['default_lang'], 'fr') !== false)
+		if (isset($this->config['default_lang']) && strpos($this->config['default_lang'], 'fr') !== false)
 		{
 			$this->seo_static['user'] = 'membre';
 			$this->seo_static['group'] = 'groupe';
@@ -90,40 +92,50 @@ trait customise
 	* drop_sid($url)
 	* drop the sid's in url
 	*/
-	public function drop_sid($url)
+	public function drop_sid(string $url): string
 	{
-		return (strpos($url, 'sid=') !== false) ? trim(preg_replace(['`&(amp;)?sid=[a-z0-9]+(&amp;|&)?`i', '`(\?)sid=[a-z0-9]+(&amp;|&)?`i'], ['\2', '\1'], $url), '?') : $url;
+		return (strpos($url, 'sid=') !== false) ? trim((string) preg_replace(['`&(amp;)?sid=[a-z0-9]+(&amp;|&)?`i', '`(\?)sid=[a-z0-9]+(&amp;|&)?`i'], ['\2', '\1'], $url), '?') : $url;
 	}
 
 	/**
 	* sslify($url, $ssl = true)
 	* properly set http protocol (eg http or https)
 	*/
-	public function sslify($url, $ssl = null)
+	public function sslify(string $url, ?bool $ssl = null): string
 	{
 		$mask = '`^https?://`i';
 
 		$replace = $ssl !== null ? ($ssl ? 'https://' : 'http://') : '//';
 
-		return preg_replace($mask, $replace, trim($url));
+		return (string) preg_replace($mask, $replace, trim($url));
 	}
 
 	/**
 	* is_utf8($string)
 	* Borrowed from php.net : http://www.php.net/mb_detect_encoding (detectUTF8)
 	*/
-	public function is_utf8($string)
+	public function is_utf8(string $string): bool
 	{
 		// non-overlong 2-byte|excluding overlongs|straight 3-byte|excluding surrogates|planes 1-3|planes 4-15|plane 16
-		return preg_match('%(?:[\xC2-\xDF][\x80-\xBF]|\xE0[\xA0-\xBF][\x80-\xBF]|[\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}|\xED[\x80-\x9F][\x80-\xBF] |\xF0[\x90-\xBF][\x80-\xBF]{2}|[\xF1-\xF3][\x80-\xBF]{3}|\xF4[\x80-\x8F][\x80-\xBF]{2})+%xs', $string);
+		return (bool) preg_match('%(?:[\xC2-\xDF][\x80-\xBF]|\xE0[\xA0-\xBF][\x80-\xBF]|[\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}|\xED[\x80-\x9F][\x80-\xBF] |\xF0[\x90-\xBF][\x80-\xBF]{2}|[\xF1-\xF3][\x80-\xBF]{3}|\xF4[\x80-\x8F][\x80-\xBF]{2})+%xs', $string);
 	}
 
 	/**
 	* stripslashes($value)
 	* Borrowed from php.net : http://www.php.net/stripslashes
 	*/
-	public function stripslashes($value)
+	public function stripslashes(mixed $value): mixed
 	{
-		return is_array($value) ? array_map([&$this, 'stripslashes'], $value) : stripslashes($value);
+		if (is_array($value))
+		{
+			return array_map([$this, 'stripslashes'], $value);
+		}
+
+		if (is_string($value))
+		{
+			return stripslashes($value);
+		}
+
+		return $value;
 	}
 }

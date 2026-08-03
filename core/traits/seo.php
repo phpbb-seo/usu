@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
 *
 * @package Ultimate phpBB SEO Friendly URL
@@ -21,7 +23,7 @@ trait seo
 	* Returns usable start param
 	* -xx
 	*/
-	public function seo_start($start)
+	public function seo_start(int $start): string
 	{
 		return ($start >= 1) ? $this->seo_delim['start'] . (int) $start : '';
 	}
@@ -30,7 +32,7 @@ trait seo
 	* seo_url_encode($url)
 	* custom urlencoding
 	*/
-	public function seo_url_encode($url)
+	public function seo_url_encode(string $url): string
 	{
 		// can be faster to return $url directly if you do not allow more chars than
 		// [a-zA-Z0-9_\.-] in your usernames
@@ -47,7 +49,7 @@ trait seo
 	* pagexx.html
 	* Only used in virtual folder mode
 	*/
-	public function seo_start_page($start, $suffix = '/')
+	public function seo_start_page(int $start, string $suffix = '/'): string
 	{
 		return ($start >= 1) ? '/' . $this->seo_static['pagination'] . (int) $start . $this->seo_ext['pagination'] : $suffix;
 	}
@@ -55,19 +57,19 @@ trait seo
 	/**
 	* Returns the full REQUEST_URI
 	*/
-	public function seo_req_uri()
+	public function seo_req_uri(): string
 	{
-		$this->seo_path['uri'] = $this->request->server('HTTP_X_REWRITE_URL'); // IIS  isapi_rewrite
+		$this->seo_path['uri'] = (string) $this->request->server('HTTP_X_REWRITE_URL'); // IIS  isapi_rewrite
 
 		if (empty($this->seo_path['uri']))
 		{
 			// Apache mod_rewrite
-			$this->seo_path['uri'] = $this->request->server('REQUEST_URI');
+			$this->seo_path['uri'] = (string) $this->request->server('REQUEST_URI');
 		}
 
 		if (empty($this->seo_path['uri']))
 		{
-			$this->seo_path['uri'] = $this->request->server('SCRIPT_NAME') . (($qs = $this->request->server('QUERY_STRING')) != '' ? "?$qs" : '');
+			$this->seo_path['uri'] = (string) $this->request->server('SCRIPT_NAME') . (($qs = $this->request->server('QUERY_STRING')) != '' ? "?$qs" : '');
 		}
 
 		$this->seo_path['uri'] = str_replace('%26', '&', rawurldecode(ltrim($this->seo_path['uri'], '/')));
@@ -87,7 +89,7 @@ trait seo
 	* Custom HTTP 301 redirections.
 	* To kill duplicates
 	*/
-	public function seo_redirect($url, $code = 301, $replace = true)
+	public function seo_redirect(string $url, int $code = 301, bool $replace = true): bool
 	{
 		$supported_headers = [
 			301	=> 'Moved Permanently',
@@ -97,7 +99,7 @@ trait seo
 
 		if (
 			!isset($supported_headers[$code]) ||
-			@headers_sent()
+			headers_sent()
 		)
 		{
 			return false;
@@ -142,13 +144,13 @@ trait seo
 	* check start var consistency
 	* Returns our best guess for $start, eg the first valid page
 	*/
-	public function seo_chk_start($start = 0, $limit = 0)
+	public function seo_chk_start(int $start = 0, int $limit = 0): int
 	{
-		$this->start = 0;
+		$this->start = '';
 
 		if ($limit > 0)
 		{
-			$start = is_int($start / $limit) ? $start : intval($start / $limit) * $limit;
+			$start = ($start % $limit === 0) ? $start : intval($start / $limit) * $limit;
 		}
 
 		if ($start >= 1)

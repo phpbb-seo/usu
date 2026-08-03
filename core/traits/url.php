@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
 *
 * @package Ultimate phpBB SEO Friendly URL
@@ -22,7 +24,7 @@ trait url
 	* format_url($url, $type = 'topic')
 	* Prepare Titles for URL injection
 	*/
-	public function format_url($url, $type = 'topic')
+	public function format_url(string $url, string $type = 'topic'): string
 	{
 		$url = preg_replace('`\[.*\]`U', '', $url);
 
@@ -42,7 +44,7 @@ trait url
 	* set_url($url, $id = 0, $type = 'forum', $parent = '')
 	* Prepare url first part and checks cache
 	*/
-	public function set_url($url, $id = 0, $type = 'forum', $parent = '')
+	public function set_url(string $url, int $id = 0, string $type = 'forum', string $parent = ''): string
 	{
 		if (empty($this->seo_url[$type][$id]))
 		{
@@ -56,7 +58,7 @@ trait url
 	* set_parent_urls(array & $forum_data)
 	* set/check urls of current forum's parent(s)
 	*/
-	public function set_parent_urls(&$forum_data)
+	public function set_parent_urls(array &$forum_data): void
 	{
 		if (!empty($forum_data['forum_parents']))
 		{
@@ -75,7 +77,7 @@ trait url
 	* prepare_url($type, $title, $id, $parent = '', $smpl = false)
 	* Prepare url first part
 	*/
-	public function prepare_url($type, $title, $id, $parent = '', $smpl = false)
+	public function prepare_url(string $type, string $title, int $id, string $parent = '', bool $smpl = false): string
 	{
 		return empty($this->seo_url[$type][$id]) ? ($this->seo_url[$type][$id] = sprintf($this->sftpl[$type . ($smpl ? '_smpl' : '')], $parent, !$smpl ? $this->format_url($title, $this->seo_static[$type]) : '', $id)) : $this->seo_url[$type][$id];
 	}
@@ -84,7 +86,7 @@ trait url
 	* get_url_info($type, $url, $info = 'title')
 	* Get info from url (title, id, parent etc ...)
 	*/
-	public function get_url_info($type, $url, $info = 'title')
+	public function get_url_info(string $type, string $url, string $info = 'title'): string
 	{
 		$url = trim($url, '/ ');
 
@@ -100,7 +102,7 @@ trait url
 	* check_url($type, $url, $parent = '')
 	* Validate a prepared url
 	*/
-	public function check_url($type, $url, $parent = '')
+	public function check_url(string $type, string $url, string $parent = ''): bool
 	{
 		if (empty($url))
 		{
@@ -109,14 +111,14 @@ trait url
 
 		$parent = !empty($parent) ? (string) $parent : '[a-z0-9/_-]+';
 
-		return !empty($this->RegEx[$type]['check']) ? preg_match(sprintf($this->RegEx[$type]['check'], $parent), $url) : false;
+		return !empty($this->RegEx[$type]['check']) ? (bool) preg_match(sprintf($this->RegEx[$type]['check'], $parent), $url) : false;
 	}
 
 	/**
 	* prepare_topic_url(&$topic_data, $topic_forum_id)
 	* Prepare topic url with SQL based URL rewriting
 	*/
-	public function prepare_topic_url(&$topic_data, $topic_forum_id = 0)
+	public function prepare_topic_url(array &$topic_data, int $topic_forum_id = 0): string
 	{
 		$id = max(0, (int) $topic_data['topic_id']);
 
@@ -147,7 +149,7 @@ trait url
 	* prepare_forum_url(&$forum_data, $parent = '')
 	* Prepare url first part and checks cache
 	*/
-	public function prepare_forum_url(&$forum_data)
+	public function prepare_forum_url(array &$forum_data): string
 	{
 		$id = max(0, (int) $forum_data['forum_id']);
 
@@ -163,7 +165,7 @@ trait url
 	* prepare_iurl($data, $type, $parent = '')
 	* Prepare url first part (not for forums) with SQL based URL rewriting
 	*/
-	public function prepare_iurl(&$data, $type, $parent = '')
+	public function prepare_iurl(array &$data, string $type, string $parent = ''): string
 	{
 		$id = max(0, (int) $data[$type . '_id']);
 
@@ -186,7 +188,7 @@ trait url
 	* set_user_url($username, $user_id = 0)
 	* Prepare profile url
 	*/
-	public function set_user_url($username, $user_id = 0)
+	public function set_user_url(string $username, int $user_id = 0): void
 	{
 		if (empty($this->seo_url['user'][$user_id]))
 		{
@@ -216,7 +218,7 @@ trait url
 	* Returns true if the user can edit urls
 	* @access public
 	*/
-	public function url_can_edit($forum_id = 0)
+	public function url_can_edit(int $forum_id = 0): bool
 	{
 		if (empty($this->seo_opt['sql_rewrite']) || empty($this->user->data['is_registered']))
 		{
@@ -250,7 +252,7 @@ trait url
 	* Will break if a $filter pattern is foundin $url.
 	* Example $filter = array("view=", "mark=");
 	*/
-	public function filter_url($filter = [])
+	public function filter_url(array $filter = []): bool
 	{
 		foreach ($filter as $patern)
 		{
@@ -270,7 +272,7 @@ trait url
 	* expected_url($path = '')
 	* build expected url
 	*/
-	public function expected_url($path = '')
+	public function expected_url(string $path = ''): string
 	{
 		$path = empty($path) ? $this->phpbb_root_path : $path;
 		$params = [];
@@ -300,7 +302,7 @@ trait url
 	* regular phpBB URL rewritting without slowing down the process.
 	* Mimics append_sid with some shortcuts related to how url are rewritten
 	*/
-	public function url_rewrite($url, $params = false, $is_amp = true, $session_id = false, $is_route = false, $recache = false)
+	public function url_rewrite(string $url, mixed $params = false, bool $is_amp = true, mixed $session_id = false, bool $is_route = false, bool $recache = false): string|bool
 	{
 		global $_SID, $_EXTRA_URL;
 
@@ -321,7 +323,9 @@ trait url
 			$anchor = '#' . $anchor;
 		}
 
-		@list($this->path, $qs) = explode('?', $url, 2);
+		$parts = explode('?', $url, 2);
+		$this->path = $parts[0];
+		$qs = $parts[1] ?? '';
 
 		if (is_array($params))
 		{
@@ -420,7 +424,7 @@ trait url
 			}
 		}
 
-		$data_sanitizer = function (&$value, $key) {
+		$data_sanitizer = function (&$value, $key): void {
 			$type_cast_helper = new \phpbb\request\type_cast_helper();
 			$type_cast_helper->set_var($value, $value, gettype($value), true);
 		};

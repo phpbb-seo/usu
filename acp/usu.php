@@ -1,9 +1,11 @@
 <?php
+
+declare(strict_types=1);
 /**
 *
 * @package Ultimate phpBB SEO Friendly URL
 * @version $$
-* @copyright (c) 2017 www.phpBB-SEO.ir
+* copyright (c) 2017 www.phpBB-SEO.ir
 * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 *
 */
@@ -47,18 +49,17 @@ class usu
 	/** @var \phpbb\language\language */
 	protected \phpbb\language\language $language;
 
-	var $u_action;
-	var $new_config = [];
-	var $dyn_select = [];
-	var $forum_ids = [];
-	var $array_type_cfg = [];
-	var $multiple_options = [];
-	var $modrtype_lang = [];
-	var $lengh_limit = 20;
-	var $word_limit = 3;
-	var $seo_unset_opts = [];
-
-	function main($id, $mode)
+	public string $u_action = '';
+	public array $new_config = [];
+	public array $dyn_select = [];
+	public array $forum_ids = [];
+	public array $array_type_cfg = [];
+	public array $multiple_options = [];
+	public array $modrtype_lang = [];
+	public int $lengh_limit = 20;
+	public int $word_limit = 3;
+	public array $seo_unset_opts = [];
+	public function main($id, $mode): void
 	{
 		global $config, $db, $user, $template, $request, $language, $phpbb_log;
 		global $phpbb_root_path, $phpbb_admin_path, $phpEx;
@@ -87,7 +88,7 @@ class usu
 		$display_vars = [];
 
 		// --> Zero Dupe
-		if (@isset($this->core->seo_opt['zero_dupe']))
+		if (isset($this->core->seo_opt['zero_dupe']))
 		{
 			$this->multiple_options['zero_dupe']['post_redir_values'] = ['off' => 'off', 'post' => 'post', 'guest' => 'guest', 'all' => 'all']; // do not change
 
@@ -112,7 +113,7 @@ class usu
 		$this->modrtype_lang = $this->set_phpbb_seo_links();
 		$this->multiple_options['modrtype_lang'] = $this->modrtype_lang['titles'];
 
-		if (@isset($this->core->seo_opt['modrtype']))
+		if (isset($this->core->seo_opt['modrtype']))
 		{
 			$this->multiple_options['modrtype_values'] = [1 => 1, 2 => 2, 3 => 3]; // do not change;
 		}
@@ -153,7 +154,7 @@ class usu
 
 				foreach ($this->core->cache_config['dynamic_options'] as $optionname => $optionvalue)
 				{
-					if (is_string($optionvalue) && @is_bool($this->core->seo_opt[$optionvalue]))
+					if (is_string($optionvalue) && is_bool($this->core->seo_opt[$optionvalue]))
 					{
 						if ($optionvalue == 'virtual_root')
 						{
@@ -173,7 +174,7 @@ class usu
 						$display_vars['vars'][$optionvalue] = ['lang' => $optionvalue, 'validate' => 'bool', 'type' => 'radio:yes_no', 'explain' => true, 'lang_explain' => $optionvalue . '_explain'];
 						$this->new_config[$optionvalue] = $this->core->seo_opt[$optionvalue];
 					}
-					else if (@isset($this->multiple_options[$optionvalue . '_values']))
+					else if (isset($this->multiple_options[$optionvalue . '_values']))
 					{
 						$this->dyn_select[$optionvalue] = $this->multiple_options[$optionvalue . '_values'];
 						$display_vars['vars'][$optionvalue] = ['lang' => $optionvalue, 'validate' => 'string', 'type' => 'select', 'method' => 'select_string', 'explain' => true, 'lang_explain' => $optionvalue . '_explain'];
@@ -193,7 +194,7 @@ class usu
 								$display_vars['vars'][$optionname . '_' . $key] = ['lang' => $optionname . '_' . $key, 'validate' => 'bool', 'type' => 'radio:yes_no', 'explain' => true, 'lang_explain' => $optionname . '_' . $key . '_explain'];
 								$this->new_config[$optionname . '_' . $key] = $this->core->seo_opt[$optionname][$key];
 							}
-							else if (@isset($this->multiple_options[$optionname][$key . '_values']))
+							else if (isset($this->multiple_options[$optionname][$key . '_values']))
 							{
 								$this->dyn_select[$optionname . '_' . $key] = $this->multiple_options[$optionname][$key . '_values'];
 								$display_vars['vars'][$optionname . '_' . $key] = ['lang' => $optionname . '_' . $key, 'validate' => 'string', 'type' => 'select', 'method' => 'select_string', 'explain' => true, 'lang_explain' => $optionname . '_' . $key . '_explain'];
@@ -281,7 +282,7 @@ class usu
 							}
 							else
 							{
-								$this->new_config['forum_url' . $forum_id] = $forum_url_title . (@$this->core->cache_config['settings']['rem_ids'] ? '': $this->core->seo_delim['forum'] . $forum_id);
+								$this->new_config['forum_url' . $forum_id] = $forum_url_title . ($this->core->cache_config['settings']['rem_ids'] ? '': $this->core->seo_delim['forum'] . $forum_id);
 							}
 						}
 						else
@@ -588,7 +589,7 @@ class usu
 		// We go through the display_vars to make sure no one is trying to set variables he/she is not allowed to...
 		foreach ($display_vars['vars'] as $config_name => $cfg_setup)
 		{
-			if (strpos($config_name, 'legend') !== false || (!isset($cfg_array[$config_name]) && @$cfg_setup['method'] != 'select_multiple'))
+			if (strpos($config_name, 'legend') !== false || (!isset($cfg_array[$config_name]) && $cfg_setup['method'] != 'select_multiple'))
 			{
 				continue;
 			}
@@ -665,7 +666,7 @@ class usu
 						{
 							$config_value = preg_replace('`^([a-z0-9_-]+)' . $this->core->seo_delim['forum'] . '[0-9]+$`i', '\\1', $config_value);
 
-							if (@$this->core->cache_config['settings']['rem_ids'])
+							if ($this->core->cache_config['settings']['rem_ids'])
 							{
 								$seo_msg['SEO_ADVICE_DELIM_REM'] = '<li>&nbsp;' . $this->language->lang('SEO_ADVICE_DELIM_REM') . '</li>';
 							}
@@ -682,12 +683,12 @@ class usu
 						if (!in_array($config_value, $forbidden))
 						{
 							// and updated (sic)
-							if ($config_value != @$this->core->cache_config['forum_urls'][$forum_id])
+							if ($config_value != $this->core->cache_config['forum_urls'][$forum_id])
 							{
 								// and if not already set
 								if (!array_search($config_value, $this->core->cache_config['forum_urls']))
 								{
-									$this->core->cache_config['forum_urls'][$forum_id] = $config_value . (@$this->core->cache_config['settings']['rem_ids'] ? '': $this->core->seo_delim['forum'] . $forum_id);
+									$this->core->cache_config['forum_urls'][$forum_id] = $config_value . ($this->core->cache_config['settings']['rem_ids'] ? '': $this->core->seo_delim['forum'] . $forum_id);
 								}
 								else
 								{
@@ -888,7 +889,7 @@ class usu
 	/**
 	*  forum_url_check validation
 	*/
-	function forum_url_input($value, $key)
+	public function forum_url_input($value, $key): string
 	{
 		return '<input id="' . $key . '" type="text" size="40" maxlength="255" name="config[' . $key . ']" value="' . $value . '" /> ';
 	}
@@ -896,22 +897,22 @@ class usu
 	/**
 	*  select_string custom select string
 	*/
-	function select_string($value, $key)
+	public function select_string($value, $key): string
 	{
 		$select_ary = $this->dyn_select[$key];
 		$html = '';
 
 		foreach ($select_ary as $sel_value)
 		{
-			if (@isset($this->array_type_cfg[$key]))
+			if (isset($this->array_type_cfg[$key]))
 			{
-				$selected = ($sel_value == @$this->core->seo_opt[$this->array_type_cfg[$key]['main']][$this->array_type_cfg[$key]['sub']]) ? ' selected="selected"' : '';
-				$sel_title = @isset($this->multiple_options[$this->array_type_cfg[$key]['main']][$this->array_type_cfg[$key]['sub'] . '_lang'][$sel_value]) ? $this->multiple_options[$this->array_type_cfg[$key]['main']][$this->array_type_cfg[$key]['sub'] . '_lang'][$sel_value] : $sel_value;
+				$selected = ($sel_value == $this->core->seo_opt[$this->array_type_cfg[$key]['main']][$this->array_type_cfg[$key]['sub']]) ? ' selected="selected"' : '';
+				$sel_title = isset($this->multiple_options[$this->array_type_cfg[$key]['main']][$this->array_type_cfg[$key]['sub'] . '_lang'][$sel_value]) ? $this->multiple_options[$this->array_type_cfg[$key]['main']][$this->array_type_cfg[$key]['sub'] . '_lang'][$sel_value] : $sel_value;
 			}
 			else
 			{
-				$selected = ($sel_value == @$this->core->cache_config['settings'][$key]) ? ' selected="selected"' : '';
-				$sel_title = @isset($this->multiple_options[$key . '_lang'][$sel_value]) ? $this->multiple_options[$key . '_lang'][$sel_value] : $sel_value;
+				$selected = ($sel_value == $this->core->cache_config['settings'][$key]) ? ' selected="selected"' : '';
+				$sel_title = isset($this->multiple_options[$key . '_lang'][$sel_value]) ? $this->multiple_options[$key . '_lang'][$sel_value] : $sel_value;
 			}
 
 			$html .= '<option value="' . $sel_value . '"' . $selected . '>' . $sel_title . '</option>';
@@ -923,7 +924,7 @@ class usu
 	/**
 	*  seo_advices Always needed :-)
 	*/
-	function seo_advices($url, $forum_id, $cached = false, $error_cust = '')
+	public function seo_advices($url, $forum_id, $cached = false, $error_cust = ''): string
 	{
 		$seo_advice = '';
 
@@ -942,7 +943,7 @@ class usu
 		if (preg_match('`^[a-z0-9_-]+' . $this->core->seo_delim['forum'] . '[0-9]+$`i', $url))
 		{
 			// With delimiter and id
-			if (@$this->core->cache_config['settings']['rem_ids'])
+			if ($this->core->cache_config['settings']['rem_ids'])
 			{
 				$seo_advice .= '<li style="color:red">&nbsp;' . $this->language->lang('SEO_ADVICE_DELIM') . '</li>';
 			}
@@ -968,7 +969,7 @@ class usu
 	/**
 	*  seo_server_conf The evil one ;-)
 	*/
-	function seo_server_conf($html = true)
+	public function seo_server_conf($html = true): string
 	{
 		// get mods server_conf tpls
 		$mods_ht = $this->get_mods_server_conf();
@@ -1595,17 +1596,17 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 	/**
 	*  get_mods_server_conf Get all mods server_conf tpls
 	*/
-	function get_mods_server_conf()
+	public function get_mods_server_conf(): string
 	{
 		$all_ht_tpl = ['pos1' => '', 'pos2' => ''];
 		$path = PHPBB_SEO_USU_ROOT_DIR . 'htmods';
 
-		if (!($dir = @opendir($path)))
+		if (!($dir = opendir($path)))
 		{
 			return false;
 		}
 
-		while (($file = @readdir($dir)) !== false)
+		while (($file = readdir($dir)) !== false)
 		{
 			if (!trim($file, '. '))
 			{
@@ -1642,7 +1643,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 	/**
 	*  set_phpbb_seo_links Builds links to support threads
 	*/
-	function set_phpbb_seo_links()
+	public function set_phpbb_seo_links(): string
 	{
 		$modrtype_lang = [];
 		$this->core->modrtype = intval($this->core->modrtype);
@@ -1714,7 +1715,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 	/**
 	*  check_cache_folder Validates the cache folder status
 	*/
-	function check_cache_folder($cache_dir, $msg = true)
+	public function check_cache_folder($cache_dir, $msg = true): string
 	{
 		$exists = $write = $inner_write = false;
 		$cache_msg = '';
@@ -1727,15 +1728,15 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 			{
 				phpbb_chmod($cache_dir, CHMOD_READ | CHMOD_WRITE);
 
-				$fp = @fopen($cache_dir . 'test_lock', 'wb');
+				$fp = fopen($cache_dir . 'test_lock', 'wb');
 
 				if ($fp !== false)
 				{
 					$write = true;
 				}
 
-				@fclose($fp);
-				@unlink($cache_dir . 'test_lock');
+				fclose($fp);
+				unlink($cache_dir . 'test_lock');
 			}
 			else
 			{
@@ -1768,14 +1769,14 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 
 						phpbb_chmod($check, CHMOD_READ | CHMOD_WRITE);
 
-						$fp = @fopen($check, 'wb');
+						$fp = fopen($check, 'wb');
 
 						if ($fp !== false)
 						{
 							$inner_write = true;
 						}
 
-						@fclose($fp);
+						fclose($fp);
 					}
 				}
 			}
@@ -1799,7 +1800,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 	/**
 	* write_cache( ) will write the cached file and keep backups.
 	*/
-	function write_cache($file, $update)
+	public function write_cache($file, $update): string
 	{
 		if (!$this->core->cache_config['cache_enable'])
 		{
@@ -1807,16 +1808,16 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 		}
 
 		// Keep a backup of the previous settings
-		@copy($file, $file . '.old');
-		$handle = @fopen($file, 'wb');
-		@fputs($handle, $update);
-		@fclose ($handle);
+		copy($file, $file . '.old');
+		$handle = fopen($file, 'wb');
+		fputs($handle, $update);
+		fclose ($handle);
 		unset($update);
-		@umask(0000);
+		umask(0000);
 		phpbb_chmod($file, CHMOD_READ | CHMOD_WRITE);
 
 		// Keep a backup of the current settings
-		@copy($file, $file . '.current');
+		copy($file, $file . '.current');
 
 		return true;
 	}
@@ -1824,7 +1825,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 	/**
 	*  select_multiple($value, $key, $select_ary)
 	*/
-	function select_multiple($value, $key, $select_ary)
+	public function select_multiple($value, $key, $select_ary): string
 	{
 		$size = min(12,count($select_ary));
 		$html = '<select multiple="multiple" id="' . $key . '" name="multiple_' . $key . '[]" size="' . $size . '">';
@@ -1833,7 +1834,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 		{
 			if (empty($sel_data['disabled']))
 			{
-				$selected = array_search($sel_key, @$this->new_config[$key]) !== false ? 'selected="selected"' : '';
+				$selected = array_search($sel_key, $this->new_config[$key]) !== false ? 'selected="selected"' : '';
 				$disabled = '';
 			}
 			else
@@ -1852,7 +1853,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 	/**
 	*  forum_select() // custom forum select setup
 	*/
-	function forum_select($ignore_acl = true, $ignore_nonpost = false, $ignore_emptycat = false, $only_acl_post = false)
+	public function forum_select($ignore_acl = true, $ignore_nonpost = false, $ignore_emptycat = false, $only_acl_post = false): string
 	{
 		$select_ary = make_forum_select(false, false, $ignore_acl, $ignore_nonpost, $ignore_emptycat, $only_acl_post, true);
 
@@ -1870,7 +1871,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 	/**
 	* Pick a language, any language ... or no language
 	*/
-	function language_select($default = '')
+	public function language_select($default = ''): string
 	{
 		return '<option value="">' . $this->language->lang('DISABLED') . '</option>' . language_select($default);
 	}

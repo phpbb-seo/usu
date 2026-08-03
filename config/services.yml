@@ -4,11 +4,12 @@
 # @copyright (c) 2017 www.phpBB-SEO.ir
 # @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
 #
-# You must indent with 4 spaces instead of 1 tab
-#
+
 services:
     phpbbseo.usu.core:
         class: phpbbseo\usu\core\core
+        shared: true
+        public: true
         arguments:
             - '@config'
             - '@request'
@@ -19,6 +20,8 @@ services:
 
     phpbbseo.usu.listener:
         class: phpbbseo\usu\event\listener
+        shared: true
+        public: false
         arguments:
             - '@phpbbseo.usu.core'
             - '@config'

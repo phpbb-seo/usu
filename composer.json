@@ -1,54 +1,54 @@
 {
-	"name": "phpbbseo/usu",
-	"type": "phpbb-extension",
-	"description": "This Extension will URL rewrite phpBB URLs in various manners, injecting, or not, forums and topic titles in their URLS, each URL being rewritten once, no matter the number of links using it on the page.",
-	"homepage": "http://www.phpBB-SEO.ir",
-	"version": "2.0.3",
-	"keywords": [
-		"phpbbSEO",
-		"extension",
-		"seo",
-		"Friendly URL"
-	],
-	"license": "GPL-2.0-only",
-	"authors": [
-		{
-			"name": "Meis@M",
-			"email": "info@phpBB-SEO.ir",
-			"homepage": "http://www.phpBB-SEO.ir/",
-			"role": "Lead Developer"
-		},
-		{
-			"name": "Dark❶ [dark1]",
-			"email": "phpbb@dark1.tech",
-			"homepage": "https://dark1.tech",
-			"role": "Developer"
-		},
-		{
-			"name": "dcz",
-			"role": "Previous Developer"
-		},
-		{
-			"name": "Carlo",
-			"email": "carlo@phpbbitalia.net",
-			"homepage": "http://www.phpbbitalia.net/",
-			"role": "Previous Developer"
-		}
-	],
-	"require": {
-		"php": "^7.4 || ^8.0 || ^8.1 || ^8.2",
-		"composer/installers": "~1.0"
-	},
-	"extra": {
-		"display-name": "Ultimate phpBB SEO Friendly URL",
-		"soft-require": {
-			"phpbb/phpbb": "^3.2 || ^3.3"
-		},
-		"version-check": {
-			"host": "phpbb-seo.github.io",
-			"directory": "/versions",
-			"filename": "usu.json",
-			"ssl": true
-		}
-	}
+    "name": "phpbbseo/usu",
+    "type": "phpbb-extension",
+    "description": "This Extension will URL rewrite phpBB URLs in various manners, injecting, or not, forums and topic titles in their URLS, each URL being rewritten once, no matter the number of links using it on the page.",
+    "homepage": "http://www.phpBB-SEO.ir",
+    "version": "2.0.3",
+    "keywords": [
+        "phpbbSEO",
+        "extension",
+        "seo",
+        "Friendly URL"
+    ],
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "Meis@M",
+            "email": "info@phpBB-SEO.ir",
+            "homepage": "http://www.phpBB-SEO.ir/",
+            "role": "Lead Developer"
+        },
+        {
+            "name": "Dark\u2776 [dark1]",
+            "email": "phpbb@dark1.tech",
+            "homepage": "https://dark1.tech",
+            "role": "Developer"
+        },
+        {
+            "name": "dcz",
+            "role": "Previous Developer"
+        },
+        {
+            "name": "Carlo",
+            "email": "carlo@phpbbitalia.net",
+            "homepage": "http://www.phpbbitalia.net/",
+            "role": "Previous Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0 || ^8.1 || ^8.2 || ^8.3 || ^8.4",
+        "composer/installers": "~1.0"
+    },
+    "extra": {
+        "display-name": "Ultimate phpBB SEO Friendly URL",
+        "soft-require": {
+            "phpbb/phpbb": "^3.3"
+        },
+        "version-check": {
+            "host": "phpbb-seo.github.io",
+            "directory": "/versions",
+            "filename": "usu.json",
+            "ssl": true
+        }
+    }
 }

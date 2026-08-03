@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
 *
 * @package Ultimate phpBB SEO Friendly URL
@@ -14,7 +16,7 @@ use phpbb\db\migration\migration;
 
 class release_2_0_0_b1 extends migration
 {
-	public function effectively_installed()
+	public function effectively_installed(): bool
 	{
 		if (!empty($this->config['seo_usu_on']))
 		{
@@ -24,12 +26,12 @@ class release_2_0_0_b1 extends migration
 		return false;
 	}
 
-	static public function depends_on()
+	static public function depends_on(): array
 	{
 		return ['\phpbb\db\migration\data\v310\rc1'];
 	}
 
-	public function update_schema()
+	public function update_schema(): array
 	{
 		return [
 			'add_columns'	=> [
@@ -40,7 +42,7 @@ class release_2_0_0_b1 extends migration
 		];
 	}
 
-	public function revert_schema()
+	public function revert_schema(): array
 	{
 		return [
 			'drop_columns'	=> [
@@ -51,7 +53,7 @@ class release_2_0_0_b1 extends migration
 		];
 	}
 
-	public function update_data()
+	public function update_data(): array
 	{
 		return [
 			['config.add', ['seo_usu_on', 1]],

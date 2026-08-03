@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
 *
 * @package Ultimate phpBB SEO Friendly URL
@@ -21,7 +23,7 @@ trait rewriter
 	* URL rewritting for viewtopic.php
 	* With Virtual Folder Injection
 	*/
-	public function viewtopic()
+	public function viewtopic(): void
 	{
 		$this->filter_url($this->stop_vars);
 		$this->path = $this->seo_path['phpbb_urlR'];
@@ -70,7 +72,7 @@ trait rewriter
 	/**
 	* URL rewritting for viewforum.php
 	*/
-	public function viewforum()
+	public function viewforum(): void
 	{
 		$this->path = $this->seo_path['phpbb_urlR'];
 		$this->filter_url($this->stop_vars);
@@ -106,11 +108,11 @@ trait rewriter
 	* URL rewritting for memberlist.php
 	* with nicknames and group name injection
 	*/
-	public function memberlist()
+	public function memberlist(): void
 	{
 		$this->path = $this->seo_path['phpbb_urlR'];
 
-		if (@$this->get_vars['mode'] === 'viewprofile' && !@empty($this->seo_url['user'][$this->get_vars['u']]))
+		if (($this->get_vars['mode'] ?? '') === 'viewprofile' && !empty($this->seo_url['user'][$this->get_vars['u'] ?? 0]))
 		{
 			$this->url = $this->seo_url['user'][$this->get_vars['u']] . $this->seo_ext['user'];
 
@@ -118,7 +120,7 @@ trait rewriter
 
 			return;
 		}
-		else if (@$this->get_vars['mode'] === 'group' && !@empty($this->seo_url['group'][$this->get_vars['g']]))
+		else if (($this->get_vars['mode'] ?? '') === 'group' && !empty($this->seo_url['group'][$this->get_vars['g'] ?? 0]))
 		{
 			$paginate_method_name = $this->paginate_method['group'];
 
@@ -129,7 +131,7 @@ trait rewriter
 
 			return;
 		}
-		else if (@$this->get_vars['mode'] === 'team')
+		else if (($this->get_vars['mode'] ?? '') === 'team')
 		{
 			$this->url =  $this->seo_static['leaders'] . $this->seo_ext['leaders'];
 
@@ -146,7 +148,7 @@ trait rewriter
 	/**
 	* URL rewritting for search.php
 	*/
-	public function search()
+	public function search(): void
 	{
 		if (isset($this->get_vars['fid']))
 		{
@@ -158,11 +160,11 @@ trait rewriter
 
 		$this->path = $this->seo_path['phpbb_urlR'];
 
-		$user_id = !empty($this->get_vars['author_id']) ? $this->get_vars['author_id'] : (isset($this->seo_url['username'][rawurldecode(@$this->get_vars['author'])]) ? $this->seo_url['username'][rawurldecode(@$this->get_vars['author'])] : 0);
+		$user_id = !empty($this->get_vars['author_id']) ? $this->get_vars['author_id'] : ($this->seo_url['username'][rawurldecode($this->get_vars['author'] ?? '')] ?? 0);
 
 		if ($user_id && isset($this->seo_url['user'][$user_id]))
 		{
-			$sr = (@$this->get_vars['sr'] == 'topics' ) ? 'topics' : 'posts';
+			$sr = (($this->get_vars['sr'] ?? '') == 'topics' ) ? 'topics' : 'posts';
 
 			$paginate_method_name = $this->paginate_method['user'];
 
@@ -177,7 +179,7 @@ trait rewriter
 		}
 		else if ($this->seo_opt['profile_noids'] && !empty($this->get_vars['author']))
 		{
-			$sr = (@$this->get_vars['sr'] == 'topics') ? '/topics' : '/posts';
+			$sr = (($this->get_vars['sr'] ?? '') == 'topics') ? '/topics' : '/posts';
 
 			// Filter default params
 			$this->filter_get_var($this->get_filter['search']);
@@ -201,7 +203,7 @@ trait rewriter
 
 					unset($this->get_vars['search_id'], $this->get_vars['sr']);
 
-					if (@$this->get_vars['st'] == 7)
+					if (($this->get_vars['st'] ?? 0) == 7)
 					{
 						unset($this->get_vars['st']);
 					}
@@ -216,7 +218,7 @@ trait rewriter
 
 					unset($this->get_vars['search_id']);
 
-					if (@$this->get_vars['sr'] == 'topics')
+					if (($this->get_vars['sr'] ?? '') == 'topics')
 					{
 						unset($this->get_vars['sr']);
 					}
@@ -238,7 +240,7 @@ trait rewriter
 
 					unset($this->get_vars['search_id']);
 
-					if (@$this->get_vars['sr'] == 'topics')
+					if (($this->get_vars['sr'] ?? '') == 'topics')
 					{
 						unset($this->get_vars['sr']);
 					}
@@ -253,7 +255,7 @@ trait rewriter
 
 					unset($this->get_vars['search_id']);
 
-					if (@$this->get_vars['sr'] == 'topics')
+					if (($this->get_vars['sr'] ?? '') == 'topics')
 					{
 						unset($this->get_vars['sr']);
 					}
@@ -270,7 +272,7 @@ trait rewriter
 	/**
 	* URL rewritting for download/file.php
 	*/
-	public function phpbb_files()
+	public function phpbb_files(): void
 	{
 		$this->filter_url($this->stop_vars);
 		$this->path = $this->seo_path['phpbb_filesR'];
@@ -284,7 +286,7 @@ trait rewriter
 				$this->url .= $this->seo_delim['file'] . $this->seo_static['thumb'];
 			}
 			/*
-			else if (@$this->get_vars['mode'] == 'view')
+			else if (($this->get_vars['mode'] ?? '') == 'view')
 			{
 				$this->url .= $this->seo_delim['file'] . 'view';
 			}
@@ -305,7 +307,7 @@ trait rewriter
 	/**
 	* URL rewritting for index.php
 	*/
-	public function index()
+	public function index(): void
 	{
 		$this->path = $this->seo_path['phpbb_urlR'];
 
@@ -325,9 +327,9 @@ trait rewriter
 	* rewrite pagination, simple
 	* -xx.html
 	*/
-	public function rewrite_pagination($suffix)
+	public function rewrite_pagination(string $suffix): void
 	{
-		$this->start = $this->seo_start(@$this->get_vars['start']) . $suffix;
+		$this->start = $this->seo_start((int) ($this->get_vars['start'] ?? 0)) . $suffix;
 
 		unset($this->get_vars['start']);
 	}
@@ -336,9 +338,9 @@ trait rewriter
 	* rewrite pagination, virtual folder
 	* /pagexx.html
 	*/
-	public function rewrite_pagination_page($suffix = '/')
+	public function rewrite_pagination_page(string $suffix = \'/\'): string
 	{
-		$this->start = $this->seo_start_page(@$this->get_vars['start'], $suffix);
+		$this->start = $this->seo_start_page((int) ($this->get_vars['start'] ?? 0), $suffix);
 
 		unset($this->get_vars['start']);
 
