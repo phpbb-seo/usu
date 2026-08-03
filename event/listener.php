@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 /**
-*
-* @package Ultimate phpBB SEO Friendly URL
-* @version $$
-* @copyright (c) 2017 www.phpBB-SEO.ir
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ * Ultimate SEO URL Extension for phpBB
+ *
+ * Copyright (c) 2026
+ *
+ * Released under the GNU General Public License v2.0
+ *
+ * https://opensource.org/licenses/GPL-2.0
+ */
 
 namespace phpbbseo\usu\event;
 
@@ -491,27 +492,27 @@ class listener implements EventSubscriberInterface
 	* Note : This mod is going to help your site a lot in Search Engines
 	* If You really cannot put this link, you should at least provide us with one visible
 	* (can be small but visible) link on your home page or your forum Index using this code for example :
-	* <a href="http://www.phpBB-SEO.ir/" title="Search Engine Optimization By phpBB SEO">phpBB SEO</a>
+	* <a href="#" title="Ultimate SEO URL">Ultimate SEO URL</a>
 	*/
 	public function core_page_footer(mixed $event): void
 	{
 		if (empty($this->core->seo_opt['copyrights']['title']))
 		{
-			$this->core->seo_opt['copyrights']['title'] = strpos($this->config['default_lang'], 'fr') !== false  ?  'Optimisation du R&eacute;f&eacute;rencement par phpBB SEO' : 'Search Engine Optimization By phpBB SEO';
+			$this->core->seo_opt['copyrights']['title'] = strpos($this->config['default_lang'], 'fr') !== false  ?  'Optimisation du R&eacute;f&eacute;rencement par Ultimate SEO URL' : 'Ultimate SEO URL';
 		}
 
 		if (empty($this->core->seo_opt['copyrights']['txt']))
 		{
-			$this->core->seo_opt['copyrights']['txt'] = 'phpBB SEO';
+			$this->core->seo_opt['copyrights']['txt'] = 'Ultimate SEO URL';
 		}
 
 		if ($this->core->seo_opt['copyrights']['img'])
 		{
-			$output = '<a href="http://www.phpBB-SEO.ir/" title="' . $this->core->seo_opt['copyrights']['title'] . '"><img src="' . $this->core->seo_path['phpbb_url'] . 'ext/phpbbseo/usu/img/phpbb-seo.png" alt="' . $this->core->seo_opt['copyrights']['txt'] . '" width="80" height="15"></a>';
+			$output = '<a href="#" title="' . $this->core->seo_opt['copyrights']['title'] . '"><img src="' . $this->core->seo_path['phpbb_url'] . 'ext/phpbbseo/usu/img/phpbb-seo.png" alt="' . $this->core->seo_opt['copyrights']['txt'] . '" width="80" height="15"></a>';
 		}
 		else
 		{
-			$output = '<a href="http://www.phpBB-SEO.ir/" title="' . $this->core->seo_opt['copyrights']['title'] . '">' . $this->core->seo_opt['copyrights']['txt'] . '</a>';
+			$output = '<a href="#" title="' . $this->core->seo_opt['copyrights']['title'] . '">' . $this->core->seo_opt['copyrights']['txt'] . '</a>';
 		}
 
 		$this->language->lang('TRANSLATION_INFO', (!empty($this->language->lang('TRANSLATION_INFO')) ? $this->language->lang('TRANSLATION_INFO') . '<br>' : '') . $output);

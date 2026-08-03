@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 /**
-*
-* acp_usu [English]
-* @package Ultimate phpBB SEO Friendly URL
-* @version $$
-* @copyright (c) 2017 www.phpBB-SEO.ir
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ * Ultimate SEO URL Extension for phpBB
+ *
+ * Copyright (c) 2026
+ *
+ * Released under the GNU General Public License v2.0
+ *
+ * https://opensource.org/licenses/GPL-2.0
+ */
 
 /**
  * DO NOT CHANGE
@@ -41,11 +41,11 @@ if (empty($lang) || !is_array($lang))
 //
 $lang = array_merge($lang, [
 	// ACP Main CAT
-	'ACP_CAT_PHPBB_SEO'	=> 'phpBB SEO',
+	'ACP_CAT_PHPBB_SEO'	=> 'Ultimate SEO URL',
 	'ACP_MOD_REWRITE'	=> 'URL Rewriting settings',
 	// ACP phpBB seo class
-	'ACP_PHPBB_SEO_CLASS'	=> 'phpBB SEO Class settings',
-	'ACP_PHPBB_SEO_CLASS_EXPLAIN'	=> 'Here you can set up various options of the phpBB SEO %1$s mod (%2$s).<br/>The various default settings such as the delimiters and suffixes still must be set up in <b>phpBB/ext/phpbbseo/usu/customise.php</b>, since changing these implies an .htaccess update and most likely appropriate redirections.%3$s',
+	'ACP_PHPBB_SEO_CLASS'	=> 'Ultimate SEO URL Class settings',
+	'ACP_PHPBB_SEO_CLASS_EXPLAIN'	=> 'Here you can set up various options of the Ultimate SEO URL %1$s mod (%2$s).<br/>The various default settings such as the delimiters and suffixes still must be set up in <b>phpBB/ext/phpbbseo/usu/customise.php</b>, since changing these implies an .htaccess update and most likely appropriate redirections.%3$s',
 	'ACP_PHPBB_SEO_VERSION' => 'Version',
 	'ACP_PHPBB_SEO_MODE' => 'Mode',
 	'ACP_SEO_SUPPORT_FORUM' => 'Support Forum',
@@ -85,7 +85,7 @@ $lang = array_merge($lang, [
 	'SEO_NGIX_CONF' => 'Ngix config',
 	'SEO_NGIX_CONF_EXPLAIN' => 'Copy and paste this code into your webserver configuration file and restart Ngix.',
 	// ACP extended
-	'ACP_SEO_EXTENDED_EXPLAIN' => 'phpBB SEO mods extended settings.',
+	'ACP_SEO_EXTENDED_EXPLAIN' => 'Ultimate SEO URL mods extended settings.',
 	'SEO_EXTERNAL_LINKS' => 'External links',
 	'SEO_EXTERNAL_LINKS_EXPLAIN' => 'Open, or not, external links in a new browser window / tab',
 	'SEO_EXTERNAL_SUBDOMAIN' => 'Sub-domain links',
@@ -131,7 +131,7 @@ $lang = array_merge($lang, [
 	'SEO_META_FB_APP_ID' => 'Facebook App ID',
 	'SEO_META_FB_APP_ID_EXPLAIN' => 'The unique ID that lets Facebook know the identity of your site. This is crucial for <a href="https://developers.facebook.com/docs/insights/">Facebook Insights</a> to work properly.',
 	// Install
-	'SEO_INSTALL_PANEL'	=> 'phpBB SEO Installation Panel',
+	'SEO_INSTALL_PANEL'	=> 'Ultimate SEO URL Installation Panel',
 	'SEO_ERROR_INSTALL'	=> 'An error occurred during the installation process. Uninstall once is safer before you retry.',
 	'SEO_ERROR_INSTALLED'	=> 'The %s module is already installed.',
 	'SEO_ERROR_ID'	=> 'The %1$ module had no ID.',
@@ -141,11 +141,11 @@ $lang = array_merge($lang, [
 	'SEO_FINAL_UNINSTALL_PHPBB_SEO'	=> 'Return to forum index',
 	'CAT_INSTALL_PHPBB_SEO'	=> 'Installation',
 	'CAT_UNINSTALL_PHPBB_SEO'	=> 'Un-Installation',
-	'SEO_OVERVIEW_TITLE'	=> 'phpBB SEO Ultimate SEO URL Overview',
+	'SEO_OVERVIEW_TITLE'	=> 'Ultimate SEO URL Ultimate SEO URL Overview',
 	'SEO_OVERVIEW_BODY'	=> 'Welcome to our public release of the %1$s phpBB3 SEO mod rewrite %2$s.</p><p>Please read <a href="%3$s" title="Check the release thread" onclick="window.open(this.href); return false;"><b>the release thread</b></a> for more information</p><p><strong style="text-transform: uppercase;">Note:</strong> You must have already performed the required code changes and uploaded all the new files before you can proceed with this install wizard.</p><p>This installation system will guide you through the process of installing the phpBB3 SEO mod rewrite admin control panel. It will allow you to accurately choose your phpBB rewritten URL standard for the best results in search engines</p>.',
-	'CAT_SEO_PREMOD'	=> 'phpBB SEO Premod',
-	'SEO_PREMOD_TITLE'	=> 'phpBB SEO Premod overview',
-	'SEO_PREMOD_BODY'	=> 'Welcome to our public release of the phpBB SEO Premod.</p><p>Please read <b>the release thread</b> for more information</p><p><strong style="text-transform: uppercase;">Note:</strong> You will be able to choose between the three phpBB3 SEO mod rewrites.<br/><br/><b>The three different URL rewriting standards available :</b><ul><li><b>The Simple mod</b>,</li><li><b>The Mixed mod</b>,</li><li><b>Advanced</b>.</li></ul>This choice is very important, we encourage you to take the time to fully discover the SEO features of this premod before you go online.<br/>This premod is as simple to install as phpBB3, just follow the regular process.<br/><br/>
+	'CAT_SEO_PREMOD'	=> 'Ultimate SEO URL Premod',
+	'SEO_PREMOD_TITLE'	=> 'Ultimate SEO URL Premod overview',
+	'SEO_PREMOD_BODY'	=> 'Welcome to our public release of the Ultimate SEO URL Premod.</p><p>Please read <b>the release thread</b> for more information</p><p><strong style="text-transform: uppercase;">Note:</strong> You will be able to choose between the three phpBB3 SEO mod rewrites.<br/><br/><b>The three different URL rewriting standards available :</b><ul><li><b>The Simple mod</b>,</li><li><b>The Mixed mod</b>,</li><li><b>Advanced</b>.</li></ul>This choice is very important, we encourage you to take the time to fully discover the SEO features of this premod before you go online.<br/>This premod is as simple to install as phpBB3, just follow the regular process.<br/><br/>
 	<p>Requirements for URL rewriting :</p>
 	<ul>
 		<li>Apache server (linux OS) with mod_rewrite module.</li>
@@ -153,13 +153,13 @@ $lang = array_merge($lang, [
 	</ul>
 	<p>Once installed, you will need to go to the ACP to set up and activate the mod.</p>',
 	'SEO_LICENCE_TITLE'	=> 'RECIPROCAL PUBLIC LICENCE',
-	'SEO_LICENCE_BODY'	=> 'The phpBB SEO mod rewrites are released under the RPL licence which states you cannot remove the phpBB SEO credits.<br/>For more details about possible exceptions, please contact a phpBB SEO administrator (primarily SeO or dcz).',
-	'SEO_PREMOD_LICENCE'	=> 'The phpBB SEO mod rewrites and the Zero duplicate included in this Premod are released under the RPL licence which states you cannot remove the phpBB SEO credits.<br/>For more details about possible exceptions, please contact a phpBB SEO administrator (primarily SeO or dcz).',
+	'SEO_LICENCE_BODY'	=> 'The Ultimate SEO URL mod rewrites are released under the RPL licence which states you cannot remove the Ultimate SEO URL credits.<br/>For more details about possible exceptions, please contact a Ultimate SEO URL administrator (primarily SeO or dcz).',
+	'SEO_PREMOD_LICENCE'	=> 'The Ultimate SEO URL mod rewrites and the Zero duplicate included in this Premod are released under the RPL licence which states you cannot remove the Ultimate SEO URL credits.<br/>For more details about possible exceptions, please contact a Ultimate SEO URL administrator (primarily SeO or dcz).',
 	'SEO_SUPPORT_TITLE'	=> 'Support',
-	'SEO_SUPPORT_BODY'	=> 'Full support will be given in the <a href="%1$s" title="Visit the %2$s SEO URL forum" onclick="window.open(this.href); return false;"><b>%2$s SEO URL forum</b></a>. We will provide answers to general setup questions, configuration problems, and support for determining common problems.</p><p>Be sure to visit our <a href="http://www.phpBB-SEO.ir/community/" title="SEO Forum" onclick="window.open(this.href); return false;"><b>Search Engine Optimization forums</b></a>.</p><p>You should <a href="http://www.phpBB-SEO.ir/community/ucp.php?mode=register" title="Register to phpBB SEO" onclick="window.open(this.href); return false;"><b>register</b></a>, log in and <a href="%3$s" title="Be notified about updates" onclick="window.open(this.href); return false;"><b>subscribe to the release thread</b></a> to be notified by mail upon each update.',
-	'SEO_PREMOD_SUPPORT_BODY'	=> 'Full support will be given in the <a href="http://www.phpBB-SEO.ir/community/" title="Visit the phpBB SEO " onclick="window.open(this.href); return false;"><b>phpBB SEO forum</b></a>. We will provide answers to general setup questions, configuration problems, and support for determining common problems.</p><p>Be sure to visit our <a href="http://www.phpBB-SEO.ir/community/" title="SEO Forum" onclick="window.open(this.href); return false;"><b>Search Engine Optimization forums</b></a>.</p><p>You should <a href="http://www.phpBB-SEO.ir/community/ucp.php?mode=register" title="Register to phpBB SEO" onclick="window.open(this.href); return false;"><b>register</b></a>, log in and <a href="http://www.phpBB-SEO.ir/community/" title="Be notified about updates" onclick="window.open(this.href); return false;"><b>subscribe to the release thread</b></a> to be notified by mail upon each update.',
-	'SEO_INSTALL_INTRO'		=> 'Welcome to the phpBB SEO Installation Wizard',
-	'SEO_INSTALL_INTRO_BODY'	=> '<p>You are about to install the %1$s phpBB SEO mod rewrite %2$s. This install tool will activate the phpBB SEO mod rewrite control panel in phpBB ACP.</p><p>Once installed, you will need to go to the ACP to set up and activate the mod.</p>
+	'SEO_SUPPORT_BODY'	=> 'Full support will be given in the <a href="%1$s" title="Visit the %2$s SEO URL forum" onclick="window.open(this.href); return false;"><b>%2$s SEO URL forum</b></a>. We will provide answers to general setup questions, configuration problems, and support for determining common problems.</p><p>Be sure to visit our <a href="#" title="SEO Forum" onclick="window.open(this.href); return false;"><b>Search Engine Optimization forums</b></a>.</p><p>You should <a href="#" title="Register to Ultimate SEO URL" onclick="window.open(this.href); return false;"><b>register</b></a>, log in and <a href="%3$s" title="Be notified about updates" onclick="window.open(this.href); return false;"><b>subscribe to the release thread</b></a> to be notified by mail upon each update.',
+	'SEO_PREMOD_SUPPORT_BODY'	=> 'Full support will be given in the <a href="#" title="Visit the Ultimate SEO URL " onclick="window.open(this.href); return false;"><b>Ultimate SEO URL forum</b></a>. We will provide answers to general setup questions, configuration problems, and support for determining common problems.</p><p>Be sure to visit our <a href="#" title="SEO Forum" onclick="window.open(this.href); return false;"><b>Search Engine Optimization forums</b></a>.</p><p>You should <a href="#" title="Register to Ultimate SEO URL" onclick="window.open(this.href); return false;"><b>register</b></a>, log in and <a href="#" title="Be notified about updates" onclick="window.open(this.href); return false;"><b>subscribe to the release thread</b></a> to be notified by mail upon each update.',
+	'SEO_INSTALL_INTRO'		=> 'Welcome to the Ultimate SEO URL Installation Wizard',
+	'SEO_INSTALL_INTRO_BODY'	=> '<p>You are about to install the %1$s Ultimate SEO URL mod rewrite %2$s. This install tool will activate the Ultimate SEO URL mod rewrite control panel in phpBB ACP.</p><p>Once installed, you will need to go to the ACP to set up and activate the mod.</p>
 	<p><strong>Note:</strong> If it’s the first time you try this mod, we strongly encourage you to take the time to test the various URL standard this mod can output on a local or private test server. This way, you won’t show different URLs to bots every other day while testing, and you won’t discover a month after that you would have preferred different URLs. Patience is virtue SEO wise and even if the zero duplicate makes the HTTP redirecting very easy, you don’t want to redirect all your forum’s URLs too often.</p><br/>
 	<p>Requirements :</p>
 	<ul>
@@ -167,20 +167,20 @@ $lang = array_merge($lang, [
 		<li>IIS server (windows OS) with isapi_rewrite module, but you will need to adapt the RewriteRules in the httpd.ini</li>
 	</ul>',
 	'SEO_INSTALL'		=> 'Install',
-	'UN_SEO_INSTALL_INTRO'		=> 'Welcome to the phpBB SEO uninstall Wizard',
-	'UN_SEO_INSTALL_INTRO_BODY'	=> '<p>You are about to uninstall the %1$s phpBB SEO mod rewrite %2$s ACP module.</p>
+	'UN_SEO_INSTALL_INTRO'		=> 'Welcome to the Ultimate SEO URL uninstall Wizard',
+	'UN_SEO_INSTALL_INTRO_BODY'	=> '<p>You are about to uninstall the %1$s Ultimate SEO URL mod rewrite %2$s ACP module.</p>
 	<p><strong>Note:</strong> This will not deactivate URL rewriting on your board as long as the phpBB files are still modded.</p>',
 	'UN_SEO_INSTALL'		=> 'Uninstall',
 	'SEO_INSTALL_CONGRATS'			=> 'Congratulations!',
 	'SEO_INSTALL_CONGRATS_EXPLAIN'	=> '<p>You have now successfully installed the %1$s phpBB3 SEO mod rewrite %2$s. You should now go to phpBB ACP and proceed with the mod rewrite settings.<p>
-	<p>In the new phpBB SEO category, you will be able to :</p>
+	<p>In the new Ultimate SEO URL category, you will be able to :</p>
 	<h2>Set up and activate URL rewriting</h2>
 		<p>Take your time, that’s where you will choose how your URLs will look like. The zero duplicate options will as well be set up from here when installed.</p>
 	<h2>Accurately choose your forum’s URL</h2>
 		<p>Using the Mixed or the Advanced mod, you will be able to dissociate Forum URLs from their titles and elect to use whatever keyword you may like in them</p>
 	<h2>Generate a personalized .htaccess</h2>
 	<p>Once you will have set up the above options, you will be able to generate a personalized .htaccess within no time and save it directly on the server.</p>',
-	'UN_SEO_INSTALL_CONGRATS'	=> 'The phpBB SEO ACP module was removed.',
+	'UN_SEO_INSTALL_CONGRATS'	=> 'The Ultimate SEO URL ACP module was removed.',
 	'UN_SEO_INSTALL_CONGRATS_EXPLAIN'	=> '<p>You have now successfully uninstalled the %1$s phpBB3 SEO mod rewrite %2$s.<p>
 	<p>This will not deactivate URL rewriting on your board as long as the phpBB files are still modded.</p>',
 	'SEO_VALIDATE_INFO'	=> 'Validation Info :',
@@ -231,11 +231,11 @@ $lang = array_merge($lang, [
 	'SYNC_TOPIC_URLS' => 'Start topic URLs synchronization',
 	'SYNC_RESET_TOPIC_URLS' => 'Reset all topic URLs',
 	'SYNC_TOPIC_URL_NOTE' => 'You just activated the SQL Rewriting option, you should now synchronize all your topics URLs by going to %sthis page%s if you did not already.<br/>This will not change any of your current URLs<br/><b style="color:red">Please note :</b><br/><em>You should only synchronize your topics URLs once you have fully set up your URL standard. It’s not a drama if you change your URL standard after your synchronized topic URLs, but you should do it again each time you do.<br/>It’s not a drama either if you don’t, your topic URLs would in such case be updated upon each topic visit in case the topic URL would be empty or not matching your current standard.</em>',
-	// phpBB SEO Class option
+	// Ultimate SEO URL Class option
 	'url_rewrite' => 'Activate URL rewriting',
 	'url_rewrite_explain' => 'Once you have set up the below options, and generated your personalized .htaccess, you can activate URL rewriting and check if your rewritten URLs do work properly. If you get 404 errors, it’s most likely an .htaccess issue, try some of the .htaccess tool option to generate a new one.',
 	'modrtype' => 'URL rewriting type',
-	'modrtype_explain' => 'You have here the choice between three phpBB SEO mod rewrite types.<br/>The <b>Simple</b> one,the <b>Mixed</b> one and the <b>Advanced</b> one.<br/><br/><b style="color:red">Please Note :</b><br/><em>Modifying this option will change all your URLs in your web site.<br/>Doing it with an already indexed web site should thus be considered with as much care as when migrating and not too often.<br/>So you’d better be decided to go for it or not.<br/>Changing this option requires an .htaccess update.</em>',
+	'modrtype_explain' => 'You have here the choice between three Ultimate SEO URL mod rewrite types.<br/>The <b>Simple</b> one,the <b>Mixed</b> one and the <b>Advanced</b> one.<br/><br/><b style="color:red">Please Note :</b><br/><em>Modifying this option will change all your URLs in your web site.<br/>Doing it with an already indexed web site should thus be considered with as much care as when migrating and not too often.<br/>So you’d better be decided to go for it or not.<br/>Changing this option requires an .htaccess update.</em>',
 	'sql_rewrite' => 'Activate SQL Rewriting',
 	'sql_rewrite_explain' => 'This option will allow you to choose URL for each topic. You will be able to accurately set topic URL when posting new topic or when editing an existing one. This functionality is though limited to forum admins and moderators.<br/><br/><b style="color:red">Please Note :</b><br/><em>Turning on this option will not change topic URLs.  Existing URLs will be stored as they are displayed in the data base. But it may not be the case if you turn it off after you started to use it. In such case, personalized URLs may be treated as if they weren’t.<br/>The feature also has the great advantage to fasten the URL rewriting by a lot, especially when using the virtual folder option in advanced mode, and to make it a lot easier to retrieve rewritten URLs from any page.</em>',
 	'profile_inj' => 'Profiles and groups injection',
@@ -269,11 +269,11 @@ $lang = array_merge($lang, [
 	// copyrights
 	'copyrights' => 'Copyrights',
 	'copyrights_img' => 'Link image',
-	'copyrights_img_explain' => 'You can here choose to display the phpBB SEO copyright link as an image or as a text links.',
+	'copyrights_img_explain' => 'You can here choose to display the Ultimate SEO URL copyright link as an image or as a text links.',
 	'copyrights_txt' => 'Link text',
-	'copyrights_txt_explain' => 'You can here choose the text to be used as the phpBB SEO copyright link text anchor. Leave empty for defaults.',
+	'copyrights_txt_explain' => 'You can here choose the text to be used as the Ultimate SEO URL copyright link text anchor. Leave empty for defaults.',
 	'copyrights_title' => 'Link title',
-	'copyrights_title_explain' => 'You can here choose the text to be used as the phpBB SEO copyright link title. Leave empty for defaults.',
+	'copyrights_title_explain' => 'You can here choose the text to be used as the Ultimate SEO URL copyright link title. Leave empty for defaults.',
 	// Zero duplicate
 	// Options
 	'ACP_ZERO_DUPE_OFF' => 'Off',
@@ -295,21 +295,21 @@ $lang = array_merge($lang, [
 ]);
 
 $lang = array_merge($lang, [
-	'ACP_CAT_PHPBB_SEO' => 'phpBB SEO',
+	'ACP_CAT_PHPBB_SEO' => 'Ultimate SEO URL',
 	'ACP_MOD_REWRITE' => 'URL Rewriting settings',
-	'ACP_PHPBB_SEO_CLASS' => 'phpBB SEO Class settings',
+	'ACP_PHPBB_SEO_CLASS' => 'Ultimate SEO URL Class settings',
 	'ACP_FORUM_URL' => 'Forum URL Management',
 	'ACP_HTACCESS' => '.htaccess',
 	'ACP_SEO_EXTENDED' => 'Extended config',
 	'ACP_PREMOD_UPDATE' => '<h1>Release announcement</h1>
 	<p>This update does only concern the premod, not the phpBB core.</p>
-	<p>A new version of the phpBB SEO premod is thus available : %1$s<br/>Make sure you visit<a href="%2$s" title="The release thread"><b>the release thread</b></a> and update your installation.</p>',
-	'SEO_LOG_INSTALL_PHPBB_SEO' => '<strong>phpBB SEO mod rewrite installed (v%s)</strong>',
-	'SEO_LOG_INSTALL_PHPBB_SEO_FAIL' => '<strong>phpBB SEO mod rewrite install attempt failed</strong><br/>%s',
-	'SEO_LOG_UNINSTALL_PHPBB_SEO' => '<strong>phpBB SEO mod rewrite uninstalled (v%s)</strong>',
-	'SEO_LOG_UNINSTALL_PHPBB_SEO_FAIL' => '<strong>phpBB SEO mod rewrite uninstall attempts failed</strong><br/>%s',
-	'SEO_LOG_CONFIG_SETTINGS' => '<strong>Altered phpBB SEO Class settings</strong>',
+	<p>A new version of the Ultimate SEO URL premod is thus available : %1$s<br/>Make sure you visit<a href="%2$s" title="The release thread"><b>the release thread</b></a> and update your installation.</p>',
+	'SEO_LOG_INSTALL_PHPBB_SEO' => '<strong>Ultimate SEO URL mod rewrite installed (v%s)</strong>',
+	'SEO_LOG_INSTALL_PHPBB_SEO_FAIL' => '<strong>Ultimate SEO URL mod rewrite install attempt failed</strong><br/>%s',
+	'SEO_LOG_UNINSTALL_PHPBB_SEO' => '<strong>Ultimate SEO URL mod rewrite uninstalled (v%s)</strong>',
+	'SEO_LOG_UNINSTALL_PHPBB_SEO_FAIL' => '<strong>Ultimate SEO URL mod rewrite uninstall attempts failed</strong><br/>%s',
+	'SEO_LOG_CONFIG_SETTINGS' => '<strong>Altered Ultimate SEO URL Class settings</strong>',
 	'SEO_LOG_CONFIG_FORUM_URL' => '<strong>Altered Forum URLs</strong>',
 	'SEO_LOG_CONFIG_HTACCESS' => '<strong>Generated new .htaccess</strong>',
-	'SEO_LOG_CONFIG_EXTENDED' => '<strong>Altered phpBB SEO extended config</strong>',
+	'SEO_LOG_CONFIG_EXTENDED' => '<strong>Altered Ultimate SEO URL extended config</strong>',
 ]);

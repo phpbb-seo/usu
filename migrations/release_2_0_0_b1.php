@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 /**
-*
-* @package Ultimate phpBB SEO Friendly URL
-* @version $$
-* @copyright (c) 2017 www.phpBB-SEO.ir
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ * Ultimate SEO URL Extension for phpBB
+ *
+ * Copyright (c) 2026
+ *
+ * Released under the GNU General Public License v2.0
+ *
+ * https://opensource.org/licenses/GPL-2.0
+ */
 
 namespace phpbbseo\usu\migrations;
 

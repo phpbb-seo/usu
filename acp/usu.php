@@ -2,20 +2,21 @@
 
 declare(strict_types=1);
 /**
-*
-* @package Ultimate phpBB SEO Friendly URL
-* @version $$
-* copyright (c) 2017 www.phpBB-SEO.ir
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ * Ultimate SEO URL Extension for phpBB
+ *
+ * Copyright (c) 2026
+ *
+ * Released under the GNU General Public License v2.0
+ *
+ * https://opensource.org/licenses/GPL-2.0
+ */
 
 namespace phpbbseo\usu\acp;
 
 /**
 * phpBB_SEO Class
-* www.phpBB-SEO.ir
-* @package Ultimate phpBB SEO Friendly URL
+* Ultimate SEO URL
+* @package Ultimate Ultimate SEO URL Friendly URL
 */
 class usu
 {
@@ -792,7 +793,7 @@ class usu
 				$file = $this->core->cache_config['file'];
 				ksort($this->core->cache_config['forum_urls']);
 
-				$update = '<'.'?php' . "\n" . '/**' . "\n" . '* phpBB SEO' . "\n" . '* www.phpBB-SEO.ir' . "\n" . '* @package phpBB SEO USU' . "\n" . '*/' . "\n" . 'if (!defined(\'IN_PHPBB\')) {' . "\n\t" . 'exit;' . "\n" . '}' . "\n";
+				$update = '<'.'?php' . "\n" . '/**' . "\n" . '* Ultimate SEO URL' . "\n" . '* Ultimate SEO URL' . "\n" . '* @package Ultimate SEO URL USU' . "\n" . '*/' . "\n" . 'if (!defined(\'IN_PHPBB\')) {' . "\n\t" . 'exit;' . "\n" . '}' . "\n";
 				$update .= '$settings = ' . preg_replace('`[\s]+`', ' ', var_export($this->core->cache_config['settings'], true)) . ';'. "\n";
 				$update .= '$forum_urls = ' . preg_replace('`[\s]+`', ' ', var_export($this->core->cache_config['forum_urls'], true)) . ';';
 
@@ -1666,22 +1667,22 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 		$modrtype_lang['type'] = $modrtype_lang['types'][$this->core->modrtype];
 
 		$modrtype_lang['modrlinks_en'] = [
-			1	=> 'http://www.phpBB-SEO.ir/simple-seo-url/simple-phpbb-seo-url-t1566.html',
-			2	=> 'http://www.phpBB-SEO.ir/mixed-seo-url/mixed-phpbb-seo-url-t1565.html',
-			3	=> 'http://www.phpBB-SEO.ir/advanced-seo-url/advanced-phpbb-seo-url-t1219.html',
-			'u'	=> 'http://www.phpBB-SEO.ir/phpbb-mod-rewrite/ultimate-seo-url-t4608.html',
+			1	=> '#',
+			2	=> '#',
+			3	=> '#',
+			'u'	=> '#',
 		];
 
 		$modrtype_lang['modrforumlinks_en'] = [
-			1	=> 'http://www.phpBB-SEO.ir/simple-seo-url/',
-			2	=> 'http://www.phpbb-seo.ir/mixed-seo-url/',
-			3	=> 'http://www.phpBB-SEO.ir/advanced-seo-url/',
-			'u'	=> 'http://www.phpBB-SEO.ir/phpbb-mod-rewrite/',
+			1	=> '#',
+			2	=> '#',
+			3	=> '#',
+			'u'	=> '#',
 		];
 
 		/**
 		 * Disable this check
-		 * https://github.com/phpbb-seo/usu/issues/38
+		 * #/usu/issues/38
 		 */
 		/** // Check if Default Lang is FR
 		if (strpos($this->config['default_lang'], 'fr') !== false)
