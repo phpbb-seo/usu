@@ -1,42 +1,49 @@
-# Ultimate SEO URL Extension for phpBB
+# Ultimate SEO URL (USU) — Legacy Project
 
-A modernized and fully compatible version of the classic **Ultimate SEO URL (USU)** extension for **phpBB 3.3.x**.
+> [!IMPORTANT]
+> This repository is maintained for existing installations and backward compatibility.
+>
+> For **NEW** phpBB installations, do not install USU.
+>
+> Use the new **phpBB SEO Framework** instead:  
+> 🔗 [https://github.com/phpbb-seo/seo-framework](https://github.com/phpbb-seo/seo-framework)
 
-This project preserves the original URL generation behavior while modernizing the codebase for current PHP versions and improving long-term maintainability.
+* **Legacy / Maintenance Status**: USU remains available as a stable compatibility project for existing websites that depend on its historical URL structure.
+* **Existing Installations**: Existing USU users should **NOT** uninstall or attempt automatic migration.
+* **New Installations**: New phpBB 3.3.x boards should install **phpBB SEO Framework**, the actively developed next-generation SEO platform.
 
 ---
 
-## Features
+## Successor: phpBB SEO Framework
 
-* Full SEO-friendly URL rewriting
-* Preserves the original USU URL structure
+[**phpBB SEO Framework**](https://github.com/phpbb-seo/seo-framework) is the modern successor to Ultimate SEO URL for new phpBB installations.
+
+Key features of phpBB SEO Framework (Lite Edition):
+* **SEO-Friendly Permalinks**: Customizable URL pattern templates for forums, topics, members, and usergroups.
+* **Persistent Slug Index**: Framework-owned persistent slug storage providing fast and deterministic URL resolution without modifying phpBB core tables.
+* **Canonical URLs & Automatic 301 Redirects**: Seamlessly normalizes legacy native URLs (`viewtopic.php?t=123`) and historical stale slugs.
+* **Titles & Meta Engine**: Pattern-driven meta titles and clean plain-text description normalization.
+* **Scalable XML Sitemap Suite**: Keyset-based streaming architecture with strict Anonymous ACL protection and **zero deep SQL offset overhead**.
+* **Multilingual / Unicode Support**: Native UTF-8 slug generation for Persian, Arabic, Cyrillic, Latin, and CJK alphabets.
+* **Modern ACP Interface**: Responsive administration dashboard with live crawl statistics and preview tools.
+* **Zero-SQL `append_sid` Hot Path**: Zero database queries during runtime outbound link rewriting.
+
+* **Official Website**: [https://www.phpbbseo.ir/](https://www.phpbbseo.ir/)
+* **GitHub Repository**: [https://github.com/phpbb-seo/seo-framework](https://github.com/phpbb-seo/seo-framework)
+
+*(Note: USU and phpBB SEO Framework use different internal architectures and are not drop-in compatible).*
+
+---
+
+## Features (Historical USU)
+
+* Full SEO-friendly URL rewriting preserving original USU URL patterns
 * Canonical URL generation
 * Automatic duplicate URL detection and 301 redirects
-* Forum, Topic, User and Search URL rewriting
-* Advanced, Mixed and Simple rewrite modes
+* Forum, Topic, User, and Search URL rewriting
+* Advanced, Mixed, and Simple rewrite modes
 * High-performance URL caching
-* Backward-compatible URL generation
-* Fully compatible with **phpBB 3.3.x**
-* Fully compatible with **PHP 8.4**
-
----
-
-## Project Goals
-
-This project is focused on preserving the proven behavior of the original USU extension while bringing the implementation up to modern development standards.
-
-The modernization includes:
-
-* PHP 8.4 compatibility
-* phpBB 3.3 compatibility
-* Strict typing
-* Improved code quality
-* Better maintainability
-* Security improvements
-* Performance optimizations
-* Long-term maintainability
-
-The external behavior, URL format, and rewrite logic remain fully compatible with the original implementation.
+* Compatible with phpBB 3.3.x and PHP 8.4
 
 ---
 
@@ -50,74 +57,47 @@ The external behavior, URL format, and rewrite logic remain fully compatible wit
 
 ---
 
-## Installation
+## Existing Installations
 
-1. Download the latest release.
-2. Extract the package into:
+> [!NOTE]
+> USU is no longer recommended for new phpBB installations. The documentation below is provided solely for administrators maintaining an existing USU-powered board.
+>
+> For new installations, please install [phpBB SEO Framework](https://github.com/phpbb-seo/seo-framework).
 
-```
-ext/phpbbseo/usu/
-```
-
-3. Navigate to:
-
-```
-Administration Control Panel
-→ Customise
-→ Manage Extensions
-```
-
-4. Enable **Ultimate SEO URL**.
-
+### Upgrading / Maintaining Existing Boards
+1. Back up your database and existing extension files.
+2. Unpack the extension into:
+   ```
+   ext/phpbbseo/usu/
+   ```
+3. In the phpBB Administration Control Panel (ACP), navigate to **Customise** &raquo; **Manage Extensions**.
+4. Ensure **Ultimate SEO URL** is enabled.
 5. Purge the phpBB cache.
+6. Verify that your URL rewriting rules in `.htaccess` remain active.
 
 ---
 
-## Upgrading
+## Development & Maintenance Philosophy
 
-If you are upgrading from an earlier version of USU:
-
-* Back up your database.
-* Back up your existing extension files.
-* Replace the extension with the new version.
-* Purge the phpBB cache.
-* Verify that your URL rewriting rules are still active.
-
-Existing SEO-friendly URLs remain compatible.
-
----
-
-## Bug Reports
-
-If you discover a bug or regression, please open an issue on the project's GitHub repository with detailed reproduction steps.
-
-Please include:
-
-* phpBB version
-* PHP version
-* Web server (Apache / Nginx)
-* Rewrite configuration
-* Steps to reproduce the issue
-
----
-
-## Development Philosophy
-
-This repository represents the **compatibility and maintenance branch** of the Ultimate SEO URL extension.
+This repository represents the **compatibility and maintenance branch** of the classic Ultimate SEO URL extension.
 
 Its primary objectives are:
+* Preserve backward compatibility for historical URL formats
+* Maintain stable URL generation on modern PHP versions
+* Provide long-term stability for existing communities
 
-* Preserve backward compatibility
-* Maintain stable URL generation
-* Support modern PHP versions
-* Improve internal architecture without changing public behavior
+Active development of new features (XML Sitemaps, Metadata engines, OpenGraph, Schema.org) is conducted exclusively on the [phpBB SEO Framework](https://github.com/phpbb-seo/seo-framework) platform.
 
-Future SEO capabilities such as XML Sitemaps, Schema.org, Open Graph, Robots management, SEO Health, and other advanced features are planned for a separate modular project built on a dedicated SEO Framework.
+---
+
+## Maintained by phpBB SEO
+
+* **Official Website**: [https://www.phpbbseo.ir/](https://www.phpbbseo.ir/)
+* **Modern SEO Framework**: [https://github.com/phpbb-seo/seo-framework](https://github.com/phpbb-seo/seo-framework)
 
 ---
 
 ## License
 
-This project is distributed under the **GNU General Public License v2.0**.
-
+This project is licensed under the **GNU General Public License v2.0 (GPL-2.0)**.  
 https://opensource.org/licenses/GPL-2.0
