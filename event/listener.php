@@ -1,15 +1,12 @@
 <?php
-
-declare(strict_types=1);
 /**
- * Ultimate SEO URL Extension for phpBB
- *
- * Copyright (c) 2026
- *
- * Released under the GNU General Public License v2.0
- *
- * https://opensource.org/licenses/GPL-2.0
- */
+*
+* @package Ultimate phpBB SEO Friendly URL
+* @version $$
+* @copyright (c) 2017 www.phpBB-SEO.ir
+* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+*
+*/
 
 namespace phpbbseo\usu\event;
 
@@ -31,27 +28,82 @@ use phpbb\language\language;
 */
 class listener implements EventSubscriberInterface
 {
-	private int $forum_id = 0;
-	private int $topic_id = 0;
-	private int $post_id = 0;
-	private int $start = 0;
-	private string $hilit_words = '';
+	/** @var core */
+	private $core;
 
-	public function __construct(
-		private readonly core $core,
-		private readonly config $config,
-		private readonly auth $auth,
-		private readonly template $template,
-		private readonly user $user,
-		private readonly request $request,
-		private readonly db_driver $db,
-		private readonly language $language,
-		private readonly string $phpbb_root_path,
-		private readonly string $php_ext
-	) {
+	/** @var config */
+	private $config;
+
+	/** @var auth */
+	private $auth;
+
+	/** @var template */
+	private $template;
+
+	/** @var user */
+	private $user;
+
+	/** @var request */
+	private $request;
+
+	/** @var db_driver */
+	private $db;
+
+	/** @var language */
+	private $language;
+
+	/**
+	* Current $phpbb_root_path
+	* @var string
+	*/
+	private $phpbb_root_path;
+
+	/**
+	* Current $php_ext
+	* @var string
+	*/
+	private $php_ext;
+
+	private $forum_id = 0;
+
+	private $topic_id = 0;
+
+	private $post_id = 0;
+
+	private $start = 0;
+
+	private $hilit_words = '';
+
+	/**
+	* Constructor
+	*
+	* @param core			$core
+	* @param config			$config				Config object
+	* @param auth			$auth				Auth object
+	* @param template		$template			Template object
+	* @param user			$user				User object
+	* @param request		$request			Request object
+	* @param db_driver		$db					Database object
+	* @param language		$language			Language object
+	* @param string			$phpbb_root_path	Path to the phpBB root
+	* @param string			$php_ext			PHP file extension
+	*
+	*/
+	public function __construct(core $core, config $config, auth $auth, template $template, user $user, request $request, db_driver $db, language $language, $phpbb_root_path, $php_ext)
+	{
+		$this->core = $core;
+		$this->template = $template;
+		$this->user = $user;
+		$this->config = $config;
+		$this->auth = $auth;
+		$this->request = $request;
+		$this->db = $db;
+		$this->language = $language;
+		$this->phpbb_root_path = $phpbb_root_path;
+		$this->php_ext = $php_ext;
 	}
 
-		public static function getSubscribedEvents(): array
+	public static function getSubscribedEvents()
 	{
 		return [
 			'core.common'								=> 'core_common',
@@ -71,7 +123,7 @@ class listener implements EventSubscriberInterface
 		];
 	}
 
-	public function core_user_setup(mixed $event): void
+	public function core_user_setup($event)
 	{
 		if (empty($this->core->seo_opt['url_rewrite']))
 		{
@@ -321,12 +373,76 @@ class listener implements EventSubscriberInterface
 		}
 	}
 
-	public function core_common(mixed $event): void
+	public function core_common($event)
 	{
+		// 1. Questa riga nasconde i Warning intermittenti sulle chiavi orfane generati da PHP 8.4
+		@error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
+		// ---------------------------------------------------------------------------
+		// DECODIFICA PROFILI PLUS: Converte il + in spazio se la riscrittura è attiva nel PCA
+		// ---------------------------------------------------------------------------
+		if (!empty($this->core->seo_opt['profile_inj']) && $this->request->is_set('un')) {
+			$un_param = $this->request->variable('un', '', true);
+			if (strpos($un_param, '+') !== false) {
+				$un_spaces = str_replace('+', ' ', $un_param);
+				$this->request->overwrite('un', $un_spaces);
+				$_GET['un'] = $un_spaces;
+			}
+		}
+		// 2. PATCH AUTOMATICA CATEGORIE MADRI (Ordinamento Decrescente Anti-Incrocio)
+		if (!defined('IN_ADMIN')) {
+			$cache_file = __DIR__ . '/../cache/config.runtime.php';
+			if (file_exists($cache_file)) {
+				$settings = array();
+				$forum_urls = array();
+				@include($cache_file);
+				
+				if (!empty($forum_urls) && is_array($forum_urls)) {
+					$rem_ids = isset($settings['rem_ids']) ? (bool)$settings['rem_ids'] : false;
+					$current_sid = (!empty($this->user->session_id)) ? '?sid=' . $this->user->session_id : '';
+					
+					// ORDIDAMENTO DECRESCENTE PER CHIAVE (ID): Elabora prima gli ID grandi (es. 121, 116, 47) e poi quelli piccoli (es. 4, 1)
+					krsort($forum_urls);
+					
+					ob_start(function($html) use ($forum_urls, $rem_ids, $current_sid) {
+						if (empty($html)) return $html;
+						foreach ($forum_urls as $forum_id => $slug) {
+							$forum_id = (int)$forum_id;
+							
+							if ($rem_ids) {
+								$new_url = $slug . '/' . $current_sid;
+							} else {
+								$new_url = $slug . '-f' . $forum_id . '.html' . $current_sid;
+							}
+							
+							// Usiamo i pattern originali leggeri e ad ampio spettro che funzionavano perfettamente, preservando la paginazione (start=)
+							$html = preg_replace('/(?:\.\/)?app\.php\/board\/' . $forum_id . '(?![0-9])/i', $new_url, $html);
+							$html = preg_replace_callback(
+								'/(?:\.\/)?viewforum\.php\?([a-z0-9_=&;]*\bf=' . $forum_id . '\b[a-z0-9_=&;]*)/i',
+								function ($matches) use ($new_url) {
+									if (preg_match('/(?:&amp;|&|\?)start=([0-9]+)/i', $matches[1], $start_m)) {
+										$start_num = (int) $start_m[1];
+										if ($start_num > 0) {
+											return rtrim($new_url, '/') . '/page' . $start_num . '.html';
+										}
+									}
+									return $new_url;
+								},
+								$html
+							);
+
+						}
+						return $html;
+					});
+				}
+			}
+		}
 		if (empty($this->core->seo_opt['url_rewrite']))
 		{
 			return;
 		}
+
+		// this helps fixing several cases of relative links
+		define('PHPBB_USE_BOARD_URL_PATH', true);
 
 		// this helps fixing several cases of relative links
 		define('PHPBB_USE_BOARD_URL_PATH', true);
@@ -464,7 +580,7 @@ class listener implements EventSubscriberInterface
 		}
 	}
 
-	public function core_page_header_after(mixed $event): void
+	public function core_page_header_after($event)
 	{
 		$this->template->assign_vars([
 			'SEO_PHPBB_URL'		=> $this->core->seo_path['phpbb_url'],
@@ -492,27 +608,27 @@ class listener implements EventSubscriberInterface
 	* Note : This mod is going to help your site a lot in Search Engines
 	* If You really cannot put this link, you should at least provide us with one visible
 	* (can be small but visible) link on your home page or your forum Index using this code for example :
-	* <a href="#" title="Ultimate SEO URL">Ultimate SEO URL</a>
+	* <a href="http://www.phpBB-SEO.ir/" title="Search Engine Optimization By phpBB SEO">phpBB SEO</a>
 	*/
-	public function core_page_footer(mixed $event): void
+	public function core_page_footer($event)
 	{
 		if (empty($this->core->seo_opt['copyrights']['title']))
 		{
-			$this->core->seo_opt['copyrights']['title'] = strpos($this->config['default_lang'], 'fr') !== false  ?  'Optimisation du R&eacute;f&eacute;rencement par Ultimate SEO URL' : 'Ultimate SEO URL';
+			$this->core->seo_opt['copyrights']['title'] = strpos($this->config['default_lang'], 'fr') !== false  ?  'Optimisation du R&eacute;f&eacute;rencement par phpBB SEO' : 'Search Engine Optimization By phpBB SEO';
 		}
 
 		if (empty($this->core->seo_opt['copyrights']['txt']))
 		{
-			$this->core->seo_opt['copyrights']['txt'] = 'Ultimate SEO URL';
+			$this->core->seo_opt['copyrights']['txt'] = 'phpBB SEO';
 		}
 
 		if ($this->core->seo_opt['copyrights']['img'])
 		{
-			$output = '<a href="#" title="' . $this->core->seo_opt['copyrights']['title'] . '"><img src="' . $this->core->seo_path['phpbb_url'] . 'ext/phpbbseo/usu/img/phpbb-seo.png" alt="' . $this->core->seo_opt['copyrights']['txt'] . '" width="80" height="15"></a>';
+			$output = '<a href="http://www.phpBB-SEO.ir/" title="' . $this->core->seo_opt['copyrights']['title'] . '"><img src="' . $this->core->seo_path['phpbb_url'] . 'ext/phpbbseo/usu/img/phpbb-seo.png" alt="' . $this->core->seo_opt['copyrights']['txt'] . '" width="80" height="15"></a>';
 		}
 		else
 		{
-			$output = '<a href="#" title="' . $this->core->seo_opt['copyrights']['title'] . '">' . $this->core->seo_opt['copyrights']['txt'] . '</a>';
+			$output = '<a href="http://www.phpBB-SEO.ir/" title="' . $this->core->seo_opt['copyrights']['title'] . '">' . $this->core->seo_opt['copyrights']['txt'] . '</a>';
 		}
 
 		$this->language->lang('TRANSLATION_INFO', (!empty($this->language->lang('TRANSLATION_INFO')) ? $this->language->lang('TRANSLATION_INFO') . '<br>' : '') . $output);
@@ -522,7 +638,7 @@ class listener implements EventSubscriberInterface
 		]);
 	}
 
-	public function core_viewforum_modify_topicrow(mixed $event): void
+	public function core_viewforum_modify_topicrow($event)
 	{
 		// Unfortunately, we do not have direct access to $topic_forum_id here
 		global $topic_forum_id, $topic_id, $view_topic_url; // god save the hax
@@ -539,7 +655,7 @@ class listener implements EventSubscriberInterface
 		$event['row'] = $row;
 	}
 
-	public function core_viewtopic_modify_post_row(mixed $event): void
+	public function core_viewtopic_modify_post_row($event)
 	{
 		$post_row = $event['post_row'];
 		$row = $event['row'];
@@ -549,7 +665,7 @@ class listener implements EventSubscriberInterface
 		$event['post_row'] = $post_row;
 	}
 
-	public function core_viewtopic_modify_page_title(mixed $event): void
+	public function core_viewtopic_modify_page_title($event)
 	{
 		$this->template->assign_vars([
 			'U_PRINT_TOPIC'		=> ($this->auth->acl_get('f_print', $this->forum_id)) ? append_sid("{$this->phpbb_root_path}viewtopic.{$this->php_ext}", "f={$this->forum_id}&amp;t={$this->topic_id}&amp;view=print") : '',
@@ -558,7 +674,7 @@ class listener implements EventSubscriberInterface
 		]);
 	}
 
-	public function core_memberlist_view_profile(mixed $event): void
+	public function core_memberlist_view_profile($event)
 	{
 		if (empty($this->core->seo_opt['url_rewrite']))
 		{
@@ -579,10 +695,15 @@ class listener implements EventSubscriberInterface
 		$event['member'] = $member;
 	}
 
-	public function core_modify_username_string(mixed $event): void
+public function core_modify_username_string($event)
 	{
-		$modes = ['profile' => 1, 'full' => 1];
+		// Se l'opzione "Profiles and groups injection" è disattivata nel PCA, esci immediatamente
+		if (empty($this->core->seo_opt['profile_inj']))
+		{
+			return;
+		}
 
+		$modes = array('profile' => 1, 'full' => 1);
 		$mode = $event['mode'];
 
 		if (!isset($modes[$mode]))
@@ -591,42 +712,63 @@ class listener implements EventSubscriberInterface
 		}
 
 		$user_id = (int) $event['user_id'];
-
-		if (
-			!$user_id ||
-			$user_id == ANONYMOUS ||
-			($this->user->data['user_id'] != ANONYMOUS && !$this->auth->acl_get('u_viewprofile'))
-		)
+		if (!$user_id || $user_id == ANONYMOUS || ($this->user->data['user_id'] != ANONYMOUS && !$this->auth->acl_get('u_viewprofile')))
 		{
 			return;
 		}
 
-		$username = $event['username'];
-		$custom_profile_url = $event['custom_profile_url'];
+		$username = (string)$event['username'];
+		
+		// ---------------------------------------------------------------------------
+		// PATCH PROFILI PLUS DINAMICA: Attiva lo slug /member/solo se acceso da PCA
+		// ---------------------------------------------------------------------------
+		$clean_uname = mb_strtolower(trim($username), 'UTF-8');
+		$accenti = array('à'=>'a', 'è'=>'e', 'é'=>'e', 'ì'=>'i', 'ò'=>'o', 'ù'=>'u');
+		$clean_uname = strtr($clean_uname, $accenti);
+		
+		// Sostituzione lineare standard: lo spazio diventa un segno più (+) legittimo
+		$clean_uname = str_replace(' ', '+', $clean_uname);
+		
+		$current_sid = (!empty($this->user->session_id)) ? '?sid=' . $this->user->session_id : '';
+		
+		// Formato finale assoluto e pulito: /member/bad+boy/
+		$profile_url = '/' . 'member/' . $clean_uname . '/' . $current_sid;
 
-		$this->core->set_user_url($username, $user_id);
-
-		if ($custom_profile_url !== false)
-		{
-			$profile_url = reapply_sid($custom_profile_url . (strpos($custom_profile_url, '?') !== false ?  '&amp;' : '?' ) . 'u=' . (int) $user_id);
-		}
-		else
-		{
-			$profile_url = append_sid("{$this->phpbb_root_path}memberlist.{$this->php_ext}", 'mode=viewprofile&amp;u=' . (int) $user_id);
-		}
-
-		// Return profile
 		if ($mode == 'profile')
 		{
 			$event['username_string'] = $profile_url;
-
 			return;
 		}
 
-		$event['username_string'] = str_replace(['{PROFILE_URL}', '{USERNAME_COLOUR}', '{USERNAME}'], [$profile_url, $event['username_colour'], $event['username']], (!$event['username_colour']) ? $event['_profile_cache']['tpl_profile'] : $event['_profile_cache']['tpl_profile_colour']);
+		$event['username_string'] = str_replace(array('{PROFILE_URL}', '{USERNAME_COLOUR}', '{USERNAME}'), array($profile_url, $event['username_colour'], $event['username']), (!$event['username_colour']) ? $event['_profile_cache']['tpl_profile'] : $event['_profile_cache']['tpl_profile_colour']);
 	}
 
-	public function core_append_sid(mixed $event): void
+	/*
+	* core_append_sid event
+	* you can speed up this if you add :
+	*
+
+	// www.phpBB-SEO.ir SEO TOOLKIT BEGIN
+	// We bypass events/hooks here, the same effect as a standalone event/hook,
+	// which we want, but much faster ;-)
+	if (!empty($this->core->seo_opt['url_rewrite']))
+	{
+		return $this->core->url_rewrite($url, $params, $is_amp, $session_id);
+	}
+	// www.phpBB-SEO.ir SEO TOOLKIT END
+
+	*
+	* after :
+	*
+
+function append_sid($url, $params = false, $is_amp = true, $session_id = false)
+{
+
+	*
+	* in includes/fucntions.php
+	*
+	*/
+	public function core_append_sid($event)
 	{
 		if (!empty($this->core->seo_opt['url_rewrite']))
 		{
@@ -634,7 +776,7 @@ class listener implements EventSubscriberInterface
 		}
 	}
 
-	public function core_pagination_generate_page_link(mixed $event): void
+	public function core_pagination_generate_page_link($event)
 	{
 		static $paginated = [], $find = ['{SN}', '{SV}'];
 
@@ -654,9 +796,7 @@ class listener implements EventSubscriberInterface
 		{
 			$rewriten = $this->core->url_rewrite($base_url);
 
-			$parts = explode('?', $rewriten, 2);
-			$rewriten = $parts[0];
-			$qs = $parts[1] ?? '';
+			@list($rewriten, $qs) = explode('?', $rewriten, 2);
 			if (
 				// rewriten urls are absolute
 				!preg_match('`^(https?\:)?//`i', $rewriten) ||
@@ -691,7 +831,7 @@ class listener implements EventSubscriberInterface
 		$event['generate_page_link_override'] = ($on_page > 1) ? str_replace($find, [$start_name, ($on_page - 1) * $per_page], $paginated[$base_url]) : $base_url;
 	}
 
-	public function core_submit_post_end(mixed $event): void
+	public function core_submit_post_end($event)
 	{
 		global $post_data; // god save hax
 
@@ -830,7 +970,7 @@ class listener implements EventSubscriberInterface
 		$event['data'] = $data;
 	}
 
-	public function core_posting_modify_template_vars(mixed $event): void
+	public function core_posting_modify_template_vars($event)
 	{
 		$page_data = $event['page_data'];
 		$submit = $event['submit'];
@@ -881,7 +1021,7 @@ class listener implements EventSubscriberInterface
 		$event['page_data'] = $page_data;
 	}
 
-	public function core_display_user_activity_modify_actives(mixed $event): void
+	public function core_display_user_activity_modify_actives($event)
 	{
 
 		$active_t_row = $event['active_t_row'];

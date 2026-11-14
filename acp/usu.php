@@ -51,7 +51,7 @@ class usu
 	protected \phpbb\language\language $language;
 
 	public string $u_action = '';
-	public array $new_config = [];
+	public $new_config = [];
 	public array $dyn_select = [];
 	public array $forum_ids = [];
 	public array $array_type_cfg = [];
@@ -480,7 +480,7 @@ class usu
 					while ($row = $db->sql_fetchrow($result))
 					{
 						$forum_data[$row['forum_id']] = $row['forum_name'];
-						$this->core->set_url($row['forum_name'], $row['forum_id'], $this->core->seo_static['forum']);
+						$this->core->set_url($row['forum_name'], (int) $row['forum_id'], $this->core->seo_static['forum']);
 					}
 					$db->sql_freeresult($result);
 
@@ -488,12 +488,14 @@ class usu
 					$sql = 'SELECT * FROM ' . TOPICS_TABLE . '
 						ORDER BY topic_id ASC';
 					$result = $db->sql_query_limit($sql, $limit, $start);
-					while ($row = $db->sql_fetchrow($result))
+										while ($row = $db->sql_fetchrow($result))
 					{
 						$forum_id = (int) $row['forum_id'];
 						$topic_id = (int) $row['topic_id'];
-						$_parent = $row['topic_type'] == POST_GLOBAL ? $this->core->seo_static['global_announce'] : $this->core->seo_url['forum'][$forum_id];
-						if ( !$this->core->check_url('topic', $row['topic_url'], $_parent))
+						$_parent = (int) $row['topic_type'] == POST_GLOBAL ? $this->core->seo_static['global_announce'] : $this->core->seo_url['forum'][$forum_id];
+						
+						// PATCH PHP 8: Forza il topic_id a intero come quarto parametro se richiesto dalla firma del trait
+						if ( !$this->core->check_url('topic', $row['topic_url'], $_parent, $topic_id))
 						{
 							if (!empty($row['topic_url']))
 							{
@@ -805,14 +807,15 @@ class usu
 
 					$msg = !empty($seo_msg) ? '<br /><h1 style="color:red;text-align:left;">' . $this->language->lang('SEO_VALIDATE_INFO') . '</h1><ul style="text-align:left;">' . implode(' ', $seo_msg) . '</ul><br />' : '';
 
-					$msg_long_text = $this->language->lang('SEO_CACHE_MSG_OK') . $msg . adm_back_link($this->u_action);
+										$msg_long_text = $this->language->lang('SEO_CACHE_MSG_OK') . $msg . adm_back_link($this->u_action);
 
 					if ($additional_notes)
 					{
 						$msg_long_text .= "<br/><br/>$additional_notes";
 					}
 
-					trigger_error(false);
+					// PATCH PHP 8: Passa la stringa formattata al trigger_error invece del valore booleano false
+					trigger_error($msg_long_text);
 				}
 				else
 				{
@@ -1110,7 +1113,7 @@ class usu
 
 		$rewrite_conf = [
 			'apache' => [
-				'header' => "<IfModule mod_rewrite.c>
+								'header' => "<IfModule mod_rewrite.c>
 	# You may need to un-comment the following lines
 	# Options +FollowSymlinks
 	# To make sure that rewritten dir or file (/|.html) will not load dir.php in case it exist
@@ -1118,20 +1121,11 @@ class usu
 	# REMEBER YOU ONLY NEED TO STARD MOD REWRITE ONCE
 	RewriteEngine On
 
-	# Uncomment the statement below if you want to make use of
-	# HTTP authentication and it does not already work.
-	# This could be required if you are for example using PHP via Apache CGI.
-	# RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+	# PARACADUTE COMPATIBILITÀ SITEMAP XML
+	RewriteRule ^sitemap\.xml$ app.php/sitemap.xml [QSA,L,NC]
 
 	# REWRITE BASE
 	RewriteBase /{REWRITEBASE}
-
-	# HERE IS A GOOD PLACE TO FORCE CANONICAL DOMAIN
-	# Define fully qualified ssl aware protocol
-	# RewriteCond %{SERVER_PORT}s ^(443(s)|[0-9]+s)$
-	# RewriteRule ^.*$ - [env=HttpFullProto:http%2://]
-	# RewriteCond %{HTTP_HOST} !^{HOSTNAME_ESCAPED}$ [NC]
-	# RewriteRule ^(.*)$ %{ENV:HttpFullProto}{HOSTNAME}/{REWRITEBASE}$1 [QSA,L,R=301]
 
 	# DO NOT GO FURTHER IF THE REQUESTED FILE / DIR DOES EXISTS
 	RewriteCond %{REQUEST_FILENAME} -f [OR]
@@ -1139,14 +1133,14 @@ class usu
 	RewriteRule . - [L]",
 
 				'footer' => '	#
+	#
 	# The following 3 lines will rewrite URLs passed through the front controller
-	# to not require app.php in the actual URL. In other words, a controller is
-	# by default accessed at /app.php/my/controller, but can also be accessed at
-	# /my/controller
+	# to not require app.php in the actual URL.
 	#
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}(.*)$ {DEFAULT_SLASH}{PHPBB_RPATH}app.{PHP_EX} [QSA,L]
+	RewriteRule ^(.*)$ {PHPBB_RPATH}app.{PHP_EX} [QSA,L]
+
 
 </IfModule>
 
@@ -1427,7 +1421,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}{STATIC_LEADERS}{EXT_LEADERS}$ {DEFAULT_S
 			$rewrite_rules += $mods_ht['pos1'];
 		}
 
-		$rewrite_rules += [
+				$rewrite_rules += [
 			'comment_forum_noid' => '# FORUM WITHOUT ID & DELIM ALL MODES
 # THESE LINES MUST BE LOCATED AT THE END OF YOUR HTACCESS TO WORK PROPERLY',
 		];
@@ -1437,9 +1431,10 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}{STATIC_LEADERS}{EXT_LEADERS}$ {DEFAULT_S
 			$rewrite_rules += [
 				'forum_noid' => [
 					'apache' => 'RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}([a-z0-9_-]+?)(-([0-9]+))?{EXT_FORUM}$ {DEFAULT_SLASH}{PHPBB_RPATH}viewforum.{PHP_EX}?forum_uri=$1&start=$3 [QSA,L,NC]',
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}([a-z0-9_-]+)/$ {DEFAULT_SLASH}{PHPBB_RPATH}viewforum.{PHP_EX}?forum_uri=$1 [QSA,L,NC]',
 					'ngix' => 'if (!-e $request_filename) {
-	rewrite ^{WIERD_SLASH}{PHPBB_LPATH}([a-z0-9_-]+?)(-([0-9]+))?{EXT_FORUM}$ {DEFAULT_SLASH}{PHPBB_RPATH}viewforum.{PHP_EX}?forum_uri=$1&start=$3 last;
+	rewrite ^/{WIERD_SLASH}{PHPBB_RPATH}([a-z0-9_-]+)/$ {DEFAULT_SLASH}{PHPBB_RPATH}viewforum.{PHP_EX}?forum_uri=$1 last;
 }',
 				],
 			];
@@ -1450,9 +1445,9 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}([a-z0-9_-]+?)(-([0-9]+))?{EXT_FORUM}$ {D
 				'forum_noid' => [
 					'apache' => 'RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}([a-z0-9_-]+){FORUM_PAGINATION}$ {DEFAULT_SLASH}{PHPBB_RPATH}viewforum.{PHP_EX}?forum_uri=$1&start=$3 [QSA,L,NC]',
+RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}([a-z0-9_-]+)/$ {DEFAULT_SLASH}{PHPBB_RPATH}viewforum.{PHP_EX}?forum_uri=$1 [QSA,L,NC]',
 					'ngix' => 'if (!-e $request_filename) {
-	rewrite ^{WIERD_SLASH}{PHPBB_LPATH}([a-z0-9_-]+){FORUM_PAGINATION}$ {DEFAULT_SLASH}{PHPBB_RPATH}viewforum.{PHP_EX}?forum_uri=$1&start=$3 last;
+	rewrite ^/{WIERD_SLASH}{PHPBB_RPATH}([a-z0-9_-]+)/$ {DEFAULT_SLASH}{PHPBB_RPATH}viewforum.{PHP_EX}?forum_uri=$1 last;
 }',
 				],
 			];
@@ -1597,7 +1592,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 	/**
 	*  get_mods_server_conf Get all mods server_conf tpls
 	*/
-	public function get_mods_server_conf(): string
+	public function get_mods_server_conf(): mixed
 	{
 		$all_ht_tpl = ['pos1' => '', 'pos2' => ''];
 		$path = PHPBB_SEO_USU_ROOT_DIR . 'htmods';
@@ -1644,7 +1639,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 	/**
 	*  set_phpbb_seo_links Builds links to support threads
 	*/
-	public function set_phpbb_seo_links(): string
+	public function set_phpbb_seo_links(): array
 	{
 		$modrtype_lang = [];
 		$this->core->modrtype = intval($this->core->modrtype);
@@ -1801,7 +1796,7 @@ RewriteRule ^{WIERD_SLASH}{PHPBB_LPATH}' . $fix_left_match . '.+/(styles/.*|imag
 	/**
 	* write_cache( ) will write the cached file and keep backups.
 	*/
-	public function write_cache($file, $update): string
+	public function write_cache($file, $update): bool
 	{
 		if (!$this->core->cache_config['cache_enable'])
 		{

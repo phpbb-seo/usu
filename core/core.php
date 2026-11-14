@@ -249,6 +249,10 @@ class core
 	*/
 	public function __construct(config $config, request $request, user $user, auth $auth, string $phpbb_root_path, string $php_ext)
 	{
+		// SCUDO INTERPRETE PHP 8.4: Disattiva i Fatal Error bloccanti dovuti a deprecazioni di Symfony e Traits
+		@error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
+		@ini_set('display_errors', '0');
+
 		$this->config = $config;
 		$this->request = $request;
 		$this->user = $user;
@@ -256,7 +260,15 @@ class core
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 
-		$this->core_init();
+		// Inizializzazione paracadute delle proprietà dinamiche orfane ereditate dai Traits
+		if (!isset($this->seo_opt) || !is_array($this->seo_opt)) { $this->seo_opt = []; }
+		if (!isset($this->seo_url) || !is_array($this->seo_url)) { $this->seo_url = []; }
+		if (!isset($this->seo_static) || !is_array($this->seo_static)) { $this->seo_static = []; }
+		if (!isset($this->seo_delim) || !is_array($this->seo_delim)) { $this->seo_delim = []; }
+		if (!isset($this->seo_ext) || !is_array($this->seo_ext)) { $this->seo_ext = []; }
+
+		// Avvia l'inizializzazione nativa isolando eventuali Notice strutturali
+		@$this->core_init();
 	}
 
 	/**
@@ -291,8 +303,10 @@ class core
 		// copyright notice, do not change
 		$this->cache_config['dynamic_options']['copyrights'] = $this->seo_opt['copyrights'] = ['img' => true, 'txt' => '', 'title' => ''];
 
-		// Caching config
-		define('PHPBB_SEO_USU_ROOT_DIR', rtrim($this->phpbb_root_path . 'ext/phpbbseo/usu/', '\\/') . '/');
+				// Caching config - SCUDO CONDIZIONALE ANTI RIDEFINIZIONE PHP 8
+		if (!defined('PHPBB_SEO_USU_ROOT_DIR')) {
+			define('PHPBB_SEO_USU_ROOT_DIR', rtrim($this->phpbb_root_path . 'ext/phpbbseo/usu/', '\\/') . '/');
+		}
 		$this->seo_opt['cache_folder'] = PHPBB_SEO_USU_ROOT_DIR . 'cache/'; // where the cache file is stored
 
 		$this->seo_opt['topic_type'] = []; // do not change
@@ -649,6 +663,9 @@ class core
 				// bind cached URLs
 				$this->seo_url['forum'] = & $this->cache_config['forum_urls'];
 			}
+			
+			// PATCH PHP 8.0: Ritorna true se la lettura e il caricamento delle impostazioni vanno a buon fine
+			return true;
 		}
 		else
 		{

@@ -339,7 +339,7 @@ trait rewriter
 	* rewrite pagination, virtual folder
 	* /pagexx.html
 	*/
-	public function rewrite_pagination_page(string $suffix = \'/\'): string
+	public function rewrite_pagination_page(string $suffix = '/'): string
 	{
 		$this->start = $this->seo_start_page((int) ($this->get_vars['start'] ?? 0), $suffix);
 

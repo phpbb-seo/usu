@@ -8,8 +8,6 @@
 services:
     phpbbseo.usu.core:
         class: phpbbseo\usu\core\core
-        shared: true
-        public: true
         arguments:
             - '@config'
             - '@request'
@@ -20,8 +18,6 @@ services:
 
     phpbbseo.usu.listener:
         class: phpbbseo\usu\event\listener
-        shared: true
-        public: false
         arguments:
             - '@phpbbseo.usu.core'
             - '@config'
@@ -35,3 +31,4 @@ services:
             - '%core.php_ext%'
         tags:
             - { name: event.listener }
+

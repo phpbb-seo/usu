@@ -9,13 +9,25 @@
         "seo",
         "Friendly URL"
     ],
-    "license": "GPL-2.0-only",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "phpBB SEO Team",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "php": "^7.4 || ^8.0 || ^8.1 || ^8.2 || ^8.3 || ^8.4",
         "composer/installers": "~1.0"
     },
+    "autoload": {
+        "psr-4": {
+            "phpbbseo\\usu\\": ""
+        }
+    },
     "extra": {
         "display-name": "Ultimate phpBB SEO Friendly URL",
+        "ext-name": "phpbbseo/usu",
         "soft-require": {
             "phpbb/phpbb": "^3.3"
         }
